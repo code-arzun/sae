@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+*,
+*::after,
+*::before {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --blue-color: #0c2f54;
+    --grey-color: #d3d2d2;
+    --dark-color: #292828;
+    --white-color: #ffffff;
+}
+
+/* Warna Teks */
+.text-dark {
+    color: var(--dark-color);
+}
+.text-dark {
+    color: var(--blue-color)
+}
+.text-start {
+    text-align: left;
+}
+.text-center {
+    text-align: center;
+}
+.text-end {
+    text-align: right;
+}
+.text-bold {
+    font-weight: 700;
+    color: var(--blue-color);
+}
+.b {
+    font-weight: 500;
+    color: var(--blue-color);
+}
+.nama {
+    font-weight: bold;
+    color: var(--blue-color);
+}
+.ditujukan,
+.produk {
+    font-weight: 600;
+    color: var(--dark-color);
+}
+/* Garis */
+/* .hr {
+    height: 1px;
+    background-color: var(--blue-color);
+    margin-top: 10px;
+    margin-bottom: 10px;
+} */
+.hr1 {
+    height: 3px;
+    background-color: var(--blue-color);
+    margin-top: 7px;
+    /* margin-bottom: 5px; */
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--dark-color);
+    font-size: 12px;
+}
+.penyiapan-wrapper {
+    min-height: 100vh;
+    background-color: rgba(0,0,0.1);
+    /* padding-top: 20px;
+    padding-bottom: 20px; */
+    /* padding: 20px; */
+}
+.penyiapan {
+    max-width: 1120px;
+    /* max-width: 850px; */
+    /* max-width: 2550px; */
+    margin-right: auto;
+    margin-left: auto;
+    background-color: var(--white-color);
+    padding: 25px;
+    /* min-height: 920px; */
+    min-height: 790px;
+    /* min-height: 850px; */
+    /* min-height: 1120px; */
+    /* height: 3300px; */
+}
+.penyiapan-kop table{
+    border-collapse: collapse;
+    width: 100%;
+    padding: 0px;
+}
+.logo {
+    width: 65px;
+    margin-right: 10px;
+}
+.identitas-perusahaan {
+    width: 100px;
+    vertical-align: top;
+}
+.identitas-perusahaan h2 {
+    font-weight: 700; 
+    font-size: 18px;  
+    /* line-height: 0.75;  */
+    /* line-height: 1.25;  */
+    line-height: 1; 
+    color: var(--blue-color);
+    vertical-align: top;
+}
+.identitas-perusahaan p {
+    font-size: 11px;
+}
+.judul-dokumen {
+    width: 100px;
+    font-weight: 700;
+    padding-right: 25px;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--blue-color);
+    vertical-align: top;
+}
+
+.penyiapan-kop hr {
+    height: 3px;
+    background-color: var(--blue-color);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.penyiapan-keterangan-dokumen {
+    font-size: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.penyiapan-keterangan-dokumen table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.penyiapan-keterangan-dokumen table td {
+    padding-right: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.penyiapan-keterangan-dokumen table td {
+    text-align: start;
+    vertical-align: text-top;
+    padding-left: 5px;
+    /* padding-right: 5px; */
+    font-size: 12px;
+    
+}
+.penyiapan-customer {
+    /* margin-top: 10px; */
+    margin-bottom: 15px;
+}
+/* .penyiapan-customer p {
+    font-size: 12px;
+} */
+.penyiapan-customer table {
+    /* margin-bottom: 10px; */
+    width: 100%;
+    /* padding-right: 10px; */
+    
+}
+.penyiapan-customer table td {
+    /* padding-left: 5px; */
+    /* padding-left: 5px; */
+    vertical-align: top;
+}
+.penyiapan-detail {
+    overflow: hidden;
+}
+.penyiapan-detail table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.penyiapan-detail table td,
+.penyiapan-detail table th {
+    padding-top: 0.5px 1px;
+    padding-bottom: 0.5px 1px;
+    padding-left: 3px;
+    padding-right: 5px;
+    /* padding-left: 10px;
+    padding-right: 10px; */
+    /* text-align: center; */
+}
+.penyiapan-detail table thead {
+    background-color: var(--blue-color);
+    text-align: center right;
+    font: 100;
+    color: var(--white-color);
+    /* padding-top: 2px;
+    padding-bottom: 2px; */
+    border-bottom: 1px solid #ffffff;
+}
+.penyiapan-detail table td {
+    /* border: 0.5px solid rgb(128, 128, 128); */
+    /* border-bottom: 0.25px solid rgb(202, 202, 202); */
+    border-bottom: 0.5px solid rgb(128, 128, 128);
+    /* border-right: 0.25px solid rgb(202, 202, 202);
+    border-left: 0.25px solid rgb(202, 202, 202); */
+}
+.border-left {
+    /* border-left: 0.25px solid rgb(202, 202, 202); */
+    border-left: 0.5px solid rgb(128, 128, 128);
+}
+.border-right {
+    /* border-right: 0.25px solid rgb(202, 202, 202); */
+    border-right: 0.5px solid rgb(128, 128, 128);
+}
+.border-top {
+    /* border-top: 0.25px solid rgb(202, 202, 202); */
+    border-top: 0.5px solid rgb(128, 128, 128);
+}
+.border-bottom {
+    /* border-bottom: 0.25px solid rgb(202, 202, 202); */
+    border-bottom: 0.5px solid rgb(128, 128, 128);
+}
+.penyiapan-total {
+    overflow: hidden;
+    margin-top: 3px;
+}
+.penyiapan-total table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.penyiapan-total table td,
+.penyiapan-total table th {
+    padding: 1px;
+    /* padding-left: 10px;
+    padding-right: 10px; */
+    padding-left: 5px;
+    padding-right: 10px;
+    /* padding-right: 15px; */
+    /* padding-bottom: 2px; */
+    /* text-align: center; */
+}
+.penyiapan-total table th {
+    vertical-align: top;
+    background-color: var(--grey-color);
+    text-align: right;
+    font: 100;
+    color: var(--dark-color);
+    /* padding-top: 2px;
+    padding-bottom: 2px; */
+    border-bottom: 1px solid var(--white-color);
+}
+/* .penyiapan-total table tr {
+    border-bottom: 0.25px solid rgb(202, 202, 202);
+} */
+.penyiapan-total table td,
+.penyiapan-total table td {
+    /* border: 0.25px solid rgb(202, 202, 202); */
+    /* border-bottom: 0.25px solid rgb(202, 202, 202); */
+    vertical-align: top;
+}
+.penyiapan-tandatangan {
+    margin-top: 50px;
+    margin-bottom: 20px;
+    /* text-align: center; */
+}
+.penyiapan-tandatangan table {
+    border-collapse: collapse;
+    width: 100%;
+    
+}
+.penyiapan-tandatangan table td {
+    text-align: center;
+    padding-bottom: 50px;
+    /* width: 37%; */
+    font: italic;
+}
+.penyiapan-tandatangan table th {
+    text-align: center;
+    font: italic;
+}
+.penyiapan-btns {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+.penyiapan-btn {
+    padding: 3px 9px;
+    color: var(--dark-color);
+    font-family: inherit;
+    border: 1px solid var(--dark-color);
+    cursor: pointer;
+    font-size: 20px;
+}
+
+
+@media screen (max-width: 992px) {
+    .penyiapan {
+        padding: 40px;
+    }
+}
+
+@media screen (max-width: 576px) {
+    .penyiapan-head-top,
+    .penyiapan-head-middle,
+    .penyiapan-head-bottom {
+        grid-template-columns: repeat(3, 1fr)
+    }
+    .penyiapan-head-bottom-right {
+        margin-top: 12px;
+        margin-bottom: 12px;
+    }
+    .penyiapan *{
+        text-align: left;
+    }
+    .penyiapan {
+        padding: 50px;
+    }
+}
+
+
+.overflow-view {
+    /* overflow-x: scroll; */
+}
+.penyiapan-body {
+    min-width: 600px;
+}
+
+@media print {
+    .print-area {
+        visibility: visible;
+        /* width: 100%; */
+        /* width: 8.5in;
+        height: 11in; */
+        height: 8.5in;
+        width: 11in;
+        /* width: 2550px; */
+        /* height: 3300px; */
+        position: absolute;
+        left: 0;
+        top: 0;
+        /* padding: 20px; */
+        overflow: hidden;
+    }
+    .overflow-view {
+        overflow-x: hidden;
+        visibility: hidden;
+    }
+}

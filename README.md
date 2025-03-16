@@ -1,16 +1,13 @@
-## ✨ Laravel Point of Sale
+## ✨ ERP SAE
 
-Point of Sale Management and Invoice build with Laravel 10 and MySql.
+Enterprise Resource Planning with Laravel 10 and MySql.
 
-![Dashboard](https://user-images.githubusercontent.com/71541409/234483153-38816efd-c261-4585-bb93-28639508f5e3.jpg)
+![Dashboard]
 
 ## 😎 Features
-- POS
-- Orders
-  - Pending Orders
-  - Complete Orders
-  - Pending Due
-- Stock Management
+- SO
+- DO
+- Collection
 - Products
   - Products
   - Categories
@@ -31,12 +28,11 @@ Point of Sale Management and Invoice build with Laravel 10 and MySql.
 1.  **Clone Repository or Download**
 
     ```bash
-    $ git clone https://github.com/fajarghifar/laravel-point-of-sale
     ```
 1. **Setup**
     ```bash
     # Go into the repository
-    $ cd laravel-point-of-sale
+    $ cd SAE
 
     # Install dependencies
     $ composer install
@@ -85,7 +81,7 @@ Point of Sale Management and Invoice build with Laravel 10 and MySql.
     Try login with username: `admin` and password: `password`
 
 ## 🚀 Config
-1. **Config Chart**
+1. **Config Cart**
 
     Open file `./config/cart.php`. You can set a tax, format number, etc.
     > For More details, visit this link [hardevine/shoppingcart](https://packagist.org/packages/hardevine/shoppingcart).
@@ -112,6 +108,3 @@ If you have any ideas to make it more interesting, please send a PR, or create a
 # 🤝 License
 
 ### [MIT](LICENSE)
-
-> Github [@fajarghifar](https://github.com/fajarghifar) &nbsp;&middot;&nbsp;
-> Instagram [@fajarghifar](https://instagram.com/fajarghifar)

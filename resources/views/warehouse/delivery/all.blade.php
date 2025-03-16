@@ -237,7 +237,7 @@
                             <th>Total Subtotal (Bruto)</th>
                         </tr>
                     </thead>
-                    <tbody class="light-body text-center">
+                    <tbody class="text-center">
                         <tr>
                             <td>{{ $deliveries->count('sub_total') }}</td>
                             <td>

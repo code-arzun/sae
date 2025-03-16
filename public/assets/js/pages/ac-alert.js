@@ -1,7 +1,7 @@
 'use strict';
 (function () {
 document.querySelector('.bs-message').addEventListener('click', function () {
-  Swal.fire('Any fool can use a computer');
+  Swal.fire('Test');
 });
 
 document.querySelector('.bs-tit-txt').addEventListener('click', function () {
@@ -465,4 +465,70 @@ document.querySelector('.bs-multiple-input').addEventListener('click', function 
     }
   })();
 });
+
+document.querySelector('.update-so').addEventListener('click', function () {
+  (async () => {
+    const inputOptions = new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          'Disetujui': 'Setujui',
+          'Ditolak': 'Tolak',
+          'Dibatalkan': 'Batalkan'
+        });
+      }, 1000);
+    });
+    const { value: color } = await Swal.fire({
+      title: 'Select color',
+      input: 'radio',
+      inputOptions: inputOptions,
+      inputValidator: (value) => {
+        if (!value) {
+          return 'You need to choose something!';
+        }
+      }
+    });
+    if (color) {
+      Swal.fire({
+        html: `You selected: ` + color
+      });
+    }
+  })();
+});
 })();
+
+/*---------------------------------------------------------------------
+Sweet alt Update
+-----------------------------------------------------------------------*/
+$('.update-button').on("click", function (e) {
+  e.preventDefault(); // Mencegah form dari pengiriman otomatis
+  const form = $(this).closest('.confirmation-form'); // Ambil form terkait
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      cancelButton: "btn btn-danger me-3", // Tombol batal (cancel) berwarna merah
+      confirmButton: "btn btn-success",    // Tombol konfirmasi (confirm) berwarna hijau
+    },
+    buttonsStyling: false,  // Menonaktifkan styling default tombol SweetAlert
+  });
+
+  swalWithBootstrapButtons
+    .fire({
+      title: "Perbarui Data",
+      text: "Apakah Anda yakin?!",
+      icon: "warning",
+      showCancelButton: true,
+      cancelButtonText: "Tidak, batalkan!",
+      confirmButtonText: "Ya, simpan!",
+      reverseButtons: true, // Membalik posisi tombol, membuat confirm di kanan dan cancel di kiri
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Berhasil!",
+          text: "Data berhasil diperbarui!.",
+          icon: "success"
+        });
+        form.submit();
+      }
+    });
+});

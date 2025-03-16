@@ -155,7 +155,7 @@
                 <th>Total Belum dibayar</th>
             </tr>
         </thead>
-        <tbody class="light-body text-center">
+        <tbody class="text-center">
             <tr>
                 <td>{{ $orders->where('order_status', 'Menunggu persetujuan')->count('due') }}</td>
                 <td>

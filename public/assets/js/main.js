@@ -760,3 +760,39 @@ if (hadirRadio && tidakHadirRadio) {
 // }
 
 // checkAttendanceStatus();
+
+// Chart
+import Chart from 'chart.js/auto';
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetch('/orders/chart-data')
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(order => `Bulan ${order.month}`);
+            const totals = data.map(order => order.total);
+
+            const ctx = document.getElementById('orderChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Jumlah Order',
+                        data: totals,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error:', error));
+});

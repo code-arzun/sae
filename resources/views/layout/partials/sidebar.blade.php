@@ -1,4 +1,4 @@
-<nav class="pc-sidebar">
+<nav class="pc-sidebar pc-sidebar-hide">
   <div class="navbar-wrapper">
     <div class="m-header">
       <a href="{{ route('dashboard') }}" class="b-brand text-primary">

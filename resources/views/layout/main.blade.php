@@ -25,6 +25,8 @@
     <!-- [Template CSS Files] -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" id="main-style-link" >
     <link rel="stylesheet" href="{{ asset('assets/css/style-preset.css') }}" >
+    <!-- Chart Js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <!-- Custom page-specific styles -->
     @yield('specificpagestyles')
@@ -37,22 +39,25 @@
         </div>
     </div>
     <!-- Wrapper Start -->
-    @include('layout.partials.sidebar') <!-- Sidebar -->
-    @include('layout.partials.navbar') <!-- Navbar -->
+      <!-- Sidebar -->
+      @include('layout.partials.sidebar')
+      <!-- Navbar -->
+      @include('layout.partials.navbar')
 
-
-    <div class="pc-container">
-        <div class="pc-content">
-            <div class="row">
-                <div class="col-sm-12">
-                    @yield('container') <!-- Main content -->
+      <div class="pc-container">
+          <div class="pc-content">
+              <div class="row">
+                <div class="col-md-12">
+                  <!-- Main content -->
+                  @yield('container')
                 </div>
-            </div>
-        </div>
-    </div>
+              </div>
+          </div>
+      </div>
     <!-- Wrapper End -->
-        
-    @include('layout.partials.footer') <!-- Footer -->
+    
+    <!-- Footer -->
+    @include('layout.partials.footer')
 
     <!-- Main JavaScript -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
@@ -61,6 +66,8 @@
     <!-- [Page Specific JS] start -->
     <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/dashboard-default.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/ac-alert.js') }}"></script>
     <!-- [Page Specific JS] end -->
     <!-- Required Js -->
     <script src="{{ asset('assets/js/plugins/popper.min.js') }}"></script>
@@ -72,8 +79,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{{ asset('assets/js/plugins/jquery.dataTables.min.js') }}"></script>
-    {{-- <script src="{{ asset('assets/js/plugins/jquery.dataTables.min.js') }}"></script> --}}
-    {{-- <script src="{{ asset('assets/js/plugins/jquery.dataTables.min.js') }}"></script> --}}
     <script>
       // [ Simple Initialization ]
       $('#single-select').DataTable({

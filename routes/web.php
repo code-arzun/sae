@@ -48,6 +48,7 @@ use App\Models\Bank;
     use App\Http\Controllers\Settings\DatabaseBackupController;
 //
 
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Finance\BankController;
 use App\Http\Controllers\Warehouse\ReturController;
@@ -471,5 +472,20 @@ use App\Http\Controllers\Publishing\WriterCategoryController;
         Route::get('/database/backup/delete/{getFileName}', [DatabaseBackupController::class, 'delete'])->name('backup.delete');
     });
 //
+
+Route::get('/orders/chart-status', function () {
+    $orders = Order::selectRaw('
+            order_status, 
+            COUNT(*) as total_orders, 
+            SUM(sub_total) as total_sub_total, 
+            SUM(discount_rp) as total_discount, 
+            SUM(grandtotal) as total_grandtotal
+        ')
+        ->groupBy('order_status')
+        ->orderBy('order_status', 'asc')
+        ->get();
+
+    return response()->json($orders);
+});
 
 require __DIR__.'/auth.php';

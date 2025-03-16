@@ -181,7 +181,7 @@
                             <th>Total Grandtotal (Nett)</th>
                             </tr>
                     </thead>
-                    <tbody class="light-body text-center">
+                    <tbody class="text-center">
                         <tr>
                             <td>{{ $orders->count('order_status', 'proposed') }}</td>
                             <td>

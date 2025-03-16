@@ -135,7 +135,7 @@
                         <th>Total Belum dibayar</th>
                     </tr>
                 </thead>
-                <tbody class="light-body text-center">
+                <tbody class="text-center">
                     <tr>
                         <td>{{ $orders->count('due') }}</td>
                         <td>

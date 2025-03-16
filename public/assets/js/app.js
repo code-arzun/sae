@@ -1215,3 +1215,93 @@ if (hadirRadio && tidakHadirRadio) {
         }
     });
 }
+
+// Rupiah
+// function formatRupiah(angka) {
+//   return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+// }
+
+// Chart
+// import Chart from 'chart.js/auto';
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetch('/orders/chart-status')
+        .then(response => response.json())
+        .then(data => {
+            console.log("Data dari server:", data); // Debugging
+
+            const labels = data.map(order => order.order_status);
+            const orderCounts = data.map(order => order.total_orders);
+            const subTotals = data.map(order => order.total_sub_total);
+            const discounts = data.map(order => order.total_discount);
+            const grandTotals = data.map(order => order.total_grandtotal);
+
+            // Chart Jumlah Order per Status
+            const ctx1 = document.getElementById('orderStatusChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Jumlah Order',
+                        data: orderCounts,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            // Chart Subtotal, Discount, dan Grandtotal
+            const ctx2 = document.getElementById('orderTotalChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Sub Total',
+                            data: subTotals,
+                            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Discount',
+                            data: discounts,
+                            backgroundColor: 'rgba(255, 206, 86, 0.6)',
+                            borderColor: 'rgba(255, 206, 86, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Grand Total',
+                            data: grandTotals,
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+        })
+        .catch(error => console.error('Error:', error));
+});

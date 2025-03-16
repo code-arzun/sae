@@ -340,6 +340,7 @@ class SalesOrderController extends Controller
         $statusFilter = request('order_status', null);
 
         $ordersQuery = Order::query();
+        $collections = Collection::query();
 
         if ($user->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin'])) {
             if ($statusFilter) {
@@ -380,6 +381,8 @@ class SalesOrderController extends Controller
             'orders' => $orders,
             'sales' => $sales,
             'orderStatus' => $orderStatus,
+            'collections' => $collections
+            // compact('orders', 'sales', 'orderStatus', 'collections')
         ]);
     }
 

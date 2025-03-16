@@ -94,7 +94,7 @@
                             </td> --}}
                             <td>
                                 <div class="d-flex align-items-center list-action">
-                                    <a class="btn btn-info me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Details" href="{{ route('salesorder.orderDetails', $paid->id) }}">
+                                    <a class="btn btn-info me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Details" href="{{ route('salesorder.orderDetails', $paid->id) }}">
                                         Details
                                     </a>
                                     {{-- <button type="button" class="btn btn-primary-dark me-2" data-bs-toggle="modal" data-target=".bd-example-modal-lg" id="{{ $paid->id }}" onclick="payDue(this.id)">Pay Due</button> --}}

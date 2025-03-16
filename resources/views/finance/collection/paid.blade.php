@@ -110,14 +110,14 @@
                                 </span>
                             </td>
                             <td><a class="badge badge-primary" href="{{ route('collection.details', $collection->id) }}" 
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Lihat Detail">{{ $collection->invoice_no }}</a></td>
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $collection->invoice_no }}</a></td>
                             <td>
                                 <span class="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Carbon\Carbon::parse($collection->salesorder->order_date)->translatedformat('l, d F Y') }}">
                                     {{ Carbon\Carbon::parse($collection->salesorder->order_date)->translatedformat('d M Y') }}
                                 </span>
                             </td>
                             <td><a class="badge badge-success" href="{{ route('so.orderDetails', $collection->order_id) }}" 
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Lihat Detail">{{ $collection->salesorder->invoice_no }}</a></td>
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $collection->salesorder->invoice_no }}</a></td>
                             <td><b>{{ $collection->salesorder->customer->NamaLembaga }}</b> <br>
                                 {{ $collection->salesorder->customer->NamaCustomer }}
                             </td>

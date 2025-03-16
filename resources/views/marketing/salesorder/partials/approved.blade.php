@@ -82,7 +82,7 @@
                                 {{ $order->invoice_no }}
                         </a>
                         <a href="{{ route('so.invoiceDownload', $order->id) }}"
-                            class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Cetak Dokumen SO">
+                            class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Cetak Dokumen SO">
                             <i class="fa fa-print me-0" aria-hidden="true"></i> 
                         </a>
                     </div>
@@ -110,7 +110,7 @@
                             @method('put')
                             @csrf
                             <input type="hidden" name="id" value="{{ $order->id }}">
-                            <button type="button" class="btn bg-warning me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Batalkan">
+                            <button type="button" class="btn bg-warning me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Batalkan">
                                 <i class="fa fa-times me-0" aria-hidden="true"></i>
                             </button>
                         </form>
@@ -119,7 +119,7 @@
                             @method('put')
                             @csrf
                             <input type="hidden" name="id" value="{{ $order->id }}">
-                            <button type="button" class="btn bg-danger me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Tolak">
+                            <button type="button" class="btn bg-danger me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Tolak">
                                 <i class="fa fa-dot-circle-o me-0" aria-hidden="true"></i>
                             </button>
                         </form>
@@ -128,7 +128,7 @@
                             @method('put')
                             @csrf
                             <input type="hidden" name="id" value="{{ $order->id }}">
-                            <button type="button" class="btn bg-success update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Setujui">
+                            <button type="button" class="btn bg-success update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Setujui">
                                 <i class="fa fa-check me-0" aria-hidden="true"></i>
                             </button>
                         </form>

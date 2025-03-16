@@ -131,7 +131,7 @@
                     </div>
                     <div class="header-title">
                         <a href="{{ route('so.invoiceDownload', $order->id) }}"
-                            class="btn bg-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Cetak Dokumen SO">
+                            class="btn bg-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Cetak Dokumen SO">
                             <i class="fa fa-print" aria-hidden="true"></i> 
                         </a>
                     </div>
@@ -206,7 +206,7 @@
                     @if ($remainingAmount > 0 && auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
                     <div>
                         <a href="{{ route('input.do') }}"
-                            class="btn bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Buat Delivery Order">
+                            class="btn bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Buat Delivery Order">
                             <i class="fa fa-plus me-2" aria-hidden="true"></i>Buat Delivery Order 
                         </a>
                     </div>
@@ -286,12 +286,12 @@
                                 <td>{{ Carbon\Carbon::parse($delivery->delivery_date)->translatedformat('l, d F Y') }}</td>
                                 <td>
                                     <a class="badge badge-primary" href="{{ route('do.deliveryDetails', $delivery->id) }}" 
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Lihat Detail">{{ $delivery->invoice_no }}
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $delivery->invoice_no }}
                                     </a>
                                 </td>
                                 <td>
                                     <a href="{{ route('do.invoiceDownload', $delivery->id) }}"
-                                        class="btn bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Cetak Dokumen">
+                                        class="btn bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Cetak Dokumen">
                                         <i class="fa fa-print me-0" aria-hidden="true"></i> 
                                     </a>
                                 </td>
@@ -445,12 +445,12 @@
                                 <td>{{ Carbon\Carbon::parse($collection->collection_date)->translatedformat('l, d F Y') }}</td>
                                 <td>
                                     <a class="badge badge-primary" href="{{ route('collection.details', $collection->id) }}" 
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Lihat Detail">{{ $collection->invoice_no }}
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $collection->invoice_no }}
                                     </a>
                                 </td>
                                 <td>
                                     <a href="{{ route('collection.invoiceDownload', $collection->id) }}"
-                                        class="btn bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Cetak Dokumen">
+                                        class="btn bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Cetak Dokumen">
                                         <i class="fa fa-print me-0" aria-hidden="true"></i> 
                                     </a>
                                 </td>

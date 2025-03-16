@@ -70,7 +70,7 @@
                     @method('put')
                     @csrf
                     <input type="hidden" name="id" value="{{ $order->id }}">
-                    <button type="submit" class="btn btn-warning w-100 me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Batalkan" title="Batalkan">
+                    <button type="submit" class="btn btn-warning w-100 me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Batalkan" data-original-title="Batalkan">
                         <i class="fa fa-times me-2" aria-hidden="true"></i>
                         Batalkan
                     </button>
@@ -82,7 +82,7 @@
                     @method('put')
                     @csrf
                     <input type="hidden" name="id" value="{{ $order->id }}">
-                    <button type="submit" class="btn btn-danger w-100 me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Tolak" title="Tolak">
+                    <button type="submit" class="btn btn-danger w-100 me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Tolak" data-original-title="Tolak">
                         <i class="fa fa-dot-circle-o me-2" aria-hidden="true"></i>
                         Tolak
                     </button>
@@ -94,7 +94,7 @@
                     @method('put')
                     @csrf
                     <input type="hidden" name="id" value="{{ $order->id }}">
-                    <button type="submit" class="btn btn-success w-100 me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Setujui" title="Setujui">
+                    <button type="submit" class="btn btn-success w-100 me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Setujui" data-original-title="Setujui">
                         <i class="fa fa-check me-2" aria-hidden="true"></i>
                         Setujui
                     </button>

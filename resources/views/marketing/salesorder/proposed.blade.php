@@ -136,7 +136,7 @@
                                         @method('put')
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $propose->id }}">
-                                        <button type="button" class="btn btn-success me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Setujui">
+                                        <button type="button" class="btn btn-success me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Setujui">
                                              <i class="fa fa-check me-0" aria-hidden="true"></i>
                                         </button>
                                     </form>
@@ -145,7 +145,7 @@
                                         @method('put')
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $propose->id }}">
-                                        <button type="button" class="btn btn-danger me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Tolak">
+                                        <button type="button" class="btn btn-danger me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Tolak">
                                             <i class="fa fa-dot-circle-o me-0" aria-hidden="true"></i>
                                         </button>
                                     </form>
@@ -154,7 +154,7 @@
                                         @method('put')
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $propose->id }}">
-                                        <button type="button" class="btn btn-warning update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Batalkan">
+                                        <button type="button" class="btn btn-warning update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Batalkan">
                                             <i class="fa fa-times me-0" aria-hidden="true"></i>
                                         </button>
                                     </form>

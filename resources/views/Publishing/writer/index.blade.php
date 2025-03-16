@@ -92,17 +92,17 @@
                             {{-- @endif --}}
                             <td>
                                 <div class="d-flex align-items-center list-action">
-                                    <a class="badge badge-primary me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="View"
+                                    <a class="badge badge-primary me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="View"
                                         href="{{ route('writer.show', $writer->id) }}" method="get"><i class="ri-eye-line"></i>
                                     </a>
                                     @if (auth()->user()->hasAnyRole('Super Admin', 'Manajer Publishing', 'Admin'))
-                                    <a class="badge badge-success me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Edit"
+                                    <a class="badge badge-success me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Edit"
                                         href="{{ route('writer.edit', $writer->id) }}" method="get"><i class="ri-pencil-line"></i>
                                     </a>
                                     <form action="{{ route('writer.destroy', $writer->id) }}" method="POST">
                                         @method('delete')
                                         @csrf
-                                        <a type="submit" class="badge badge-warning border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Delete"><i class="ri-delete-bin-line me-0"></i></a>
+                                        <a type="submit" class="badge badge-warning border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line me-0"></i></a>
                                     </form>
                                     @endif
                                 </div>

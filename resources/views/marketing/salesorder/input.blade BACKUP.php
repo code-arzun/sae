@@ -113,7 +113,7 @@
                     @forelse ($products as $product)
                     <tr>
                         {{-- <td>{{ (($products->currentPage() * 10) - 10) + $loop->iteration  }}</td> --}}
-                        <td class="text-left" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="{{ $product->category->name }} || Rp {{ number_format($product->selling_price) }}">
+                        <td class="text-left" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="{{ $product->category->name }} || Rp {{ number_format($product->selling_price) }}">
                             <b >{{ $product->product_name }}</b>
                         </td>
                         <td class="text-left">
@@ -139,7 +139,7 @@
                                 <input type="hidden" name="name" value="{{ $product->product_name }}">
                                 <input type="hidden" name="category" value="{{ $product->category->name }}">
                                 <input type="hidden" name="price" value="{{ $product->selling_price }}">
-                                <button type="submit" class="btn btn-primary border-none" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Tambah"><i class="far fa-plus me-0"></i></button>
+                                <button type="submit" class="btn btn-primary border-none" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Tambah"><i class="far fa-plus me-0"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -175,7 +175,7 @@
                 @foreach ($productItem as $item)
                 <tr>
                     <td class="text-center">
-                        <a href="{{ route('inputso.deleteCart', $item->rowId) }}" class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Hapus"><i class="fa-solid fa-trash me-0"></i></a>
+                        <a href="{{ route('inputso.deleteCart', $item->rowId) }}" class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Hapus"><i class="fa-solid fa-trash me-0"></i></a>
                     </td>
                     <td><b>{{ $item->name }}</b></td>
                     <td>{{ $item->category }}</td>
@@ -212,7 +212,7 @@
                 <form action="{{ route('inputso.confirmation') }}" method="POST">
                     @csrf
                     <tr>
-                        <th class="text-end" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Gunakan titik (.) sebagai pemisah!">Diskon (%)</th>
+                        <th class="text-end" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Gunakan titik (.) sebagai pemisah!">Diskon (%)</th>
                         <th>
                             <div class="input-group">
                                 <input type="number" step="0.01" data-bs-toggle="tooltip" data-bs-placement="top" title="Gunakan titik (.) sebagai pemisah!"

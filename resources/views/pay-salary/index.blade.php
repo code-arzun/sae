@@ -83,7 +83,7 @@
                             <td>${{ $advanceSalary->employee->salary - $advanceSalary->advance_salary }}</td>
                             <td>
                                 <div class="d-flex align-items-center list-action">
-                                    <a class="btn btn-info me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Pay Now"
+                                    <a class="btn btn-info me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Pay Now"
                                         href="{{ route('pay-salary.paySalary', $advanceSalary->id) }}">Pay Now</i>
                                     </a>
                                 </div>

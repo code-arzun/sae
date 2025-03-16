@@ -117,20 +117,20 @@
             @endif
             <td width="200px">
                 <div class="d-flex align-items-center justify-content-between">
-                    <a class="badge bg-primary me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Lihat Detail"
+                    <a class="badge bg-primary me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail"
                             href="{{ route('customers.show', $customer->id) }}"><i class="ti ti-eye"></i>
                     </a>
                     @if (auth()->user()->hasAnyRole('Super Admin', 'Manajer Marketing', 'Admin'))
                     <button type="button" class="badge border-none bg-warning" data-bs-toggle="modal" data-bs-target="#editCustomer{{ $customer->id }}"><i class="ti ti-edit"></i></button>
                     <!-- Edit -->
                     @include('marketing.customers.edit')
-                    {{-- <a class="badge bg-warning me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Edit"
+                    {{-- <a class="badge bg-warning me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Edit"
                         href="{{ route('customers.edit', $customer->id) }}"><i class="ti ti-edit"></i>
                     </a> --}}
                     <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" class="confirmation-form">
                         @method('delete')
                         @csrf
-                        <a type="button" class="badge bg-danger delete-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Delete"><i class="ti ti-trash"></i></a>
+                        <a type="button" class="badge bg-danger delete-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Delete"><i class="ti ti-trash"></i></a>
                     </form>
                     @endif
                 </div>

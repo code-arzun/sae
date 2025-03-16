@@ -134,7 +134,7 @@
                             </td>
                             <td>
                                 <a class="badge badge-primary" href="{{ route('do.deliveryDetails', $propose->delivery->id) }}" 
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $propose->delivery->invoice_no }}</a></td>
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Lihat Detail">{{ $propose->delivery->invoice_no }}</a></td>
                             <td><h6>{{ $propose->delivery->salesorder->customer->NamaLembaga }}</h6> {{ $propose->delivery->salesorder->customer->NamaCustomer }}</td>
                             @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing']))
                             <td>{{ $propose->delivery->salesorder->customer->employee->name }}</td>
@@ -147,7 +147,7 @@
                                         @method('put')
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $propose->id }}">
-                                        <button type="button" class="btn btn-success me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Setujui">
+                                        <button type="button" class="btn btn-success me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Setujui">
                                              <i class="fa fa-check me-0" aria-hidden="true"></i>
                                         </button>
                                     </form>
@@ -156,7 +156,7 @@
                                         @method('put')
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $propose->id }}">
-                                        <button type="button" class="btn btn-danger me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Tolak">
+                                        <button type="button" class="btn btn-danger me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Tolak">
                                             <i class="fa fa-dot-circle-o me-0" aria-hidden="true"></i>
                                         </button>
                                     </form>
@@ -165,7 +165,7 @@
                                         @method('put')
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $propose->id }}">
-                                        <button type="button" class="btn btn-warning update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Batalkan">
+                                        <button type="button" class="btn btn-warning update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Batalkan">
                                             <i class="fa fa-times me-0" aria-hidden="true"></i>
                                         </button>
                                     </form>

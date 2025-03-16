@@ -115,14 +115,14 @@
                                 </span>
                             </td>
                             <td><a class="badge badge-primary" href="{{ route('do.deliveryDetails', $ready->id) }}" 
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $ready->invoice_no }}</a></td>
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Lihat Detail">{{ $ready->invoice_no }}</a></td>
                             <td>
                                 <span class="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Carbon\Carbon::parse($ready->salesorder->order_date)->translatedformat('l, d F Y') }}">
                                     {{ Carbon\Carbon::parse($ready->salesorder->order_date)->translatedformat('d M Y') }}
                                 </span>
                             </td>
                             <td><a class="badge badge-success" href="{{ route('so.orderDetails', $ready->order_id) }}" 
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $ready->salesorder->invoice_no }}</a></td>
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Lihat Detail">{{ $ready->salesorder->invoice_no }}</a></td>
                             <td><h6>{{ $ready->salesorder->customer->NamaLembaga }}</h6>{{ $ready->salesorder->customer->NamaCustomer }}</td>
                             @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
                             <td>{{ $ready->salesorder->customer->employee->name }}</td>
@@ -131,7 +131,7 @@
                             <td>
                                 <div class="d-flex align-items-center list-action">
                                     <a href="{{ route('do.invoiceDownload', $ready->id) }}"
-                                        class="btn bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Cetak Dokumen">
+                                        class="btn bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Cetak Dokumen">
                                         <i class="fa fa-print me-0" aria-hidden="true"></i> 
                                     </a>
                                     {{-- Kirim --}}
@@ -140,7 +140,7 @@
                                         @method('put')
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $ready->id }}">
-                                        <button type="button" class="btn bg-success update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Kirim">
+                                        <button type="button" class="btn bg-success update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Kirim">
                                              <i class="fa fa-truck me-0" aria-hidden="true"></i>
                                         </button>
                                     </form>

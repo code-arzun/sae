@@ -86,7 +86,7 @@
             <th class="text-white">Subtotal</th>
             <th class="text-white">Diskon</th>
             <th class="text-white">Grand Total</th>
-            <th class="bg-info"><i class="fas fa-cog me-3"></i>Status SO</th>
+            <th class="bg-info text-white"><i class="fas fa-cog me-3"></i>Status SO</th>
             <th class="bg-warning">
                 <a href="{{ route('do.all') }}" class="text-white">
                     <i class="fas fa-truck me-3"></i>Delivery Order
@@ -164,7 +164,7 @@
                                     @method('put')
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $order->id }}">
-                                    <button type="button" class="btn btn-warning me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Batalkan">
+                                    <button type="button" class="btn btn-warning me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Batalkan">
                                         <i class="fa fa-times me-0" aria-hidden="true"></i>
                                     </button>
                                 </form>
@@ -173,7 +173,7 @@
                                     @method('put')
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $order->id }}">
-                                    <button type="button" class="btn btn-danger me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Tolak">
+                                    <button type="button" class="btn btn-danger me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Tolak">
                                         <i class="fa fa-dot-circle-o me-0" aria-hidden="true"></i>
                                     </button>
                                 </form>
@@ -182,7 +182,7 @@
                                     @method('put')
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $order->id }}">
-                                    <button type="button" class="btn btn-success update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Setujui">
+                                    <button type="button" class="btn btn-success update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Setujui">
                                         <i class="fa fa-check me-0" aria-hidden="true"></i>
                                     </button>
                                 </form>
@@ -204,27 +204,20 @@
                 <!-- Status SO -->
                 <td class="text-center">
                     @if ($order->order_status === 'Disetujui' && $order->shipping_status === 'Terkirim' && $order->payment_status === 'Lunas')
-                        {{-- <span data-bs-toggle="tooltip" class="badge bg-purple-500">{{ $order->order_status }}</span> --}}
-                        <form action="{{ route('so.finishedStatus') }}" method="POST" class="confirmation-form">
-                            @method('put')
-                            @csrf
-                            <input type="hidden" name="id" value="{{ $order->id }}">
-                            {{-- <button type="button" class="btn btn-primary me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Selesai" data-original-title="Selesai">
-                                <i class="fa fa-check me-0" aria-hidden="true"></i>
-                            </button> --}}
-                            {{-- <button type="button" class="btn btn-light-primary update-so">Perbarui</button> --}}
-                            <button class="btn btn-warning bs-radio-input">{{ $order->order_status }}</button>
-                            <button class="btn btn-light-primary bs-radio-input">Try me!</button>
-                        </form>
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Perbarui status menjadi SELESAI">
+                            <a href="#" class="badge bg-info w-100" data-bs-toggle="modal" data-bs-target="#finished{{ $order->id }}" data-id="{{ $order->id }}">Disetujui</a>
+                        </span>
+                        <!-- modal -->
+                        @include('marketing.salesorder.partials.status-finished')
                     @else 
-                        <span data-bs-toggle="tooltip" class="badge bg-primary">{{ $order->order_status }}</span>
+                        <span data-bs-toggle="tooltip" class="badge bg-primary w-100">{{ $order->order_status }}</span>
                     @endif
                 </td>
                 <!-- Status DO -->
                 <td class="text-center">
                     @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']) && $order->order_status === 'Disetujui' && $order->shipping_status === 'Pengiriman ke-1')
                         <div class="d-flex justify-content-between">
-                            <a class="badge bg-purple-300" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen Penyiapan Produk" data-original-title="Cetak Dokumen Penyiapan Produk"
+                            <a class="badge bg-purple-300" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen Penyiapan Produk" title="Cetak Dokumen Penyiapan Produk"
                                 href="{{ route('do.printPenyiapan', $order->id) }}">
                                 <i class="fa fa-print me-0" aria-hidden="true"></i>
                             </a>
@@ -251,20 +244,20 @@
                     @endif
                             @if ($order->shipping_status === 'Terkirim' && $order->order_status === 'Selesai')
                             @elseif ($order->shipping_status === 'Terkirim')
-                                <span data-bs-toggle="tooltip" class="badge bg-success">{{ $order->shipping_status }}</span>
+                                <span data-bs-toggle="tooltip" class="badge bg-success w-100">{{ $order->shipping_status }}</span>
                             @else
-                                <span data-bs-toggle="tooltip" class="badge bg-danger">{{ $order->shipping_status }}</span>
+                                <span data-bs-toggle="tooltip" class="badge bg-danger w-100">{{ $order->shipping_status }}</span>
                             @endif
                     </div>
                 </td>
                 <!-- Status Collection -->
                 <td class="text-center">
                     @if ($order->payment_status === 'Lunas')
-                        <span data-bs-toggle="tooltip" class="badge bg-success">{{ $order->payment_status }}</span>
+                        <span data-bs-toggle="tooltip" class="badge bg-success w-100">{{ $order->payment_status }}</span>
                     @elseif ($order->payment_status === 'Belum Lunas')
-                        <span data-bs-toggle="tooltip" class="badge bg-warning">{{ $order->payment_status }}</span>
+                        <span data-bs-toggle="tooltip" class="badge bg-warning w-100">{{ $order->payment_status }}</span>
                     @else
-                        <span data-bs-toggle="tooltip" class="badge bg-danger">{{ $order->payment_status }}</span>
+                        <span data-bs-toggle="tooltip" class="badge bg-danger w-100">{{ $order->payment_status }}</span>
                     @endif
                 </td>
             @endif

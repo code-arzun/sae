@@ -127,7 +127,7 @@
                             <td class="text-center">
                                 <div class="d-flex justify-content-between">
                                     {{-- <a class="badge bg-primary" href="{{ route('do.deliveryDetails', $delivery->id) }}" 
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $delivery->invoice_no }}
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Lihat Detail">{{ $delivery->invoice_no }}
                                     </a> --}}
                                     <a class="badge {{ strpos($delivery->invoice_no, '-RO') !== false ? 'badge-primary' : (strpos($delivery->invoice_no, '-HO') !== false ? 'badge-danger' : 
                                         (strpos($delivery->invoice_no, '-RS') !== false ? 'badge-success' : (strpos($delivery->invoice_no, '-HS') !== false ? 'badge-warning' : 'badge-secondary'))) }}" 
@@ -136,7 +136,7 @@
                                     </a>
                                     @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
                                         <a href="{{ route('do.invoiceDownload', $delivery->id) }}" class="btn bg-warning me-2" data-bs-toggle="tooltip"
-                                            data-bs-placement="top" title="" data-original-title="Cetak Dokumen DO"><i class="fa fa-print me-0" aria-hidden="true"></i> 
+                                            data-bs-placement="top" title="" title="Cetak Dokumen DO"><i class="fa fa-print me-0" aria-hidden="true"></i> 
                                         </a>
                                     @endif
                                 </div>
@@ -149,7 +149,7 @@
                             </td>
                             <td>
                                 {{-- <a class="badge bg-success" href="{{ route('so.orderDetails', $delivery->order_id) }}" 
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $delivery->salesorder->invoice_no }}
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Lihat Detail">{{ $delivery->salesorder->invoice_no }}
                                 </a> --}}
                                 <a class="badge {{ strpos($delivery->salesorder->invoice_no, '-RO') !== false ? 'badge-primary' : (strpos($delivery->salesorder->invoice_no, '-HO') !== false ? 'badge-danger' : 
                                     (strpos($delivery->salesorder->invoice_no, '-S') !== false ? 'badge-success' : (strpos($delivery->salesorder->invoice_no, '-HS') !== false ? 'badge-warning' : 'badge-secondary'))) }}" 
@@ -178,13 +178,13 @@
                                         <span class="badge bg-success">{{ $delivery->delivery_status }}</span>
                                 @endif
                                 {{-- @if ($delivery->delivery_status === 'Siap dikirim')
-                                        <a href="{{ route('do.ready')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Buka Halaman DO Siap Dikirim"
+                                        <a href="{{ route('do.ready')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Buka Halaman DO Siap Dikirim"
                                         class="badge bg-danger">{{ $delivery->delivery_status }}</a>
                                     @elseif ($delivery->delivery_status === 'Dikirim')
-                                        <a href="{{ route('do.sent')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Buka Halaman DO Dikirim"
+                                        <a href="{{ route('do.sent')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Buka Halaman DO Dikirim"
                                         class="badge bg-warning">{{ $delivery->delivery_status }}</a>
                                     @else
-                                        <a href="{{ route('do.delivered')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Buka Halaman DO Terkirim"
+                                        <a href="{{ route('do.delivered')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Buka Halaman DO Terkirim"
                                         class="badge bg-success">{{ $delivery->delivery_status }}</a>
                                 @endif --}}
                             </td>
@@ -198,7 +198,7 @@
                                                 @method('put')
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{ $delivery->id }}">
-                                                <button type="button" class="btn bg-success update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Kirim">
+                                                <button type="button" class="btn bg-success update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Kirim">
                                                     <i class="fa fa-truck me-0" aria-hidden="true"></i>
                                                 </button>
                                             </form>
@@ -208,7 +208,7 @@
                                                 @method('put')
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{ $delivery->id }}">
-                                                <button type="button" class="btn btn-success me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Terkirim">
+                                                <button type="button" class="btn btn-success me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Terkirim">
                                                     <i class="fa fa-check me-0" aria-hidden="true"></i>
                                                 </button>
                                             </form>

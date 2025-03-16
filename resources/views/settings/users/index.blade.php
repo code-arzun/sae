@@ -87,12 +87,12 @@
                                     @method('delete')
                                     @csrf
                                     <div class="d-flex align-items-center list-action">
-                                        {{-- <a class="btn btn-info me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="View"
+                                        {{-- <a class="btn btn-info me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="View"
                                             href="{{ route('users.show', $item->username) }}"><i class="ri-eye-line me-0"></i>
                                         </a> --}}
-                                        <a class="btn btn-success me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Edit" href="{{ route('users.edit', $item->username) }}"><i class="ri-pencil-line me-0"></i>
+                                        <a class="btn btn-success me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Edit" href="{{ route('users.edit', $item->username) }}"><i class="ri-pencil-line me-0"></i>
                                         </a>
-                                        <button type="submit" class="btn btn-danger me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line me-0"></i></button>
+                                        <button type="submit" class="btn btn-danger me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Delete"><i class="ri-delete-bin-line me-0"></i></button>
                                     </div>
                                 </form>
                             </td>

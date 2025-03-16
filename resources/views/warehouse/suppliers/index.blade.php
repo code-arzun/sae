@@ -84,16 +84,16 @@
                             <td>{{ $supplier->type }}</td>
                             <td>
                                 <div class="d-flex align-items-center list-action">
-                                    <a class="badge badge-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="View"
+                                    <a class="badge badge-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="View"
                                         href="{{ route('suppliers.show', $supplier->id) }}"><i class="ri-eye-line me-0"></i>
                                     </a>
-                                    <a class="badge bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Edit"
+                                    <a class="badge bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Edit"
                                         href="{{ route('suppliers.edit', $supplier->id) }}"><i class="ri-pencil-line me-0"></i>
                                     </a>
                                     <form action="{{ route('suppliers.destroy', $supplier->id) }}" method="POST">
                                         @method('delete')
                                         @csrf
-                                        <button type="submit" class="badge bg-danger me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line me-0"></i></button>
+                                        <button type="submit" class="badge bg-danger me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Delete"><i class="ri-delete-bin-line me-0"></i></button>
                                     </form>
                                 </div>
                             </td>

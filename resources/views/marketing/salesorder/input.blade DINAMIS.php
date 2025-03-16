@@ -63,7 +63,7 @@
                 @foreach ($productItem as $item)
                 <tr>
                     <td class="text-center">
-                        <a href="{{ route('inputso.deleteCart', $item->rowId) }}" class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Hapus"><i class="fa-solid fa-trash me-0"></i></a>
+                        <a href="{{ route('inputso.deleteCart', $item->rowId) }}" class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Hapus"><i class="fa-solid fa-trash me-0"></i></a>
                     </td>
                     <td><b>{{ $item->name }}</b></td>
                     <td>{{ $item->category }}</td>
@@ -100,7 +100,7 @@
                 <form action="{{ route('inputso.confirmation') }}" method="POST">
                     @csrf
                     <tr>
-                        <th class="text-end" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Gunakan titik (.) sebagai pemisah!">Diskon (%)</th>
+                        <th class="text-end" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Gunakan titik (.) sebagai pemisah!">Diskon (%)</th>
                         <th>
                             <div class="input-group">
                                 <input type="number" step="0.01" data-bs-toggle="tooltip" data-bs-placement="top" title="Gunakan titik (.) sebagai pemisah!"

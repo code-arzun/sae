@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between mb-3">
         <a href="{{ url()->previous() }}" class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Kembali"><i class="fa fa-arrow-left"></i></a>
-        {{-- <a class="badge bg-success me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Edit"
+        {{-- <a class="badge bg-success me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Edit"
                         href="{{ route('writer.edit', $writer->id) }}" method="get"><i class="ri-pencil-line"></i> Edit
         </a> --}}
     </div>
@@ -15,7 +15,7 @@
                     <div class="header-title">
                         <h4 class="card-title">Data Penulis</h4>
                     </div>
-                    <a class="btn bg-success me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Edit"
+                    <a class="btn bg-success me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Edit"
                         href="{{ route('writer.edit', $writer->id) }}" method="get"><i class="ri-pencil-line"></i> Edit
                     </a>
                 </div>

@@ -129,7 +129,7 @@
                         </td>
                         <td>
                             <a class="badge badge-primary" href="{{ route('do.deliveryDetails', $declined->delivery->id) }}" 
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $declined->delivery->invoice_no }}</a></td>
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Lihat Detail">{{ $declined->delivery->invoice_no }}</a></td>
                         <td><h6>{{ $declined->delivery->salesorder->customer->NamaLembaga }}</h6> {{ $declined->delivery->salesorder->customer->NamaCustomer }}</td>
                         @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing']))
                         <td>{{ $declined->delivery->salesorder->customer->employee->name }}</td>

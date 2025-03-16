@@ -18,9 +18,9 @@
                                         @method('put')
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $stocks->id }}">
-                                        <button type="submit" class="btn btn-success me-2 border-none" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Konfirmasi">Konfirmasi</button>
+                                        <button type="submit" class="btn btn-success me-2 border-none" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Konfirmasi">Konfirmasi</button>
 
-                                        <a class="btn btn-danger me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Cancel" href="{{ route('stock.pendingStock') }}">Batalkan</a>
+                                        <a class="btn btn-danger me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Cancel" href="{{ route('stock.pendingStock') }}">Batalkan</a>
                                     </form>
                                 </div>
                             </div>

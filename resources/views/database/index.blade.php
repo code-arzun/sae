@@ -43,10 +43,10 @@
                             <td>{{ $file->getPath() }}</td>
                             <td>
                                 <div class="d-flex align-items-center list-action">
-                                    <a class="btn btn-success me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Download"
+                                    <a class="btn btn-success me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Download"
                                         href="{{ route('backup.download', $file->getFileName()) }}"><i class="fa-solid fa-download me-0"></i>
                                     </a>
-                                    <a class="btn btn-danger me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Delete"
+                                    <a class="btn btn-danger me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Delete"
                                         href="{{ route('backup.delete', $file->getFileName()) }}"><i class="fa-solid fa-trash me-0"></i>
                                     </a>
                                 </div>

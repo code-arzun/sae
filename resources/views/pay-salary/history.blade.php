@@ -86,10 +86,10 @@
                                     @method('delete')
                                     @csrf
                                     <div class="d-flex align-items-center list-action">
-                                        <a class="btn btn-info me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="History" href="{{ route('pay-salary.payHistoryDetail', $paySalary->id) }}">
+                                        <a class="btn btn-info me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="History" href="{{ route('pay-salary.payHistoryDetail', $paySalary->id) }}">
                                             <i class="ri-eye-line me-0"></i>
                                         </a>
-                                        <button type="submit" class="btn btn-warning me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Delete">
+                                        <button type="submit" class="btn btn-warning me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Delete">
                                             <i class="ri-delete-bin-line me-0"></i>
                                         </button>
                                     </div>

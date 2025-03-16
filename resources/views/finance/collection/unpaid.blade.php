@@ -108,7 +108,7 @@
                                 </span>
                             </td>
                             <td><a class="badge badge-success" href="{{ route('so.orderDetails', $salesorder->id) }}" 
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $salesorder->invoice_no }}</a></td>
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="" title="Lihat Detail">{{ $salesorder->invoice_no }}</a></td>
                             <td><b>{{ $salesorder->customer->NamaLembaga }}</b> <br>
                                 {{ $salesorder->customer->NamaCustomer }}
                             </td>

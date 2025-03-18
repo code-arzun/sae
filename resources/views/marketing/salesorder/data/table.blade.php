@@ -78,13 +78,13 @@
         <tr class="text-white">
             <th class="text-white" width="5px">No.</th>
             <th class="text-white">Tgl. Pesan</th>
-            <th class="text-white" width="200px">No. SO</th>
+            <th class="text-white" width="160px">No. SO</th>
             <th class="text-white">Customer</th>
             @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
             <th class="text-white">Sales</th>
             @endif
             <th class="text-white">Subtotal</th>
-            <th class="text-white">Diskon</th>
+            <th class="text-white" width="200px">Diskon</th>
             <th class="text-white">Grand Total</th>
             <th class="bg-info text-white"><i class="fas fa-cog me-3"></i>Status SO</th>
             <th class="bg-warning">
@@ -110,7 +110,7 @@
             </td>
             <td>
                 <div class="d-flex justify-content-between align-items-center">
-                    <a class="badge 
+                    <a class="badge me-2
                         {{ 
                             // $order->order_status === 'Menunggu persetujuan' ? 'bg-purple' : 
                             (strpos($order->invoice_no, '-RO') !== false ? 'bg-primary' : 
@@ -137,14 +137,14 @@
             {{-- <td><h6>{{ explode(' ', $order->customer->employee->name)[0] }}</h6></td> --}}
             <td><h6>{{ explode(' ', $order->customer->employee->name)[0] }}</h6></td>
             @endif
-            <td class="text-end"><span class="text text-success">Rp {{ number_format($order->sub_total) }}</span></td>
-            <td class="text-end">
+            <th class="text-end"><span class="text text-success">Rp {{ number_format($order->sub_total) }}</span></th>
+            <th class="text-end">
                 <div class="d-flex justify-content-between">
-                    <span class="text text-warning">{{ number_format($order->discount_percent, 2) }}%</span>
+                    <span class="text text-warning me-2">{{ number_format($order->discount_percent, 2) }}%</span>
                     <span class="text text-danger">Rp {{ number_format($order->discount_rp) }}</span>
                 </div>
-            </td>
-            <td class="text-end"><span class="text text-primary">Rp {{ number_format($order->grandtotal) }}</span></td>
+            </th>
+            <th class="text-end"><span class="text text-primary">Rp {{ number_format($order->grandtotal) }}</span></th>
             @if ($order->order_status === 'Selesai' && $order->shipping_status === 'Terkirim' && $order->payment_status === 'Lunas')
                 <td colspan="3">
                     <span class="badge bg-success w-100">Transaksi Selesai</span>
@@ -156,7 +156,7 @@
                             <div class="col">
                                 <a href="#" class="badge bg-warning w-100" data-bs-toggle="modal" data-bs-target="#confirmation{{ $order->id }}" data-id="{{ $order->id }}">Menunggu Persetujuan Manajer Marketing</a>
                                 {{-- <button type="button" class="btn btn-warning w-100" data-bs-toggle="modal" data-bs-target="#confirmation">Menunggu Persetujuan Manajer Marketing</button> --}}
-                                @include('marketing.salesorder.partials.status-update')
+                                @include('marketing.salesorder.data.status-update')
                             </div>
                             {{-- <div class="col ml-3 d-flex align-items-center">
                                 <!-- Batalkan -->
@@ -188,7 +188,9 @@
                                 </form>
                             </div> --}}
                         @else
-                            <span class="badge bg-warning w-100">Menunggu Persetujuan Manajer Marketing</span>
+                            <div class="col">
+                                <span class="badge bg-warning w-100">Menunggu Persetujuan Manajer Marketing</span>
+                            </div>
                         @endif
                     </div>
                 </td>
@@ -208,7 +210,7 @@
                             <a href="#" class="badge bg-info w-100" data-bs-toggle="modal" data-bs-target="#finished{{ $order->id }}" data-id="{{ $order->id }}">Disetujui</a>
                         </span>
                         <!-- modal -->
-                        @include('marketing.salesorder.partials.status-finished')
+                        @include('marketing.salesorder.data.status-finished')
                     @else 
                         <span data-bs-toggle="tooltip" class="badge bg-primary w-100">{{ $order->order_status }}</span>
                     @endif

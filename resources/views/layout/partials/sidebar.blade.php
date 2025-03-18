@@ -25,12 +25,14 @@
           <label>Marketing</label>
           <i class="ti ti-dashboard"></i>
         </li>
-        <li class="pc-item">
-          <a href="{{ route('sales') }}" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-users"></i></span>
-            <span class="pc-mtext">Sales</span>
-          </a>
-        </li>
+        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
+          <li class="pc-item">
+            <a href="{{ route('sales') }}" class="pc-link">
+              <span class="pc-micon"><i class="ti ti-users"></i></span>
+              <span class="pc-mtext">Sales</span>
+            </a>
+          </li>
+        @endif
         <li class="pc-item">
           <a href="{{ route('customers.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-users"></i></span>
@@ -44,6 +46,7 @@
           </a>
         </li>
 
+        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
         <li class="pc-item pc-caption">
           <label>Retail</label>
           <i class="ti ti-dashboard"></i>
@@ -66,6 +69,7 @@
             <span class="pc-mtext">Sales Order</span>
           </a>
         </li>
+        @endif
 
         <li class="pc-item pc-caption">
           <label>Gudang</label>

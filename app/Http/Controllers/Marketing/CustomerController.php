@@ -59,11 +59,14 @@ class CustomerController extends Controller
             $employees = Employee::where('department_id', '2')->get();
         }
     
-        return view('marketing.customers.index',
-            compact('sales', 'employees'), [
+        return view('marketing.customers.index', [
+            'sales' => $sales,
+            'employees' => $employees,
             'customers' => $customers->filter(request(['search']))->sortable()->orderBy('id', 'desc')
-                            ->paginate($row)->appends(request()->query()),
+                ->paginate($row)->appends(request()->query()),
+            'title' => 'Data Customer'
         ]);
+        
     }
 
     /**
@@ -79,6 +82,7 @@ class CustomerController extends Controller
         // }
         return view('marketing.customers.create', [
             // 'employees' => $employees,
+            'title' => 'Tambah Customer Baru'
         ]);
     }
 
@@ -143,7 +147,9 @@ class CustomerController extends Controller
             ->where('customer_id', $customer->id)->get();
         
         return view('marketing.customers.show', 
-            compact('customer', 'orders'), ['employees' => $employees,]
+            compact('customer', 'orders'), 
+            ['employees' => $employees,
+            'title' => 'Detail Customer']
         );
     }
 

@@ -4,7 +4,7 @@
 
 <div class="d-flex justify-content-between mb-3">
     <div>
-        <h2>Data Customer</h2>
+        <h2>{{ $title }}</h2>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-default-icon">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="ti ti-home-2"></i></a></li>
@@ -13,7 +13,7 @@
         </nav>
     </div>
     <div>
-        <button type="button" class="badge bg-primary" data-bs-toggle="modal" data-bs-target="#tambahCustomer">Tambah Customer Baru</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahCustomer">Tambah Customer Baru</button>
         <!-- Create -->
         @include('marketing.customers.create')
     </div>

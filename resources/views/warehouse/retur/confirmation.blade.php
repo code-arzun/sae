@@ -60,7 +60,7 @@
                             {{-- <h5 class="mb-3">Detail Pesanan</h5> --}}
                             <div class="dt-responsive table-responsive-lg">
                                 <table class="table table-striped table-bordered nowrap">
-                                    <thead class="light text-center">
+                                    <thead class="text-center">
                                         <tr>
                                             {{-- <th>No.</th> --}}
                                             <th>Nama Produk</th>
@@ -98,12 +98,12 @@
                                         </th>
                                         <th>Grand Total<span class="badge bg-primary ml-2">Rp {{ number_format($grandtotal) }}</span></th>
                                     </tr>
-                                    {{-- <tr class="light text-end">
+                                    {{-- <tr class="text-end">
                                         <th>Total Item<span class="badge bg-secondary ml-2">{{ number_format(count(Cart::content())) }}</span></th>
                                         <th>Total Barang<span class="badge bg-primary ml-2">{{ number_format(Cart::count()) }}</span></th>
                                         <th>Subtotal<span class="badge bg-success ml-2">Rp {{ number_format(Cart::subtotal()) }}</span></th>
                                         </tr>
-                                        <tr class="light text-end">
+                                        <tr class="text-end">
                                             <th colspan="2">Diskon
                                                 <span class="badge bg-primary ml-2">{{ number_format($discount_percent) }} %</span>
                                             </th>
@@ -111,7 +111,7 @@
                                                 <span class="badge bg-secondary">Rp {{ number_format($discount_rp) }}</span>
                                             </th>
                                         </tr>
-                                        <tr class="light text-end">
+                                        <tr class="text-end">
                                             <th colspan="2">Grand Total</th>
                                             <th><span class="badge bg-primary ml-2">Rp {{ number_format($grandtotal) }}</span></th>
                                     </tr> --}}

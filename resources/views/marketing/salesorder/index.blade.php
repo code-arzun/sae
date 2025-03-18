@@ -4,11 +4,10 @@
 
 <div class="d-flex justify-content-between mb-3">
     <div>
-        <h2>Data Sales Order</h2>
+        <h2>{{ $title }}</h2>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-default-icon">
-                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="ti ti-home-2"></i></a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('so.index') }}">Sales Order</a></li>
+                @include('marketing.salesorder.partials.breadcrumb')
             </ol>
         </nav>
     </div>
@@ -34,11 +33,11 @@
 <div class="tab-content" id="salesorderContent">
     <!-- All Data -->
     <div class="tab-pane fade show active" id="all" role="tabpanel">
-        @include('marketing.salesorder.partials.all')
+        @include('marketing.salesorder.data.table')
     </div>
     <!-- Data Recap -->
     <div class="tab-pane fade" id="datarecap" role="tabpanel">
-        @include('marketing.salesorder.partials.data-recap')
+        @include('marketing.salesorder.data.recap')
     </div>
 </div>
 @endsection

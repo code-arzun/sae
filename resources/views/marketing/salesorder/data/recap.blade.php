@@ -3,13 +3,13 @@
         <a class="nav-link active" id="pills-total-tab" data-bs-toggle="pill" href="#pills-total" role="tab" aria-controls="pills-total" aria-selected="true">Total Transaksi</a>
     </li>
     <li class="nav-item me-3">
-        <a class="nav-link" id="pills-finished-tab" data-bs-toggle="pill" href="#pills-finished" role="tab" aria-controls="pills-finished" aria-selected="false">Selesai</a>
+        <a class="nav-link" id="pills-proposed-tab" data-bs-toggle="pill" href="#pills-proposed" role="tab" aria-controls="pills-proposed" aria-selected="false">Menunggu Persetujuan</a>
     </li>
     <li class="nav-item me-3">
         <a class="nav-link" id="pills-approved-tab" data-bs-toggle="pill" href="#pills-approved" role="tab" aria-controls="pills-approved" aria-selected="false">Disetujui</a>
     </li>
     <li class="nav-item me-3">
-        <a class="nav-link" id="pills-proposed-tab" data-bs-toggle="pill" href="#pills-proposed" role="tab" aria-controls="pills-proposed" aria-selected="false">Menunggu Persetujuan</a>
+        <a class="nav-link" id="pills-finished-tab" data-bs-toggle="pill" href="#pills-finished" role="tab" aria-controls="pills-finished" aria-selected="false">Selesai</a>
     </li>
     <li class="nav-item me-3">
         <a class="nav-link" id="pills-declined-tab" data-bs-toggle="pill" href="#pills-declined" role="tab" aria-controls="pills-declined" aria-selected="false">Ditolak</a>
@@ -23,37 +23,37 @@
     <!-- Rekap Total -->
     <div class="tab-pane fade show active" id="pills-total" role="tabpanel" aria-labelledby="pills-total-tab">
         <div class="row">
-            @include('marketing.salesorder.partials.rekap-data.all')
+            @include('marketing.salesorder.data.rekap-data.all')
         </div>
     </div>
     <!-- Rekap Selesai -->
     <div class="tab-pane fade" id="pills-finished" role="tabpanel" aria-labelledby="pills-finished-tab">
         <div class="row">
-            @include('marketing.salesorder.partials.rekap-data.finished')
+            @include('marketing.salesorder.data.rekap-data.finished')
         </div>
     </div>
     <!-- Rekap Disetujui -->
     <div class="tab-pane fade" id="pills-approved" role="tabpanel" aria-labelledby="pills-approved-tab">
         <div class="row">
-            @include('marketing.salesorder.partials.rekap-data.approved')
+            @include('marketing.salesorder.data.rekap-data.approved')
         </div>
     </div>
     <!-- Rekap Menunggu Persetujuan -->
     <div class="tab-pane fade" id="pills-proposed" role="tabpanel" aria-labelledby="pills-proposed-tab">
         <div class="row">
-            @include('marketing.salesorder.partials.rekap-data.proposed')
+            @include('marketing.salesorder.data.rekap-data.proposed')
         </div>
     </div>
     <!-- Rekap Ditolak -->
     <div class="tab-pane fade" id="pills-declined" role="tabpanel" aria-labelledby="pills-declined-tab">
         <div class="row">
-            @include('marketing.salesorder.partials.rekap-data.declined')
+            @include('marketing.salesorder.data.rekap-data.declined')
         </div>
     </div>
     <!-- Rekap Dibatalkan -->
     <div class="tab-pane fade" id="pills-cancelled" role="tabpanel" aria-labelledby="pills-cancelled-tab">
         <div class="row">
-            @include('marketing.salesorder.partials.rekap-data.cancelled')
+            @include('marketing.salesorder.data.rekap-data.cancelled')
         </div>
     </div>
 </div>

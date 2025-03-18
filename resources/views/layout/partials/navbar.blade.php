@@ -139,8 +139,9 @@
                 <img src="{{ asset('assets/images/user/avatar-2.jpg') }}" alt="user-image" class="user-avtar wid-35">
               </div>
               <div class="flex-grow-1 ms-3">
-                <h6 class="mb-1">{{ auth()->user()->employee->name }}</h6>
-                <span>UI/UX Designer</span>
+                {{-- <h6 class="mb-1">{{ auth()->user()->employee->name }}</h6> --}}
+                <h6 class="mb-1">{{ explode(' ', auth()->user()->employee->name)[0] }}</h6>
+                <span>{{ auth()->user()->employee->position->name }}</span>
               </div>
               <form action="{{ route('logout') }}" method="POST">
                 @csrf

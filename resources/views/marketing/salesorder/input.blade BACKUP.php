@@ -162,7 +162,7 @@
     {{-- <div class="col-lg-7 col-md-12"> --}}
         <table class="table">
             <thead>
-                <tr class="light text-center">
+                <tr class="text-center">
                     <th>#</th>
                     <th>Nama Produk</th>
                     <th>Kategori</th>
@@ -198,7 +198,7 @@
         
         <!-- Total -->
         <table class="table table-striped table-bordered nowrap">
-            <thead class="light">
+            <thead >
                 <tr class="text-end">
                     <th>Total Item<span class="badge bg-secondary ml-3">{{ number_format(count(Cart::content())) }}</span></th>
                     <th>Total Barang<span class="badge bg-primary ml-3">{{ number_format(Cart::count()) }}</span></th>
@@ -226,7 +226,7 @@
                     </tr>
             </tbody>
             <!-- Grand Total -->
-            <tfoot class="light">
+            <tfoot >
                 <tr>
                     <th colspan="2" class="text-end">Grand Total</th>
                     <th>

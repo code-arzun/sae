@@ -780,31 +780,57 @@ $('.delete-button').on("click", function (e) {
 // Success Alert
 function showSuccessAlert(message) {
   Swal.fire({
-      position: "bottom-end",
+      position: "top-end",
       toast: true,
       text: message,
+      icon: "success", // Tambahkan icon success
       showConfirmButton: false,
-      timer: 2500,
+      timer: 5000,
+      customClass: {
+        popup: "swal-custom-success" // Tambahkan kelas CSS
+      },
       didOpen: (toast) => {
         toast.addEventListener('mouseenter', Swal.stopTimer);
         toast.addEventListener('mouseleave', Swal.resumeTimer);
-    }
+      }
   });
 }
 
 // Warning Alert
-function warningAlert(message) {
+function showWarningAlert(message) {
   Swal.fire({
-      position: "center",
+      position: "top-end",
       toast: true,
-      icon: 'error',
       text: message,
+      icon: "warning", // Tambahkan icon warning
       showConfirmButton: false,
-      timer: 2500,
+      timer: 5000,
+      customClass: {
+        popup: "swal-custom-warning" // Tambahkan kelas CSS
+      },
       didOpen: (toast) => {
         toast.addEventListener('mouseenter', Swal.stopTimer);
         toast.addEventListener('mouseleave', Swal.resumeTimer);
-    }
+      }
+  });
+}
+
+// Danger Alert
+function showDangerAlert(message) {
+  Swal.fire({
+      position: "top-end",
+      toast: true,
+      text: message,
+      icon: "warning",
+      showConfirmButton: false,
+      timer: 5000,
+      customClass: {
+        popup: "swal-custom-danger"
+      },
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      }
   });
 }
 
@@ -1222,7 +1248,7 @@ if (hadirRadio && tidakHadirRadio) {
 // }
 
 // Chart
-// import Chart from 'chart.js/auto';
+import Chart from 'chart.js/auto';
 
 document.addEventListener("DOMContentLoaded", function () {
     fetch('/orders/chart-status')

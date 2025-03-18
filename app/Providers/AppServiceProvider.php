@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
+        View::share('title', 'Judul Default');
     }
     // public function boot()
     // {

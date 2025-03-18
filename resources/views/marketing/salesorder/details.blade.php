@@ -343,7 +343,7 @@
                                 <th>Belum dikirim</th>
                             </tr>
                         </thead>
-                        <tbody class="light light-data">
+                        <tbody class="light-data">
                             @foreach ($orderDetails as $item)
                                 <tr>
                                     <td class="text-center">{{ $loop->iteration }}</td>

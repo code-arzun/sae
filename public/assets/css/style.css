@@ -22210,6 +22210,18 @@ select.form-control[data-multiselectsplitter-firstselect-selector], select.form-
   bottom: 0;
   right: 0;
 }
+.swal-custom-success {
+  background-color: var(--bs-success) !important; /* Warna hijau sukses */
+  color: white !important; /* Warna teks putih */
+}
+.swal-custom-warning {
+  background-color: var(--bs-warning) !important; /* Warna hijau sukses */
+  color: white !important; /* Warna teks putih */
+}
+.swal-custom-danger {
+  background-color: var(--bs-danger) !important; /* Warna hijau sukses */
+  color: white !important; /* Warna teks putih */
+}
 
 /**  =====================
   23. Icon layouts css end

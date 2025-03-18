@@ -235,7 +235,7 @@
             <!-- Detail Pesanan -->
             <table class="table table-striped table-bordered nowrap">
                 <thead>
-                    <tr class="light text-center">
+                    <tr class="text-center">
                         <th width="50px">#</th>
                         <th>Nama Produk</th>
                         <th width="160px">Kategori</th>
@@ -276,7 +276,7 @@
                 
             <!-- Total -->
             <table class="table">
-                <tbody class="light text-end">
+                <tbody class="text-end">
                     <th>Total Item<span class="badge bg-secondary ml-3">{{ number_format(count(Cart::content())) }}</span></th>
                     <th>Total Barang<span class="badge bg-primary ml-3">{{ number_format(Cart::count()) }}</span></th>
                     <th>Subtotal<span class="badge bg-success ml-3">Rp {{ number_format(Cart::subtotal()) }}</span></th>

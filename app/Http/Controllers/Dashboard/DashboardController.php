@@ -12,26 +12,26 @@ use App\Http\Controllers\Controller;
 class DashboardController extends Controller
 {
     public function index()
-    // {
-    //     return view('dashboard.index', [
-    //         'so_bruto' => Order::sum('sub_total'),
-    //         'so_nett' => Order::sum('grandtotal'),
-    //         // 'so_diskon' => Order::sum('vat'),
-    //         'total_paid' => Order::sum('pay'),
-    //         'total_due' => Order::sum('due'),
-    //         'pending_orders' => Order::where('order_status', 'pending')->get(),
-    //         'complete_orders' => Order::where('order_status', 'complete')->get(),
-    //         'products' => Product::orderBy('product_store')->take(5)->get(),
-    //         'new_products' => Product::orderBy('buying_date')->take(2)->get(),
-    //     ]);
-    // }
     {
-        $user = User::has('employee')->get();
+        $users = User::has('employee')->get();
+        $currentUser = auth()->user();
 
-        $attendance = Attendance::where('employee_id', auth()->user()->employee_id)
+        $ordersQuery = Order::query();
+        if ($currentUser->hasRole('Sales')) {
+            $ordersQuery->whereHas('customer', function ($query) use ($currentUser) {
+                $query->where('employee_id', $currentUser->employee_id);
+            });
+        } elseif ($currentUser->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin'])) { 
+                $ordersQuery;
+        } else {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $orders = $ordersQuery->sortable()->filter(request(['search']))->orderBy('id', 'desc');
+
+        $attendance = Attendance::where('employee_id', $currentUser->employee_id)
                                 ->whereDate('created_at', today())->first();
                                 
-        return view('dashboard.index', compact('attendance'));
-        // return view('dashboard.index');
+        return view('dashboard.index', compact('attendance', 'users', 'orders'));
     }
 }

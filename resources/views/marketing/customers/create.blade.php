@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-fullscreen" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary">
-                <h3 class="modal-title text-white" id="tambahCustomerLabel">Tambah Customer Baru</h3>
+                <h3 class="modal-title text-white" id="tambahCustomerLabel">Tambah {{ $title }} Baru</h3>
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="ti ti-x"></i></button>
             </div>
             <div class="modal-body">

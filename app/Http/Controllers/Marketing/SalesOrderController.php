@@ -76,6 +76,7 @@ class SalesOrderController extends Controller
             'productItem' => Cart::content(),
             'products' => $productsQuery->filter(request(['search']))->sortable()->paginate($row)->appends(request()->query()),
             'categories' => $categories,
+            'title' => 'Input Sales Order',
         ]);
     }
 
@@ -120,7 +121,7 @@ class SalesOrderController extends Controller
         {
             Cart::remove($discount);
 
-            return Redirect::back()->with('success', 'Produk berhasil dihapus!');
+            return Redirect::back()->with('danger', 'Produk berhasil dihapus!');
         }
     // 
 
@@ -151,6 +152,7 @@ class SalesOrderController extends Controller
             'discount_percent' => $discountPercent,
             'discount_rp' => $discountRp,
             'grandtotal' => $grandtotal,
+            'title' => 'Konfirmasi Sales Order',
         ]);
     }
 
@@ -381,7 +383,8 @@ class SalesOrderController extends Controller
             'orders' => $orders,
             'sales' => $sales,
             'orderStatus' => $orderStatus,
-            'collections' => $collections
+            'collections' => $collections,
+            'title' => 'Data Sales Order',
             // compact('orders', 'sales', 'orderStatus', 'collections')
         ]);
     }

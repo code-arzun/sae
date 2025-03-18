@@ -18,7 +18,7 @@
                     <div class="row">
                                 <div class="col-sm me-3">
                                     <table class="table text-end table-hover">
-                                        <thead class="light">
+                                        <thead >
                                             <tr>
                                                 <th colspan="3">Detail Collection 
                                                     {{-- <a class="badge 
@@ -73,7 +73,7 @@
                                         </tbody>
                                     </table>
                                     <table class="table text-end table-hover">
-                                        <thead class="light">
+                                        <thead >
                                             <tr>
                                                 <th colspan="3">Detail Sales Order</th>
                                             </tr>
@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <table class="table text-end table-hover">
-                                        <thead class="light text-center">
+                                        <thead class="text-center">
                                             <tr>
                                                 <th>Keterangan</th>
                                                 <th>Persentase</th>

@@ -4,12 +4,20 @@
 
 <div class="d-flex justify-content-between mb-3">
     <div>
-        <h2>Detail Customer</h2>
+        <h2>{{ $title }}</h2>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-default-icon">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="ti ti-home-2"></i></a></li>
                 <li class="breadcrumb-item"><a href="{{ route('customers.index') }}">Data Customer</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('customers.show', $customer->id) }}">Detail Customer</a> || {{ $customer->NamaLembaga }}_{{ $customer->NamaCustomer }}_{{ $customer->employee->name }}</li>
+                {{-- <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('customers.show', $customer->id) }}">Detail Customer</a></li> --}}
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{{ route('customers.show', $customer->id) }}">{{ $customer->NamaLembaga }}_{{ $customer->NamaCustomer }}
+                        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
+                        _{{ $customer->employee->name }}
+                        @endif
+                    </a>
+                </li>
+                {{-- <li class="breadcrumb-item">{{ $customer->NamaLembaga }}_{{ $customer->NamaCustomer }}_{{ $customer->employee->name }}</li> --}}
             </ol>
         </nav>
     </div>

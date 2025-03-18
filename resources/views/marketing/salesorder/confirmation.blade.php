@@ -13,31 +13,6 @@
             </ol>
         </nav>
     </div>
-    <div class="invoice-btn d-flex" data-extra-toggle="confirmation">
-        @php
-            $salesOrders = [
-                // ['route' => 'store.SOReguler', 'label' => 'Sales Order Reguler'],
-                // ['route' => 'store.SOHet', 'label' => 'Sales Order HET'],
-                // ['route' => 'store.SOROnline', 'label' => 'Sales Order Reguler SIPLah'],
-                // ['route' => 'store.SOHOnline', 'label' => 'Sales Order HET SIPLah']
-                ['route' => 'store.SOReguler', 'label' => 'R-Offline'],
-                ['route' => 'store.SOHet', 'label' => 'H-Offfline'],
-                ['route' => 'store.SOROnline', 'label' => 'R-Online'],
-                ['route' => 'store.SOHOnline', 'label' => 'H-Online']
-            ];
-        @endphp
-
-        @foreach ($salesOrders as $order)
-            <form action="{{ route($order['route']) }}" method="post" class="confirmation-form">
-                @csrf
-                <input type="hidden" name="customer_id" value="{{ $customer->id }}">
-                <input type="hidden" name="discount_percent" value="{{ $discount_percent }}">
-                <input type="hidden" name="discount_rp" value="{{ $discount_rp }}">
-                <input type="hidden" name="grandtotal" value="{{ $grandtotal }}">
-                <button type="submit" class="btn bg-success me-3 confirm-button"><b>{{ $order['label'] }}</b></button>
-            </form>
-        @endforeach
-    </div>
 </div>
 <div class="card">
     <div class="card-body">
@@ -63,26 +38,7 @@
                 <h4 class="mb-0">{{ $customer->employee->name }}</h4>
             </div>
         </div>
-        {{-- <table class="table text-center">
-            <thead>
-                <tr>
-                    <th>Tanggal Pemesanan</th>
-                    <th>Nama Lembaga</th>
-                    <th>Nama Customer</th>
-                    <th>Sales</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                    </td>
-                    {{ $customer->NamaLembaga }}
-                    {{ $customer->Jabatan }}
-                    {{ $customer->employee->name }}
-                </tr>
-            </tbody>
-        </table> --}}
-
+       
         <!-- Detail Pesanan -->
         <table class="table table-striped nowrap">
             <thead class="bg-info text-center">
@@ -128,34 +84,12 @@
             </table>
         </div>
     </div>
-
-    {{-- <div class="card-footer d-flex flex-wrap justify-content-end">
-        <div class="invoice-btn d-flex" data-extra-toggle="confirmation">
-            @php
-                $salesOrders = [
-                    // ['route' => 'store.SOReguler', 'label' => 'Sales Order Reguler'],
-                    // ['route' => 'store.SOHet', 'label' => 'Sales Order HET'],
-                    // ['route' => 'store.SOROnline', 'label' => 'Sales Order Reguler SIPLah'],
-                    // ['route' => 'store.SOHOnline', 'label' => 'Sales Order HET SIPLah']
-                    ['route' => 'store.SOReguler', 'label' => 'R-Offline'],
-                    ['route' => 'store.SOHet', 'label' => 'H-Offfline'],
-                    ['route' => 'store.SOROnline', 'label' => 'R-Online'],
-                    ['route' => 'store.SOHOnline', 'label' => 'H-Online']
-                ];
-            @endphp
-
-            @foreach ($salesOrders as $order)
-                <form action="{{ route($order['route']) }}" method="post" class="confirmation-form">
-                    @csrf
-                    <input type="hidden" name="customer_id" value="{{ $customer->id }}">
-                    <input type="hidden" name="discount_percent" value="{{ $discount_percent }}">
-                    <input type="hidden" name="discount_rp" value="{{ $discount_rp }}">
-                    <input type="hidden" name="grandtotal" value="{{ $grandtotal }}">
-                    <button type="button" class="btn bg-success me-3 confirm-button"><b>{{ $order['label'] }}</b></button>
-                </form>
-            @endforeach
-        </div>
-    </div> --}}
+</div>
+<div class="col">
+    <a href="#" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#save">
+        Simpan
+    </a>
+    @include('marketing.salesorder.input.save')
 </div>
 
 @endsection

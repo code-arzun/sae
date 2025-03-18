@@ -8,17 +8,15 @@
         <div class="modal-body d-flex justify-content-between">
             <div class="d-flex flex-column align-items-center text-center">
                 <label class="text-secondary mb-2">No. SO</label>
-                <span class="badge 
-                    {{ 
-                        // $order->order_status === 'Menunggu persetujuan' ? 'bg-purple' : 
-                        (strpos($order->invoice_no, '-RO') !== false ? 'bg-primary' : 
-                        (strpos($order->invoice_no, '-HO') !== false ? 'bg-danger' : 
-                        (strpos($order->invoice_no, '-RS') !== false ? 'bg-success' : 
-                        (strpos($order->invoice_no, '-HS') !== false ? 'bg-warning' : 'bg-secondary')))) }}"  
-                        href="{{ route('so.orderDetails', $order->id) }}" 
-                        data-bs-toggle="tooltip" 
-                        data-bs-placement="top" 
-                        title="Lihat Detail Pesanan">
+                <span class="badge {{ // $order->order_status === 'Menunggu persetujuan' ? 'bg-purple' : 
+                    (strpos($order->invoice_no, '-RO') !== false ? 'bg-primary' : 
+                    (strpos($order->invoice_no, '-HO') !== false ? 'bg-danger' : 
+                    (strpos($order->invoice_no, '-RS') !== false ? 'bg-success' : 
+                    (strpos($order->invoice_no, '-HS') !== false ? 'bg-warning' : 'bg-secondary')))) }}"  
+                    href="{{ route('so.orderDetails', $order->id) }}" 
+                    data-bs-toggle="tooltip" 
+                    data-bs-placement="top" 
+                    title="Lihat Detail Pesanan">
                         {{ $order->invoice_no }}
                 </span>
             </div>
@@ -35,34 +33,6 @@
                 <h4>{{ explode(' ', $order->customer->employee->name)[0] }}</h4>
             </div>
         </div>
-        {{-- <table class="table text-center">
-            <thead>
-                <th>No. SO</th>
-                <th>Nama Lembaga</th>
-                <th>Nama Customer</th>
-                <th>Sales</th>
-            </thead>
-            <tbody>
-                <td>
-                    <span class="badge 
-                        {{ 
-                            // $order->order_status === 'Menunggu persetujuan' ? 'bg-purple' : 
-                            (strpos($order->invoice_no, '-RO') !== false ? 'bg-primary' : 
-                            (strpos($order->invoice_no, '-HO') !== false ? 'bg-danger' : 
-                            (strpos($order->invoice_no, '-RS') !== false ? 'bg-success' : 
-                            (strpos($order->invoice_no, '-HS') !== false ? 'bg-warning' : 'bg-secondary')))) }}"  
-                            href="{{ route('so.orderDetails', $order->id) }}" 
-                            data-bs-toggle="tooltip" 
-                            data-bs-placement="top" 
-                            title="Lihat Detail Pesanan">
-                            {{ $order->invoice_no }}
-                    </span>
-                </td>
-                <td><h6 class="mb-0">{{ $order->customer->NamaLembaga }}</h6></td>
-                <td><span class="text-secondary">{{ $order->customer->NamaCustomer }}</span></td>
-                <td><h6>{{ $order->customer->employee->name }}</h6></td>
-            </tbody>
-        </table> --}}
         <div class="modal-footer">
             <!-- Batalkan -->
             <div class="col">

@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
-        View::share('title', 'Judul Default');
+        View::share('title', 'ERP');
     }
     // public function boot()
     // {

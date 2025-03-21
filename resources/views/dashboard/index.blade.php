@@ -58,18 +58,33 @@
         @endif
     </div> --}}
 
-    <!-- Super Admin -->
-    @if (auth()->user()->hasRole('Super Admin'))
     <div class="row">
-        @include('marketing.salesorder.data.rekap-data.all')
+        <!-- Super Admin -->
+        @if (auth()->user()->hasRole('Super Admin'))
+            @include('marketing.salesorder.data.rekap-data.all')
+        <!-- Sales -->
+        @elseif (auth()->user()->hasRole('Sales'))
+            @include('marketing.salesorder.data.rekap-data.all')
+        <!-- Admin -->
+        @elseif (auth()->user()->hasRole('Admin'))
+            @include('marketing.salesorder.data.rekap-data.all')
+        <!-- Gudang -->
+        @elseif (auth()->user()->hasRole('Admin Gudang'))
+        <div class="row">
+            <div id="carouselExampleSlidesOnly" class="carousel slide mb-5" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                <div class="carousel-item active">
+                    {{-- <img src="https://images.unsplash.com/photo-1627309366653-2dedc084cdf1?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="d-block w-100" alt=""> --}}
+                    <img src="https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="d-block w-100" alt="">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1624927637280-f033784c1279?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="d-block w-100" alt="...">
+                </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
-    @endif
-    <!-- Sales -->
-    @if (auth()->user()->hasRole('Sales'))
-    <div class="row">
-        @include('marketing.salesorder.data.rekap-data.all')
-    </div>
-    @endif
 
     
 @endsection
@@ -86,26 +101,66 @@
 @endsection
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
     // Greetings
-const greetingElement = document.getElementById('greetings');
-if (greetingElement) {
-    const now = new Date();
-    const currentHour = now.getHours();
-    let greetingMessage = '';
-    
-    if (currentHour >= 0 && currentHour <= 10) {
-        greetingMessage = 'Pagi';
-    } else if (currentHour >= 11 && currentHour <= 14) {
-        greetingMessage = 'Siang';
-    } else if (currentHour >= 14 && currentHour <= 18) {
-        greetingMessage = 'Sore';
-    } else if (currentHour >= 18 && currentHour <= 23) {
-        greetingMessage = 'Malam';
+    const greetingElement = document.getElementById('greetings');
+    if (greetingElement) {
+        const now = new Date();
+        const currentHour = now.getHours();
+        let greetingMessage = '';
+
+        if (currentHour >= 0 && currentHour <= 10) {
+            greetingMessage = 'Pagi';
+        } else if (currentHour >= 11 && currentHour <= 14) {
+            greetingMessage = 'Siang';
+        } else if (currentHour >= 14 && currentHour <= 18) {
+            greetingMessage = 'Sore';
+        } else if (currentHour >= 18 && currentHour <= 23) {
+            greetingMessage = 'Malam';
+        }
+
+        greetingElement.textContent = `Selamat ${greetingMessage}, ${greetingElement.textContent}`;
     }
 
-    greetingElement.textContent = `Selamat ${greetingMessage}, ${greetingElement.textContent}`;
-}
-    document.addEventListener("DOMContentLoaded", function () {
+    // Popup Absensi
+    const attendanceModalElement = document.getElementById('attendanceCheckinModal');
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay(); // Mengambil hari dalam seminggu
+
+    if (attendanceModalElement && currentDay !== 0) { // 0 berarti hari Minggu
+        const attendanceModal = new bootstrap.Modal(attendanceModalElement, {
+            keyboard: false,
+            backdrop: 'static',
+        });
+        attendanceModal.show();
+    }
+
+    const hadirRadio = document.getElementById('hadir');
+    const tidakHadirRadio = document.getElementById('tidak_hadir');
+    const timepickerDiv = document.getElementById('timepickerDiv');
+    const keteranganDiv = document.getElementById('keteranganDiv');
+
+    if (hadirRadio && tidakHadirRadio) {
+        hadirRadio.addEventListener('change', function () {
+            if (this.checked) {
+                timepickerDiv.style.display = 'block';
+                document.getElementById('datangTime').setAttribute('required', 'required');
+                keteranganDiv.style.display = 'none';
+                document.getElementById('keterangan').removeAttribute('required');
+            }
+        });
+
+        tidakHadirRadio.addEventListener('change', function () {
+            if (this.checked) {
+                timepickerDiv.style.display = 'none';
+                document.getElementById('datangTime').removeAttribute('required');
+                keteranganDiv.style.display = 'block';
+                document.getElementById('keterangan').setAttribute('required', 'required');
+            }
+        });
+    }
+
+    // Chart
     fetch('/orders/chart-status')
         .then(response => response.json())
         .then(data => {
@@ -207,5 +262,5 @@ if (greetingElement) {
 
         })
         .catch(error => console.error('Error:', error));
-});
+    });
 </script>

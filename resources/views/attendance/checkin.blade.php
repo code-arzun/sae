@@ -1,5 +1,3 @@
-<!-- Datang -->
-{{-- @if ((!isset($attendance) || $attendance->status == null) && (Carbon\Carbon::now()->format('H:i') >= '07:00' && Carbon\Carbon::now()->format('H:i') <= '16:00')) --}}
 <div class="modal fade" id="attendanceModal" tabindex="-1" role="dialog" aria-labelledby="attendanceModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -55,4 +53,3 @@
         </div>
     </div>
 </div>
-{{-- @endif --}}

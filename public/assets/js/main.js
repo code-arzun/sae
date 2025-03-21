@@ -612,34 +612,34 @@ Index Of Script
 //     }
 //   })(jQuery);
   
-function calculateDiscount() {
-  // Mengambil nilai subtotal dan diskon persen
-  const subtotalElement = document.getElementById('subtotal');
-  const discountPercentElement = document.getElementById('discount_percent');
-  const discountRpElement = document.getElementById('discount_rp');
-  const grandTotalElement = document.getElementById('grandtotal');
+// function calculateDiscount() {
+//   // Mengambil nilai subtotal dan diskon persen
+//   const subtotalElement = document.getElementById('subtotal');
+//   const discountPercentElement = document.getElementById('discount_percent');
+//   const discountRpElement = document.getElementById('discount_rp');
+//   const grandTotalElement = document.getElementById('grandtotal');
   
-  const subtotal = parseFloat(subtotalElement.textContent.replace(',', ''));
-    //  const discountPercent = parseFloat(discountPercentElement.value);
-  const discountPercent = parseFloat(document.getElementById('discount_percent').value);
+//   const subtotal = parseFloat(subtotalElement.textContent.replace(',', ''));
+//     //  const discountPercent = parseFloat(discountPercentElement.value);
+//   const discountPercent = parseFloat(document.getElementById('discount_percent').value);
 
   
-  // Validasi input
-  if (isNaN(subtotal) || isNaN(discountPercent) || discountPercent < 0 || discountPercent > 100) {
-    discountPercentElement.value = 0;
-    discountRpElement.value = 0;
-    return;
-  }
+//   // Validasi input
+//   if (isNaN(subtotal) || isNaN(discountPercent) || discountPercent < 0 || discountPercent > 100) {
+//     discountPercentElement.value = 0;
+//     discountRpElement.value = 0;
+//     return;
+//   }
   
-  // Menghitung jumlah diskon
-  const discountRp = (subtotal * discountPercent) / 100;
-  // Menghitung total akhir
-  const grandTotal = subtotal - discountRp;
+//   // Menghitung jumlah diskon
+//   const discountRp = (subtotal * discountPercent) / 100;
+//   // Menghitung total akhir
+//   const grandTotal = subtotal - discountRp;
   
-  // Menampilkan hasil perhitungan di input field
-  discountRpElement.value = discountRp
-  grandTotalElement.value = grandTotal
-}
+//   // Menampilkan hasil perhitungan di input field
+//   discountRpElement.value = discountRp
+//   grandTotalElement.value = grandTotal
+// }
 
 $('.confirm-button').on("click", function (e) {
   e.preventDefault(); // Mencegah form dari pengiriman otomatis

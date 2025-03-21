@@ -145,11 +145,12 @@
               </div>
               <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button type="submit" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></button>
+                {{-- <button type="submit" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></button> --}}
+                <button type="submit" class="pc-head-link bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Keluar"><i class="ti ti-power text-danger"></i></button>
               </form>
             </div>
           </div>
-          <ul class="nav drp-tabs nav-fill nav-tabs" id="mydrpTab" role="tablist">
+          {{-- <ul class="nav drp-tabs nav-fill nav-tabs" id="mydrpTab" role="tablist">
             <li class="nav-item" role="presentation">
               <button
                 class="nav-link active"
@@ -226,7 +227,7 @@
               </a>
             </div>
           </div>
-        </div>
+        </div> --}}
       </li>
     </ul>
   </div>

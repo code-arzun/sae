@@ -21,6 +21,8 @@
           </a>
         </li>
 
+        <!-- Marketing -->
+        @if (auth()->user()->can('customer'))
         <li class="pc-item pc-caption">
           <label>Marketing</label>
           <i class="ti ti-dashboard"></i>
@@ -33,20 +35,23 @@
             </a>
           </li>
         @endif
+        @if (auth()->user()->can('customer'))
         <li class="pc-item">
           <a href="{{ route('customers.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-users"></i></span>
             <span class="pc-mtext">Customer</span>
           </a>
         </li>
+        @endif
         <li class="pc-item">
           <a href="{{ route('so.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-color-swatch"></i></span>
             <span class="pc-mtext">Sales Order</span>
           </a>
         </li>
+        @endif
 
-        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
+        {{-- @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
         <li class="pc-item pc-caption">
           <label>Retail</label>
           <i class="ti ti-dashboard"></i>
@@ -69,14 +74,14 @@
             <span class="pc-mtext">Sales Order</span>
           </a>
         </li>
-        @endif
+        @endif --}}
 
         <li class="pc-item pc-caption">
           <label>Gudang</label>
           <i class="ti ti-news"></i>
         </li>
         <li class="pc-item">
-          <a href="{{ route('do.all') }}" class="pc-link">
+          <a href="{{ route('do.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-lock"></i></span>
             <span class="pc-mtext">Delivery Order</span>
           </a>
@@ -99,15 +104,15 @@
             <span class="pc-mtext">Produk</span>
           </a>
         </li>
-        <li class="pc-item pc-hasmenu">
+        {{-- <li class="pc-item pc-hasmenu">
           <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-truck-delivery"></i></span><span class="pc-mtext">Delivery Order</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
           <ul class="pc-submenu">
             <li class="pc-item"><a class="pc-link" href="{{ route('input.do') }}">Input</a></li>
-            <li class="pc-item"><a class="pc-link" href="{{ route('do.all') }}">Data</a></li>
+            <li class="pc-item"><a class="pc-link" href="{{ route('do.index') }}">Data</a></li>
           </ul>
-        </li>
+        </li> --}}
 
-        <li class="pc-item pc-caption">
+        {{-- <li class="pc-item pc-caption">
           <label>Other</label>
           <i class="ti ti-brand-chrome"></i>
         </li>
@@ -151,7 +156,7 @@
             <span class="pc-micon"><i class="ti ti-brand-chrome"></i></span>
             <span class="pc-mtext">Sample page</span>
           </a>
-        </li>
+        </li> --}}
       </ul>
     </div>
   </div>

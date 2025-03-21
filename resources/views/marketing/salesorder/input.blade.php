@@ -27,14 +27,10 @@
     <div class="col-lg-7 col-md-12">
         @include('marketing.salesorder.input.cart')
     </div>
-</div>
-    
+
 @include('components.preview-img-form')
 
 @endsection
-
-<!-- Session -->
-@include('layout.partials.session')
 
 <script>
     $(document).ready(function () {

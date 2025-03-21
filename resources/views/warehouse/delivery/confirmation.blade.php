@@ -58,7 +58,7 @@
                             <h5 class="mb-3">Detail Pesanan</h5>
                             <div class="dt-responsive table-responsive-lg">
                                 <table class="table table-striped table-bordered nowrap">
-                                    <thead class="text-center">
+                                    <thead>
                                         <tr>
                                             <th scope="col">Nama Produk</th>
                                             <th scope="col">Kategori</th>

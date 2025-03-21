@@ -202,14 +202,14 @@
                                     @method('delete')
                                     @csrf
                                     <div class="d-flex align-items-center list-action">
-                                        <a class="btn btn-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail"
+                                        <a class="btn btn-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail"
                                             href="{{ route('products.show', $product->id) }}"><i class="ri-eye-line me-0"></i>
                                         </a>
-                                        <a class="btn btn-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Edit"
+                                        <a class="btn btn-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
                                             href="{{ route('products.edit', $product->id) }}"><i class="ri-pencil-line me-0"></i>
                                         </a>
                                         @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin']))
-                                            <button type="submit" class="btn btn-danger me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Hapus"><i class="ri-delete-bin-line me-0"></i></button>
+                                            <button type="submit" class="btn btn-danger me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus"><i class="ri-delete-bin-line me-0"></i></button>
                                         @endif
                                     </div>
                                 </form>

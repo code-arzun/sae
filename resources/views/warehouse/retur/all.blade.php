@@ -114,7 +114,7 @@
                             </td>
                             <td>
                                 <a class="badge badge-primary" href="{{ route('retur.Details', $retur->id) }}" 
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $retur->invoice_no }}</a>
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail">{{ $retur->invoice_no }}</a>
                             </td>
                             <td>
                                 <span class="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Carbon\Carbon::parse($retur->delivery->delivery_date)->translatedformat('l, d F Y') }}">
@@ -123,7 +123,7 @@
                             </td>
                             <td>
                                 <a class="badge badge-primary" href="{{ route('do.deliveryDetails', $retur->delivery_id) }}" 
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $retur->delivery->invoice_no }}</a>
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail">{{ $retur->delivery->invoice_no }}</a>
                             </td>
                             <td>
                                 <b>{{ $retur->delivery->salesorder->customer->NamaLembaga }}</b> <br>
@@ -136,16 +136,16 @@
                             {{-- @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin'])) --}}
                             <td>
                                 @if ($retur->retur_status === 'Diajukan')
-                                        <a href="{{ route('retur.proposed')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Buka Halaman Retur Diajukan"
+                                        <a href="{{ route('retur.proposed')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Buka Halaman Retur Diajukan"
                                         class="badge bg-warning">{{ $retur->retur_status }}</a>
                                     @elseif ($retur->retur_status === 'Disetujui')
-                                        <a href="{{ route('retur.approved')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Buka Halaman Retur Disetujui"
+                                        <a href="{{ route('retur.approved')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Buka Halaman Retur Disetujui"
                                         class="badge bg-success">{{ $retur->retur_status }}</a>
                                     @elseif ($retur->retur_status === 'Ditolak')
-                                        <a href="{{ route('retur.declined')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Buka Halaman Retur Ditolak"
+                                        <a href="{{ route('retur.declined')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Buka Halaman Retur Ditolak"
                                         class="badge bg-danger">{{ $retur->retur_status }}</a>
                                     @else
-                                        <a href="{{ route('retur.cancelled')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Buka Halaman Retur Dibatalkan"
+                                        <a href="{{ route('retur.cancelled')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Buka Halaman Retur Dibatalkan"
                                         class="badge bg-danger">{{ $retur->retur_status }}</a>
                                     @endif
                             </td>

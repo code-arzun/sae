@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <table class="table text-end table-hover">
-                                        <thead class="text-center">
+                                        <thead>
                                             <tr>
                                                 <th>Keterangan</th>
                                                 <th>Persentase</th>

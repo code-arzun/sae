@@ -41,13 +41,13 @@
        
         <!-- Detail Pesanan -->
         <table class="table table-striped nowrap">
-            <thead class="bg-info text-center">
+            <thead>
                 <tr>
-                    <th class="text-white">Nama Produk</th>
-                    <th class="text-white" width="250px">Kategori</th>
-                    <th class="text-white" width="150px">Harga</th>
-                    <th class="text-white" width="150px">Jumlah</th>
-                    <th class="text-white" width="150px">Total</th>
+                    <th>Nama Produk</th>
+                    <th width="250px">Kategori</th>
+                    <th width="150px">Harga</th>
+                    <th width="150px">Jumlah</th>
+                    <th width="150px">Total</th>
                 </tr>
             </thead>
             <tbody>

@@ -12,10 +12,12 @@
         </nav>
     </div>
     <div>
+        @if (auth()->user()->hasAnyRole('Super Admin', 'Admin', 'Sales', 'Manajer Marketing'))
         <a href="{{ route('input.so') }}" class="btn btn-primary">Buat SO</a>
+        @endif
         @if (auth()->user()->hasAnyRole('Super Admin', 'Admin', 'Admin Gudang', 'Manajer Marketing'))
         <a href="{{ route('so.exportData') }}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Download Excel">
-            <!-- <i class="fa fa-file-excel"></i> -->
+            <i class="fa fa-file-excel me-2"></i>
             Download Excel
         </a>
         @endif
@@ -33,11 +35,12 @@
 <div class="tab-content" id="salesorderContent">
     <!-- All Data -->
     <div class="tab-pane fade show active" id="all" role="tabpanel">
-        @include('marketing.salesorder.data.table')
+        @include('marketing.salesorder.partials.table')
     </div>
     <!-- Data Recap -->
     <div class="tab-pane fade" id="datarecap" role="tabpanel">
         @include('marketing.salesorder.data.recap')
     </div>
 </div>
+
 @endsection

@@ -28,7 +28,7 @@
                                 <a class="dropdown-item" href="{{ route('do.ready') }}">Siap Kirim</a>
                                 <a class="dropdown-item" href="{{ route('do.delivered') }}">Terkirim</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('do.all') }}">Semua</a>
+                                <a class="dropdown-item" href="{{ route('do.index') }}">Semua</a>
                             </div>
                         </div>
                     </h5>
@@ -113,14 +113,14 @@
                                 </span>
                             </td>
                             <td><a class="badge badge-primary" href="{{ route('do.deliveryDetails', $sent->id) }}" 
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $sent->invoice_no }}</a></td>
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail">{{ $sent->invoice_no }}</a></td>
                             <td>
                                 <span class="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Carbon\Carbon::parse($sent->salesorder->order_date)->translatedformat('l, d F Y') }}">
                                     {{ Carbon\Carbon::parse($sent->salesorder->order_date)->translatedformat('d M Y') }}
                                 </span>
                             </td>
                             <td><a class="badge badge-success" href="{{ route('so.orderDetails', $sent->order_id) }}" 
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $sent->salesorder->invoice_no }}</a></td>
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail">{{ $sent->salesorder->invoice_no }}</a></td>
                             <td><b>{{ $sent->salesorder->customer->NamaLembaga }}</b> <br>
                                 {{ $sent->salesorder->customer->NamaCustomer }}
                             </td>
@@ -131,7 +131,7 @@
                             <td>
                                 <div class="d-flex align-items-center list-action">
                                     <a href="{{ route('do.invoiceDownload', $sent->id) }}"
-                                        class="btn bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Cetak Dokumen">
+                                        class="btn bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen">
                                         <i class="fa fa-print me-0" aria-hidden="true"></i> 
                                     </a>
                                     {{-- Terkirim --}}
@@ -140,7 +140,7 @@
                                         @method('put')
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $sent->id }}">
-                                        <button type="button" class="btn btn-success me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Terkirim">
+                                        <button type="button" class="btn btn-success me-2 update-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Terkirim">
                                              <i class="fa fa-check me-0" aria-hidden="true"></i>
                                         </button>
                                     </form>

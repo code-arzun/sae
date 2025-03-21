@@ -70,7 +70,7 @@
                             <td>{{ (($stocks->currentPage() * 10) - 10) + $loop->iteration  }}</td>
                             <td>{{ Carbon\Carbon::parse($stock->stock_date)->translatedformat('l, d F Y') }}</td>
                             <td class="text-center">
-                                <a class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail"
+                                <a class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail"
                                         href="{{ route('stock.Details', $stock->id) }}">
                                         {{ $stock->invoice_no }}
                                 </a>

@@ -64,7 +64,7 @@
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <a class="badge bg-success me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Edit"
+                                                <a class="badge bg-success me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
                                                     href="{{ route('writerjob.edit', $writerjob->id) }}"><i class="ri-pencil-line me-0"></i>
                                                 </a>
                                                 <form action="{{ route('writerjob.destroy', $writerjob->id) }}" method="POST" class="confirmation-form">

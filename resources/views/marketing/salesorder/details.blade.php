@@ -5,191 +5,106 @@
 
 @section('container')
 
-<!-- Buttons for back, approve, decline, & cancel -->
-<div class="col-lg-12 mb-3">
-    <div class="d-flex justify-content-between align-items-center list-action">
-        <a href="{{ url()->previous() }}" class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Kembali"><i class="fa fa-arrow-left"></i></a>
-        @if ($order->order_status == 'Menunggu persetujuan' && auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
-        <div class="d-flex ml-auto">
-            <form action="{{ route('so.approvedStatus') }}" method="POST" class="mr-2">
-                @method('put')
-                @csrf
-                <input type="hidden" name="id" value="{{ $order->id }}">
-                <button type="submit" class="btn bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Setujui">Setujui<i class="fa fa-check ml-2" aria-hidden="true"></i></button>
-            </form>
-            <form action="{{ route('so.declinedStatus') }}" method="POST" class="mr-2">
-                @method('put')
-                @csrf
-                <input type="hidden" name="id" value="{{ $order->id }}">
-                <button type="submit" class="btn bg-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Tolak">Tolak<i class="fa fa-dot-circle-o ml-2" aria-hidden="true"></i></button>
-            </form>
-            <form action="{{ route('so.cancelledStatus') }}" method="POST">
-                @method('put')
-                @csrf
-                <input type="hidden" name="id" value="{{ $order->id }}">
-                <button type="submit" class="btn bg-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Batalkan">Batalkan<i class="fa fa-times ml-2" aria-hidden="true"></i></button>
-            </form>
-        </div>
+<div class="d-flex justify-content-between mb-3">
+    <div>
+        <h2>{{ $title }}</h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-default-icon">
+                @include('marketing.salesorder.partials.breadcrumb')
+                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('so.orderDetails', $order->id) }}">Detail</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><b>{{ $order->invoice_no }}</b>_{{ $order->customer->NamaLembaga }}_{{ $order->customer->NamaCustomer }}_{{ $order->customer->employee->name }}</li>
+            </ol>
+        </nav>
+    </div>
+    <div>
+        <!-- Update status button -->
+        @if ($order->order_status == 'Menunggu persetujuan')
+        <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#confirmation{{ $order->id }}" data-id="{{ $order->id }}"><i class="fa fa-info-circle me-2"></i><span>Perbarui Status Sales Order</span></a>
         @endif
+        @include('marketing.salesorder.data.status-update')
     </div>
 </div>
 
 <!-- Informasi Umum -->
-<div class="col-lg-12">
+<div class="mb-5">
+    <h4 class="mb-3">Informasi Umum</h4>
     <div class="card">
-        <div class="card-header d-flex justify-content-between">
-            <div class="header-title">
-                {{-- <h4 class="card-title">Informasi Detail Pesanan</h4> --}}
-                <h4 class="card-title">Informasi Umum</h4>
-            </div>
-        </div>
         <div class="card-body">
-            <div class="row align-items-top">
-                <div class="form-group col-md-3">
-                    <label>Tanggal Pemesanan</label> <br>
-                    <span class="badge bg-white">{{Carbon\Carbon::parse($order->order_date)->translatedformat('l, d F Y') }}</span>
+            <div class="row justify-content-between">
+                <div class="col d-flex flex-column mb-3">
+                    <label class="mb-2">Tanggal Pemesanan</label>
+                    <h5>{{Carbon\Carbon::parse($order->order_date)->translatedformat('l, d F Y') }}</h5>
                 </div>
-                <div class="form-group col-md-3">
-                    <label>Nomor</label> <br>
-                    <span class="badge {{ strpos($order->invoice_no, '-R') !== false ? 'badge-primary' : (strpos($order->invoice_no, '-H') !== false ? 'badge-danger' : 
-                        (strpos($order->invoice_no, '-RS') !== false ? 'badge-success' : (strpos($order->invoice_no, '-HS') !== false ? 'badge-warning' : 'badge-secondary'))) }}">
-                        {{ $order->invoice_no }}
-                    </span>
+                <div class="col col-md-1 d-flex flex-column mb-3">
+                    <label class="mb-2">Nomor SO</label>
+                    <div>
+                        <span class="badge {{ strpos($order->invoice_no, '-R') !== false ? 'bg-primary' : (strpos($order->invoice_no, '-H') !== false ? 'bg-danger' : 
+                                (strpos($order->invoice_no, '-RS') !== false ? 'bg-success' : (strpos($order->invoice_no, '-HS') !== false ? 'bg-warning' : 'bg-secondary'))) }}">
+                            {{ $order->invoice_no }}
+                        </span>
+                    </div>
                 </div>
-                <div class="form-group col-md-3">
-                    <label>Metode Pembayaran</label> <br>
-                    <span class="badge bg-white"> {{ $order->payment_method }}</span>
+                <div class="col d-flex flex-column mb-3">
+                    <label class="mb-2">Metode Pembayaran</label>
+                    <h5> {{ $order->payment_method }}</h5>
                 </div>
-                <div class="form-group col-md-3">
-                    <label>Status </label> <br>
-                    <span class="badge {{ strpos($order->order_status, 'Menunggu persetujuan') !== false ? 'badge-warning' : (strpos($order->order_status, 'Disetujui') !== false ? 'badge-success' : 
-                            (strpos($order->order_status, 'Dalam pengiriman') !== false ? 'badge-success' : 'badge-secondary')) }}">
+                <div class="col d-flex flex-column mb-3">
+                    <label class="mb-2">Status </label>
+                    <div>
+                        <span class="badge {{ strpos($order->order_status, 'Menunggu persetujuan') !== false ? 'bg-warning' : (strpos($order->order_status, 'Disetujui') !== false ? 'bg-success' : 
+                                (strpos($order->order_status, 'Dalam pengiriman') !== false ? 'bg-success' : 'bg-secondary')) }}">
                             {{ $order->order_status }}
-                    </span>
+                        </span>
+                    </div>
                 </div>
-                <div class="form-group col-md-3">
-                    <label>Nama Lembaga</label> <br>
-                    <a class="badge bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail Customer"
-                        href="{{ route('customers.show', $order->customer->id) }}">{{ $order->customer->NamaLembaga }}
+                <div class="col d-flex flex-column mb-3">
+                    <label class="mb-2">Nama Lembaga</label>
+                    <a data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail Customer"
+                        href="{{ route('customers.show', $order->customer->id) }}">
+                        <h5>{{ $order->customer->NamaLembaga }}</h5>
                     </a>
                 </div>
-                <div class="form-group col-md-3">
-                    <label>Nama Customer</label> <br>
-                    <a class="badge bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail Customer"
-                        href="{{ route('customers.show', $order->customer->id) }}">{{ $order->customer->NamaCustomer }}
+                <div class="col d-flex flex-column mb-3">
+                    <label class="mb-2">Nama Customer</label>
+                    <a data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail Customer"
+                        href="{{ route('customers.show', $order->customer->id) }}">
+                        <h5>{{ $order->customer->NamaCustomer }}</h5>
                     </a>
                 </div>
-                <div class="form-group col-md-3">
-                    <label>Jabatan</label> <br>
-                    <span class="badge bg-white">{{ $order->customer->Jabatan }}</span>
+                <div class="col col-md-1 d-flex flex-column mb-3">
+                    <label class="mb-2">Jabatan</label>
+                    {{-- <span class="badge bg-secondary">{{ $order->customer->Jabatan }}</span> --}}
+                    <h5>{{ $order->customer->Jabatan }}</h5>
                 </div>
-                <div class="form-group col-md-3">
-                    <label>Sales</label> <br>
-                    <span class="badge bg-white">{{ $order->customer->employee->name }}</span>
+                <div class="col d-flex flex-column">
+                    <label class="mb-2">Sales</label>
+                    <h5>{{ $order->customer->employee->name }}</h5>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Navigation Tabs -->
-<div class="col-lg-12 mt-3">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+<div>
+    <!-- Navigation Tabs -->
+    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab">
-                <h4>
-                    Sales Order
-                </h4>
-            </a>
+            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab"><h5>Sales Order</h5></a>
         </li>
         @if ($order->order_status == 'Disetujui' || $order->order_status == 'Selesai' )
         <li class="nav-item">
-            <a class="nav-link" id="delivery-tab" data-bs-toggle="tab" href="#delivery" role="tab">
-                <h4>
-                    Delivery Order
-                </h4>
-            </a>
+            <a class="nav-link" id="delivery-tab" data-bs-toggle="tab" href="#delivery" role="tab"><h5>Delivery Order</h5></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="collection-tab" data-bs-toggle="tab" href="#coll" role="tab">
-                <h4>
-                    Collection
-                </h4>
-            </a>
+            <a class="nav-link" id="collection-tab" data-bs-toggle="tab" href="#coll" role="tab"><h5>Collection</h5></a>
         </li>
         @endif
     </ul>
-        
     <!-- Content -->
     <div class="tab-content" id="myTabContent">
         <!-- Sales Order -->
         <div class="tab-pane fade show active" id="home" role="tabpanel">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <div class="header-title">
-                        <h4 class="card-title">Sales Order</h4>
-                    </div>
-                    <div class="header-title">
-                        <a href="{{ route('so.invoiceDownload', $order->id) }}"
-                            class="btn bg-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Cetak Dokumen SO">
-                            <i class="fa fa-print" aria-hidden="true"></i> 
-                        </a>
-                    </div>
-                </div>
-                <div class="dt-responsive table-responsive">
-                    <table class="table table-striped table-bordered nowrap mb-3">
-                        <thead>
-                            <tr>
-                                <th width="3px">No.</th>
-                                <th>Produk</th>
-                                <th>Kategori</th>
-                                <th>Jumlah</th>
-                                {{-- <th>Terkirim</th> --}}
-                                {{-- <th>Belum Dikirim</th> --}}
-                                {{-- <th>Siap Kirim</th> --}}
-                                <th>Harga Satuan</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($orderDetails as $item)
-                            <tr>
-                                <td>{{ $loop->iteration  }}</td>
-                                <td><b>{{ $item->product->product_name }}</b></td>
-                                <td>{{ $item->product->category->name }}</td>
-                                <td class="text-center"><b class="mr-1">{{ number_format($item->quantity) }}</b> {{ $item->product->category->productunit->name }}</td>
-                                {{-- <td class="text-center"><span class="badge bg-purple me-2">{{ number_format($item->quantity) }}</span>{{ $item->product->category->productunit->name }}</td> --}}
-                                {{-- <td class="text-center"><span class="badge bg-success me-2">{{ number_format($item->quantity) }}</span>{{ $item->product->category->productunit->name }}</td> --}}
-                                {{-- <td class="text-center"><span class="badge bg-danger me-2">{{ number_format($item->quantity) }}</span>{{ $item->product->category->productunit->name }}</td> --}}
-                                {{-- <td class="text-center"><span class="badge bg-warning me-2">{{ number_format($item->quantity) }}</span>{{ $item->product->category->productunit->name }}</td> --}}
-                                <td class="text-end">Rp {{ number_format($item->unitcost) }}</td>
-                                <td class="text-end">Rp {{ number_format($item->total) }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <table class="table text-center">
-                        <thead>
-                            <tr>
-                                <th>Jumlah Item</th>
-                                <th>Total Produk</th>
-                                <th>Subtotal</th>
-                                <th>Diskon</th>
-                                <th>Grand Total</th>
-                            </tr>
-                        </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ number_format($orderDetails->count('order_id')) }}</td>
-                            <td>{{ number_format($order->total_products) }}</td>
-                            <td><span class="badge bg-success">Rp {{ number_format($order->sub_total) }}</td>
-                            <td><span class="badge bg-warning">{{ number_format($order->discount_percent, 2) }}%</span> <span class="badge bg-danger">Rp {{ number_format($order->discount_rp) }}</span></td>
-                            <td><span class="badge bg-primary">Rp {{ number_format($order->grandtotal) }}</td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
-            </div>
+            @include('marketing.salesorder.details.so')
         </div>
         <!-- Delivery Order -->
         <div class="tab-pane fade" id="delivery" role="tabpanel">
@@ -206,7 +121,7 @@
                     @if ($remainingAmount > 0 && auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
                     <div>
                         <a href="{{ route('input.do') }}"
-                            class="btn bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Buat Delivery Order">
+                            class="btn bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Buat Delivery Order">
                             <i class="fa fa-plus me-2" aria-hidden="true"></i>Buat Delivery Order 
                         </a>
                     </div>
@@ -286,12 +201,12 @@
                                 <td>{{ Carbon\Carbon::parse($delivery->delivery_date)->translatedformat('l, d F Y') }}</td>
                                 <td>
                                     <a class="badge badge-primary" href="{{ route('do.deliveryDetails', $delivery->id) }}" 
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $delivery->invoice_no }}
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail">{{ $delivery->invoice_no }}
                                     </a>
                                 </td>
                                 <td>
                                     <a href="{{ route('do.invoiceDownload', $delivery->id) }}"
-                                        class="btn bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Cetak Dokumen">
+                                        class="btn bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen">
                                         <i class="fa fa-print me-0" aria-hidden="true"></i> 
                                     </a>
                                 </td>
@@ -445,12 +360,12 @@
                                 <td>{{ Carbon\Carbon::parse($collection->collection_date)->translatedformat('l, d F Y') }}</td>
                                 <td>
                                     <a class="badge badge-primary" href="{{ route('collection.details', $collection->id) }}" 
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $collection->invoice_no }}
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail">{{ $collection->invoice_no }}
                                     </a>
                                 </td>
                                 <td>
                                     <a href="{{ route('collection.invoiceDownload', $collection->id) }}"
-                                        class="btn bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Cetak Dokumen">
+                                        class="btn bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen">
                                         <i class="fa fa-print me-0" aria-hidden="true"></i> 
                                     </a>
                                 </td>

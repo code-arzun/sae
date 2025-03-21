@@ -80,9 +80,9 @@
     </div>
 </form>
 <!-- Data -->
-<table class="table table-striped bg-white nowrap">
-    <thead>
-        <tr>
+<div class="dt-responsive">
+    <table class="table table-responsive bg-white nowrap">
+        <thead>
             {{-- <th width="3px">No.</th> --}}
             <th>Nama Lembaga</th>
             <th>Nama Customer</th>
@@ -92,53 +92,50 @@
             <th>Sales</th>
             @endif
             <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($customers as $customer)
-        <tr>
-            {{-- <td>{{ (($customers->currentPage() * 10) - 10) + $loop->iteration  }}</td> --}}
-            <td><b data-bs-toggle="popover" title="{{ $customer->NamaLembaga }}" data-content="{{ $customer->AlamatLembaga }}">{{ $customer->NamaLembaga }}</b></td>
-            <td>
-                <div class="d-flex align-items-center">
-                    <img class="avatar-60 rounded" src="{{ $customer->photo ? asset('storage/customers/'.$customer->photo) : asset('assets/images/user/1.png') }}">
-                    <b class="ml-3">{{ $customer->NamaCustomer }}</b>
-                </div>
-            </td>
-            <td>{{ $customer->Jabatan }}</td>
-            <td>
-                <span class="badge {{ strpos($customer->Potensi, 'Tinggi') !== false ? 'bg-success' : (strpos($customer->Potensi, 'Sedang') !== false ? 'bg-warning' : 
-                    (strpos($customer->Potensi, 'Rendah') !== false ? 'bg-danger' : '-')) }}">
-                    {{ $customer->Potensi }}
-                </span>
-            </td>
-            @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
-            <td>{{ $customer->employee->name }}</td>
-            @endif
-            <td width="200px">
-                <div class="d-flex align-items-center justify-content-between">
-                    <a class="badge bg-primary me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail"
-                            href="{{ route('customers.show', $customer->id) }}"><i class="ti ti-eye"></i>
-                    </a>
-                    @if (auth()->user()->hasAnyRole('Super Admin', 'Manajer Marketing', 'Admin'))
-                    <button type="button" class="badge border-none bg-warning" data-bs-toggle="modal" data-bs-target="#editCustomer{{ $customer->id }}"><i class="ti ti-edit"></i></button>
-                    <!-- Edit -->
-                    @include('marketing.customers.edit')
-                    {{-- <a class="badge bg-warning me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Edit"
-                        href="{{ route('customers.edit', $customer->id) }}"><i class="ti ti-edit"></i>
-                    </a> --}}
-                    <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" class="confirmation-form">
-                        @method('delete')
-                        @csrf
-                        <a type="button" class="badge bg-danger delete-button" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Delete"><i class="ti ti-trash"></i></a>
-                    </form>
-                    @endif
-                </div>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach ($customers as $customer)
+            <tr>
+                {{-- <td>{{ (($customers->currentPage() * 10) - 10) + $loop->iteration  }}</td> --}}
+                <td><b data-bs-toggle="popover" title="{{ $customer->NamaLembaga }}" data-content="{{ $customer->AlamatLembaga }}">{{ $customer->NamaLembaga }}</b></td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img class="avatar-60 rounded" src="{{ $customer->photo ? asset('storage/customers/'.$customer->photo) : asset('assets/images/user/1.png') }}">
+                        <b class="ml-3">{{ $customer->NamaCustomer }}</b>
+                    </div>
+                </td>
+                <td>{{ $customer->Jabatan }}</td>
+                <td>
+                    <span class="badge {{ strpos($customer->Potensi, 'Tinggi') !== false ? 'bg-success' : (strpos($customer->Potensi, 'Sedang') !== false ? 'bg-warning' : 
+                        (strpos($customer->Potensi, 'Rendah') !== false ? 'bg-danger' : '-')) }}">
+                        {{ $customer->Potensi }}
+                    </span>
+                </td>
+                @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
+                <td>{{ $customer->employee->name }}</td>
+                @endif
+                <td width="200px">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <a class="badge bg-primary me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail"
+                                href="{{ route('customers.show', $customer->id) }}"><i class="ti ti-eye"></i>
+                        </a>
+                        @if (auth()->user()->hasAnyRole('Super Admin', 'Manajer Marketing', 'Admin'))
+                        <a href="#" class="badge bg-warning" data-bs-toggle="modal" data-bs-target="#editCustomer{{ $customer->id }}"><i class="ti ti-edit"></i></a>
+                        <!-- Edit -->
+                        @include('marketing.customers.edit')
+                        <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" class="confirmation-form">
+                            @method('delete')
+                            @csrf
+                            <button type="button" class="badge bg-danger delete-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="ti ti-trash"></i></button>
+                        </form>
+                        @endif
+                    </div>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 {{-- {{ $customers->links() }} --}}
 
 @endsection

@@ -111,7 +111,7 @@
                             <td>{{ $loop->iteration  }}</td>
                             <td>
                                 <a class="badge badge-primary" href="{{ route('so.orderDetails', $salesorder->id) }}" 
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $salesorder->invoice_no }}
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail">{{ $salesorder->invoice_no }}
                                 </a>
                             </td>
                             <td>
@@ -130,13 +130,13 @@
                             <td class="text-end"><span class="badge bg-primary">Rp {{ number_format($salesorder->pay) }}</span></td>
                             <td>
                                 @if ($salesorder->payment_status === 'Belum dibayar')
-                                    <a href="{{ route('collection.unpaid')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Buka Halaman Collection Belum dibayar"
+                                    <a href="{{ route('collection.unpaid')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Buka Halaman Collection Belum dibayar"
                                     class="badge bg-danger">{{ $salesorder->payment_status }}</a>
                                 @elseif ($salesorder->payment_status === 'Belum Lunas')
-                                    <a href="{{ route('collection.onProgress')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Buka Halaman Collection Belum Lunas"
+                                    <a href="{{ route('collection.onProgress')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Buka Halaman Collection Belum Lunas"
                                     class="badge bg-warning">{{ $salesorder->payment_status }}</a>
                                 @else
-                                    <a href="{{ route('collection.paid')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Buka Halaman Collection Lunas"
+                                    <a href="{{ route('collection.paid')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Buka Halaman Collection Lunas"
                                     class="badge bg-success">{{ $salesorder->payment_status }}</a>
                                 @endif
                             </td>

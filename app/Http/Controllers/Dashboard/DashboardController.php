@@ -23,6 +23,8 @@ class DashboardController extends Controller
             });
         } elseif ($currentUser->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin'])) { 
                 $ordersQuery;
+        } else if ($currentUser->hasAnyRole(['Admin Gudang'])) { 
+            $ordersQuery;
         } else {
             abort(403, 'Unauthorized action.');
         }

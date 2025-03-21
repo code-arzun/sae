@@ -80,10 +80,10 @@
                                     @method('delete')
                                     @csrf
                                     <div class="d-flex align-items-center list-action">
-                                        <a class="btn btn-success me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Edit"
+                                        <a class="btn btn-success me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
                                             href="{{ route('rolePermission.edit', $role->id) }}"><i class="ri-pencil-line me-0"></i>
                                         </a>
-                                        <button type="submit" class="btn btn-warning me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line me-0"></i></button>
+                                        <button type="submit" class="btn btn-warning me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="ri-delete-bin-line me-0"></i></button>
                                     </div>
                                 </form>
                             </td>

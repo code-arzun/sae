@@ -1911,7 +1911,7 @@ progress {
   border-color: var(--bs-table-border-color);
 }
 .table > :not(caption) > * > * {
-  padding: 0.9rem 0.75rem;
+  padding: 0.75rem 0.5rem;
   color: var(--bs-table-color-state, var(--bs-table-color-type, var(--bs-table-color)));
   background-color: var(--bs-table-bg);
   border-bottom-width: 1px;
@@ -20727,9 +20727,55 @@ pre[class*=language-] > code {
 .table.table-align-center th {
   vertical-align: middle;
 }
+
 .table thead th {
-  padding: 0.9rem 0.75rem;
+  padding: 0.5rem;
+  color: white;
+  text-align: center;
+  vertical-align: center;
+  background-color: var(--bs-info);
 }
+
+.table tbody td.accounting {
+  text-align: right;
+  font-weight: 700;
+  position: relative;
+}
+.table tbody
+td.accounting.price::before,
+td.accounting.subtotal::before,
+td.accounting.discountRp::before,
+td.accounting.grandtotal::before
+{
+  content: "Rp ";
+}
+.table tbody td.accounting.discountPercent::after {
+  content: " %";
+}
+
+.table tbody td.accounting.price
+{
+  color: var(--bs-secondary);
+}
+.table tbody td.accounting.subtotal
+{
+  color: var(--bs-success);
+}
+.table tbody td.accounting.discountPercent
+{
+  color: var(--bs-warning);
+  width: 80px !important;
+}
+.table tbody td.accounting.discountRp
+{
+  color: var(--bs-danger);
+  width: 120px;
+}
+.table tbody td.accounting.grandtotal
+{
+  color: var(--bs-primary);
+}
+
 .table td,
 .table th {
   vertical-align: middle;

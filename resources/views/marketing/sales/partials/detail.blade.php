@@ -87,7 +87,7 @@
             <div class="col-md-6">
                 <h3>Rekapitulasi Transaksi</h3>
                 <table class="table bg-white">
-                    <thead class="text-center">
+                    <thead>
                         <th>Status</th>
                         <th>Total</th>
                         <th>Subtotal</th>

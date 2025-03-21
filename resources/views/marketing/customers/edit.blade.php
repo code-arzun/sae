@@ -5,7 +5,7 @@
                 <h3 class="modal-title text-white" id="editCustomerLabel">Edit {{ $title }}</h3>
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="ti ti-x"></i></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body bg-gray-100">
                 <form action="{{ route('customers.update', $customer->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('put')
@@ -190,15 +190,10 @@
                             @enderror
                         </div>
                         @endif
-                        <!-- Button -->
                     </div>
                     <!-- <div class="mt-2"> -->
-                        <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button> -->
-                        <!-- <button type="submit" class="btn btn-primary me-2">Simpan</button> -->
-                    <!-- </div> -->
-                <!-- </form> -->
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
                 </form>

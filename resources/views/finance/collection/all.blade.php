@@ -103,7 +103,7 @@
                             <td>{{ $loop->iteration  }}</td>
                             <td>
                                 <a class="badge badge-primary" href="{{ route('so.orderDetails', $salesorder->id) }}" 
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $salesorder->invoice_no }}
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail">{{ $salesorder->invoice_no }}
                                 </a>
                             </td>
                             <td>

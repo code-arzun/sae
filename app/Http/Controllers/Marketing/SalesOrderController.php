@@ -283,10 +283,14 @@ class SalesOrderController extends Controller
             }
 
             // Update status order menjadi 'Disetujui'
-            Order::findOrFail($order_id)->update(['order_status' => 'Disetujui']);
+            Order::findOrFail($order_id)->update([
+                'order_status' => 'Disetujui',
+                // Timestamp
+                // 'confirmed_at' => Carbon::now(),
+            ]);
 
             // Redirect dengan pesan sukses
-            return back()->with('success', 'Sales Order disetujui. Silakan cek halaman SO disetujui');
+            return back()->with('success', 'Status Sales Order berhasil diperbarui menjadi disetujui.');
         }
 
         // Tolak
@@ -331,7 +335,6 @@ class SalesOrderController extends Controller
     //
 
     // Root controller view all, proposed, approved, sent, delivered page
-    // protected function getOrdersView($view, $statusFilter)
     public function index()
     {
         $row = (int) request('row', 10000);
@@ -344,7 +347,7 @@ class SalesOrderController extends Controller
         $ordersQuery = Order::query();
         $collections = Collection::query();
 
-        if ($user->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin'])) {
+        if ($user->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang'])) {
             if ($statusFilter) {
                 $ordersQuery->where('order_status', 'like', $statusFilter);
             }
@@ -378,69 +381,14 @@ class SalesOrderController extends Controller
         // Retrieve distinct sales employees for dropdown
         $sales = Customer::select('employee_id')->distinct()->get();
 
-        // return view("marketing.salesorder.partials.$view", [
         return view("marketing.salesorder.index", [
             'orders' => $orders,
             'sales' => $sales,
             'orderStatus' => $orderStatus,
             'collections' => $collections,
             'title' => 'Data Sales Order',
-            // compact('orders', 'sales', 'orderStatus', 'collections')
         ]);
     }
-
-        // // Tampilkan Semua Sales Order
-        // public function all() 
-        // {
-        //     return $this->getOrdersView('all', null);
-        // }
-
-        // // Tampilkan Sales Order Diajukan
-        // public function proposed()
-        // {
-        //     return $this->getOrdersView('proposed', '%Menunggu Persetujuan%');
-        // }
-
-        // // Tampilkan Sales Order disetujui
-        // public function approved()
-        // {
-        //     return $this->getOrdersView('approved', '%Disetujui%');
-        // }
-
-        // /// Tampilkan Sales Order dalam Pengiriman
-        // public function sent()
-        // {
-        //     return $this->getOrdersView('sent', '%Pengiriman ke-%');
-        // }
-
-        // // Tampilkan Sales Order Terkirim
-        // public function delivered()
-        // {
-        //     return $this->getOrdersView('delivered', '%Terkirim%');
-        // }
-
-        // // Tampilkan Sales Order ditolak
-        // public function declined()
-        // {
-        //     return $this->getOrdersView('declined', '%Ditolak%');
-        // }
-
-        // // Tampilkan Sales Order dibatalkan
-        // public function cancelled()
-        // {
-        //     return $this->getOrdersView('cancelled', '%Dibatalkan%');
-        // }
-
-        //     // Tampilkan Semua Sales Order
-        //     public function allCollection() 
-        //     {
-        //     //  return $this->getOrdersView('all', null);
-        //         return view("finance.collection.all", [
-        //         'orders' => $orders, // Send orders variable to view
-        //         'sales' => $sales, // Pass sales employees for dropdown
-        //     ]);
-        //     }
-    //
 
     // Order Detail
     public function orderDetails(Int $order_id) 
@@ -462,14 +410,16 @@ class SalesOrderController extends Controller
         $collections = Collection::where('order_id', $order_id)
                         ->orderBy('id', 'asc')->get();
 
-        // return view('marketing.salesorder.details', [
-        //     'customer' => $customer,
-        //     'order' => $order,
-        //     'orderDetails' => $orderDetails,
-        //     'deliveries' => $deliveries,
-        //     'deliveryDetails' => $deliveryDetails,
-        // ]);
-        return view( 'marketing.salesorder.details', compact('customer','order','orderDetails','deliveries','deliveryDetails', 'collections'));
+        return view('marketing.salesorder.details', [
+            'customer' => $customer,
+            'order' => $order,
+            'orderDetails' => $orderDetails,
+            'deliveries' => $deliveries,
+            'deliveryDetails' => $deliveryDetails,
+            'collections' => $collections,
+            'title' => 'Detail Sales Order',
+        ]);
+        // return view( 'marketing.salesorder.details', compact('customer','order','orderDetails','deliveries','deliveryDetails', 'collections'));
     }
 
 

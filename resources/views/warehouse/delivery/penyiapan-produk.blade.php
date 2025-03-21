@@ -84,14 +84,14 @@
                             </td>
                             <td>
                                 <a class="badge badge-primary" href="{{ route('so.orderDetails', $prepare->id) }}" 
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Lihat Detail">{{ $prepare->invoice_no }}</a>
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail">{{ $prepare->invoice_no }}</a>
                             </td>
                             <td><b>{{ $prepare->customer->NamaLembaga }}</b> <br>
                                 {{ $prepare->customer->NamaCustomer }}
                             </td>
                             <td>{{ $prepare->customer->employee->name }}</td>
                             <td>
-                                <a class="btn btn-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Cetak"
+                                <a class="btn btn-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak"
                                         href="{{ route('do.printPenyiapan', $prepare->id) }}">
                                         <i class="fa fa-print me-0" aria-hidden="true"></i>
                                 </a>

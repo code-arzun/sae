@@ -14,12 +14,12 @@ class Order extends Model
         'customer_id',
         'order_date',
         'order_status',
+        // 'confirmed_at',
         'total_products',
         'sub_total',
         // 'discount',
         'discount_percent',
         'discount_rp',
-        // 'vat',
         'invoice_no',
         'grandtotal',
         'payment_method',
@@ -34,12 +34,12 @@ class Order extends Model
         'customer_id',
         'order_date',
         'order_status',
+        // 'confirmed_at',
         'total_products',
         'sub_total',
         // 'discount',
         'discount_percent',
         'discount_rp',
-        // 'vat',
         'invoice_no',
         'grandtotal',
         'payment_method',
@@ -58,6 +58,11 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
         // return $this->belongsTo(Customer::class);
+    }
+
+    public function deliveries()
+    {
+        return $this->hasMany(Delivery::class, 'order_id', 'id');
     }
 
     public function collection()

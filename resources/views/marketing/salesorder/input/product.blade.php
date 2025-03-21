@@ -70,12 +70,12 @@
 
 <!-- Daftar Produk -->
 <table class="table bg-white nowrap mt-2">
-    <thead class="bg-info text-center">
+    <thead>
         <tr>
-            <th class="text-white">Nama Produk</th>
-            <th class="text-white" width="150px">Harga</th>
-            <th class="text-white" width="50px">Stok</th>
-            <th class="text-white" width="50px">#</th>
+            <th>Nama Produk</th>
+            <th width="150px">Harga</th>
+            <th width="50px">Stok</th>
+            <th width="50px">#</th>
         </tr>
     </thead>
     <tbody>

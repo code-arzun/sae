@@ -83,6 +83,7 @@ class DeliveryController extends Controller
             'productItem' => Cart::content(),
             'products' => $products,
             'categories' => $categories,
+            'title' => 'Input Delivery Order'
         ]);
     }
 
@@ -311,7 +312,7 @@ class DeliveryController extends Controller
             return back()->with('success', 'Status pesanan diperbarui menjadi Terkirim!');
         }
     //
-    private function getDeliveries($view, $status = null)
+    public function index()
     {
         $row = (int) request('row', 10000);
 
@@ -322,6 +323,7 @@ class DeliveryController extends Controller
         $statusFilter = request('delivery_status', null);
 
         // Query dasar
+        $ordersQuery = Order::whereIn('order_status', ['Disetujui', 'Selesai']);
         $query = Delivery::with('salesorder');
 
         // Filter berdasarkan status jika diberikan
@@ -330,7 +332,7 @@ class DeliveryController extends Controller
         }
 
         // Filter berdasarkan peran user
-        if ($user->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin'])) {
+        if ($user->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang'])) {
             $deliveries = $query;
         } elseif ($user->hasRole('Sales')) {
             $deliveries = $query->whereHas('salesorder.customer', function ($query) use ($user) {
@@ -361,50 +363,33 @@ class DeliveryController extends Controller
         }
 
         // Sortable dan filter tambahan
+        $orders = $ordersQuery->sortable()->filter(request(['search']))->orderBy('id', 'desc')->paginate($row);
         $deliveries = $deliveries->sortable()->filter(request(['search']))->orderBy('id', 'desc')->paginate($row);
 
         $sales = Customer::select('employee_id')->distinct()->get();
 
         // return $deliveries;
-        return view("warehouse.delivery.$view", [
-            'deliveries' => $deliveries, // Send orders variable to view
-            'sales' => $sales, // Pass sales employees for dropdown
+        return view("warehouse.delivery.index", [
+            'orders' => $orders,
+            'deliveries' => $deliveries,
+            'sales' => $sales,
             'deliveryStatus' => $deliveryStatus,
+            'title' => 'Data Delivery Order',
         ]);
     }
-        // View
-            public function all()
-            {
-                return $this->getDeliveries('all', null);
-            }
 
-            public function ready()
-            {
-                return $this->getDeliveries('ready', '%Siap dikirim%');
-            }
-
-            public function sent()
-            {
-                return $this->getDeliveries('sent', '%Dalam Pengiriman%');
-            }
-
-            public function delivered()
-            {
-                return $this->getDeliveries('delivered', '%Terkirim%');
-            }
-        // 
-    
     public function deliveryDetails(Int $delivery_id)
     {
-        $deliveries = Delivery::where('id', $delivery_id)->first();
+        $delivery = Delivery::where('id', $delivery_id)->first();
         $deliveryDetails = DeliveryDetails::with('product')
                         ->where('delivery_id', $delivery_id)
                         ->orderBy('id', 'ASC')
                         ->get();
 
-        return view('warehouse.delivery.details-delivery', [
-            'deliveries' => $deliveries,
+        return view('warehouse.delivery.details', [
+            'delivery' => $delivery,
             'deliveryDetails' => $deliveryDetails,
+            'title' => 'Detail Delivery Order',
         ]);
     }
 

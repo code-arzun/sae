@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style-preset.css') }}" >
     <!-- Chart Js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
     
     <!-- Custom page-specific styles -->
     @yield('specificpagestyles')
@@ -38,6 +39,10 @@
           <div class="loader-fill"></div>
         </div>
     </div>
+
+    <!-- Session -->
+    @include('layout.partials.session')
+    
     <!-- Wrapper Start -->
       <!-- Sidebar -->
       @include('layout.partials.sidebar')
@@ -76,6 +81,9 @@
     <script src="{{ asset('assets/js/fonts/custom-font.js') }}"></script>
     <script src="{{ asset('assets/js/pcoded.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{{ asset('assets/js/plugins/jquery.dataTables.min.js') }}"></script>

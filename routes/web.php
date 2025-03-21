@@ -258,7 +258,7 @@ use App\Http\Controllers\Publishing\WriterCategoryController;
 
             // Delivery Order
             Route::middleware(['permission:do'])->group(function () {
-                Route::get('all', [DeliveryController::class, 'all'])->name('do.all');
+                Route::get('', [DeliveryController::class, 'index'])->name('do.index');
                 Route::get('ready', [DeliveryController::class, 'ready'])->name('do.ready');
                 Route::get('sent', [DeliveryController::class, 'sent'])->name('do.sent');
                 Route::get('delivered', [DeliveryController::class, 'delivered'])->name('do.delivered');

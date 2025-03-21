@@ -72,13 +72,13 @@
                             <td>{{ $category->productunit->name }}</td>
                             <td>
                                 <div class="d-flex align-items-center list-action">
-                                    <a class="badge bg-success me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Edit"
+                                    <a class="badge bg-success me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
                                         href="{{ route('productcategory.edit', $category->id) }}"><i class="ri-pencil-line me-0"></i>
                                     </a>
                                     <form action="{{ route('productcategory.destroy', $category->id) }}" method="POST">
                                         @method('delete')
                                         @csrf
-                                        <button type="submit" class="badge bg-warning me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line me-0"></i></button>
+                                        <button type="submit" class="badge bg-warning me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="ri-delete-bin-line me-0"></i></button>
                                     </form>
                                 </div>
                             </td>

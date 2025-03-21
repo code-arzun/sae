@@ -35,7 +35,6 @@ class DeliveryController extends Controller
         $mapel = request('mapel', null);
 
         $ordersQuery = Order::query()->where('order_status', 'Disetujui');
-        // $productsQuery = Product::query();
         $productsQuery = Product::query()->whereHas('orderDetails', function($query) use ($ordersQuery) {
             $query->whereIn('order_id', $ordersQuery->pluck('id'));
         });

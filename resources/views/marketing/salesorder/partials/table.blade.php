@@ -77,6 +77,7 @@
         <tr>
             <!-- Partial Head -->
             @include('layout.table.so-head')
+            <th class="bg-primary text-white"><i class="fas fa-cog me-3"></i>Status SO</th>
             <th class="bg-warning">
                 <a href="{{ route('do.index') }}" class="text-white">
                     <i class="fas fa-truck me-3"></i>Delivery Order

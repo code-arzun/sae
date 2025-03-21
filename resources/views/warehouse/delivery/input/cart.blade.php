@@ -29,7 +29,7 @@
                     <div class="input-group">
                         <input type="number" class="form-control text-center" style="width:100px" name="qty" required
                             value="{{ old('qty', $item->qty) }}" 
-                            onblur="validateQuantity(this)">
+                            onblur="this.form.submit()">
                     </div>
                 </form>
             </td>
@@ -93,7 +93,7 @@
             </div>
             @enderror
         </div>
-        <div class="col-md-12 mt-3">
+        <div class="col-md-12 mt-3">-
             <button type="submit" class="btn btn-success w-100">Buat Delivery Order</button>
         </div>
     </div>

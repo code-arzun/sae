@@ -8,4 +8,4 @@
 <th>Subtotal</th>
 <th colspan="2">Diskon</th>
 <th>Grand Total</th>
-<th class="bg-primary text-white"><i class="fas fa-cog me-3"></i>Status SO</th>
+{{-- <th class="bg-primary text-white"><i class="fas fa-cog me-3"></i>Status SO</th> --}}

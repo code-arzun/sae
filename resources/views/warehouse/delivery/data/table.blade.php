@@ -50,32 +50,38 @@
     </thead>
     <tbody>
         @foreach ($orders as $order)
-        @if($order->deliveries->isNotEmpty())
-            <tr data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" role="button" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">
-        @else
-            </tr>
-        @endif
+        <tr>
             <!-- Partial Data -->
             @include('layout.table.so-data')
-            @if ($order->order_status === 'Selesai' && $order->shipping_status === 'Terkirim' && $order->payment_status === 'Lunas')
-                <td colspan="3">
-                    <span class="badge bg-success w-100">Transaksi Selesai</span>
+            @if ($order->shipping_status === 'Terkirim')
+                <td colspan="2">
+                    <span class="badge bg-success w-100">{{ $order->shipping_status }}</span>
                 </td>
             @else
-                <!-- Status SO -->
-                <td class="text-center">
-                    @if ((auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']) && $order->order_status === 'Disetujui' && $order->shipping_status === 'Terkirim' && $order->payment_status === 'Lunas'))
-                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Perbarui status menjadi SELESAI">
-                            <a href="#" class="badge bg-info w-100" data-bs-toggle="modal" data-bs-target="#finished{{ $order->id }}" data-id="{{ $order->id }}">Disetujui</a>
-                        </span>
-                        <!-- modal -->
-                        @include('marketing.salesorder.data.status-finished')
-                    @else 
-                        <span data-bs-toggle="tooltip" class="badge bg-primary w-100">{{ $order->order_status }}</span>
-                    @endif
-                </td>
                 <!-- Status DO -->
                 <td class="text-center">
+                    @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
+                    {{-- @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']) && $order->order_status === 'Disetujui' && $order->shipping_status === 'Belum ada pengiriman') --}}
+                    <div class="d-flex justify-content-between">
+                        <div>
+
+                            <a class="badge bg-purple-300 me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen Penyiapan Produk" data-original-title="Cetak Dokumen Penyiapan Produk"
+                                href="{{ route('do.printPenyiapan', $order->id) }}">
+                                <i class="fa fa-print me-0" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        @if ($order->shipping_status === 'Terkirim')
+                            <a class="badge bg-success w-100" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" role="button" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">{{ $order->shipping_status }}</a>
+                        @elseif ($order->shipping_status === 'Belum ada pengiriman')
+                        <!-- Tambah tombol membuat DO sesuai SO secara langsung -->
+                            <a class="badge bg-danger w-100" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" role="button" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">{{ $order->shipping_status }}</a>
+                        @else
+
+                        @endif
+                    @endif
+
+                </td>
+                {{-- <td class="text-center">
                     @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']) && $order->order_status === 'Disetujui' && $order->shipping_status === 'Pengiriman ke-1')
                         <div class="d-flex justify-content-between">
                             <a class="badge bg-purple-300" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen Penyiapan Produk" data-original-title="Cetak Dokumen Penyiapan Produk"
@@ -105,12 +111,12 @@
                     @endif
                             @if ($order->shipping_status === 'Terkirim' && $order->order_status === 'Selesai')
                             @elseif ($order->shipping_status === 'Terkirim')
-                                <span data-bs-toggle="tooltip" class="badge bg-success w-100">{{ $order->shipping_status }}</span>
+                                <a class="badge bg-success w-100" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" role="button" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">{{ $order->shipping_status }}</a>
                             @else
-                                <span data-bs-toggle="tooltip" class="badge bg-danger w-100">{{ $order->shipping_status }}</span>
+                                <a class="badge bg-danger w-100" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" role="button" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">{{ $order->shipping_status }}</a>
                             @endif
                     </div>
-                </td>
+                </td> --}}
                 <td>
                     @if($order->deliveries->isNotEmpty())
                         <a class="badge bg-info" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" role="button" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}"><i class="ti ti-eye"></i></a>

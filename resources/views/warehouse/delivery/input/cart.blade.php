@@ -29,7 +29,9 @@
                     <div class="input-group">
                         <input type="number" class="form-control text-center" style="width:100px" name="qty" required
                             value="{{ old('qty', $item->qty) }}" 
-                            onblur="validateQuantity(this)">
+                            {{-- onblur="validateQuantity(this)" --}}
+                            onblur="this.form.submit()"
+                            >
                     </div>
                 </form>
             </td>

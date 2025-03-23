@@ -2,7 +2,7 @@
     <form action="#" method="get">
         <div class="d-flex flex-wrap align-items-center row">
             <!-- Filter berdasarkan SO -->
-                <div class="col-sm-12 mb-3">
+                {{-- <div class="col-sm-12 mb-3">
                     <select class="form-control order_id" name="order_id"
                         data-bs-toggle="tooltip" data-bs-placement="top" title="Filter berdasarkan SO" onchange="this.form.submit()">
                         <option selected="" disabled="">-- Pilih SO --</option>
@@ -10,11 +10,11 @@
                         @foreach ($salesorders as $salesorder)
                             <option value="{{ $salesorder->id }}" {{ request('order_id') == $salesorder->id ? 'selected' : '' }}>
                                 {{ $salesorder->invoice_no }} | {{ $salesorder->customer->NamaLembaga }} - 
-                                {{ $salesorder->customer->NamaCustomer }} | Rp {{ $salesorder->sub_total }} | {{ $salesorder->customer->employee->name }}
+                                {{ $salesorder->customer->NamaCustomer }} | Rp {{ number_format($salesorder->sub_total) }} | {{ $salesorder->customer->employee->name }}
                             </option>
                         @endforeach
                     </select>
-                </div>
+                </div> --}}
             <!-- Jenjang -->
                 <div class="col-sm-3 mb-3">
                     <select name="jenjang" id="jenjang" class="form-control"

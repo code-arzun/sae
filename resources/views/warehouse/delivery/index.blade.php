@@ -1,7 +1,6 @@
 @extends('layout.main')
 
 @section('container')
-<div class="container-fluid">
 
     <div class="d-flex justify-content-between mb-3">
         <div>
@@ -13,8 +12,8 @@
             </nav>
         </div>
         <div>
-            <a href="{{ route('input.do') }}" class="btn btn-primary">Buat DO</a>
             @if (auth()->user()->hasAnyRole('Super Admin', 'Admin', 'Admin Gudang', 'Manajer Marketing'))
+            <a href="{{ route('input.do') }}" class="btn btn-primary">Buat DO</a>
             <a href="{{ route('do.exportData') }}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Download Excel">
                 <i class="fa fa-file-excel me-2"></i>
                 Download Excel
@@ -102,7 +101,5 @@
             @include('warehouse.delivery.data.recap')
         </div>
     </div>
-    
-</div>
 
 @endsection

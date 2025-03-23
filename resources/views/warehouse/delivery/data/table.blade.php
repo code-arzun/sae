@@ -40,89 +40,81 @@
         <tr>
             <!-- Partial Head -->
             @include('layout.table.so-head')
-            <th class="bg-warning">
-                <a href="{{ route('do.index') }}" class="text-white">
-                    <i class="fas fa-truck me-3"></i>Delivery Order
-                </a>
-            </th>
-            <th>#</th>
+            @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
+            <th width="50px"><i class="ti ti-file-alert"></i></th>
+            @endif
+            <th width="200px"><i class="fas fa-truck me-3"></i>Status Pengiriman</th>
+            {{-- <th><i class="fas fa-truck me-3"></i>Jumlah Pengiriman</th> --}}
+            <th><i class="fas fa-truck me-3"></i>Riwayat Pengiriman</th>
+            @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Admin Gudang']))
+            <th width="50px">#</th>
+            @endif
         </tr>
     </thead>
     <tbody>
         @foreach ($orders as $order)
-        @if($order->deliveries->isNotEmpty())
-            <tr data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" role="button" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">
-        @else
-            </tr>
-        @endif
+        <tr>
             <!-- Partial Data -->
             @include('layout.table.so-data')
-            @if ($order->order_status === 'Selesai' && $order->shipping_status === 'Terkirim' && $order->payment_status === 'Lunas')
-                <td colspan="3">
-                    <span class="badge bg-success w-100">Transaksi Selesai</span>
-                </td>
-            @else
-                <!-- Status SO -->
+            @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
                 <td class="text-center">
-                    @if ((auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']) && $order->order_status === 'Disetujui' && $order->shipping_status === 'Terkirim' && $order->payment_status === 'Lunas'))
-                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Perbarui status menjadi SELESAI">
-                            <a href="#" class="badge bg-info w-100" data-bs-toggle="modal" data-bs-target="#finished{{ $order->id }}" data-id="{{ $order->id }}">Disetujui</a>
-                        </span>
-                        <!-- modal -->
-                        @include('marketing.salesorder.data.status-finished')
-                    @else 
-                        <span data-bs-toggle="tooltip" class="badge bg-primary w-100">{{ $order->order_status }}</span>
-                    @endif
-                </td>
-                <!-- Status DO -->
-                <td class="text-center">
-                    @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']) && $order->order_status === 'Disetujui' && $order->shipping_status === 'Pengiriman ke-1')
-                        <div class="d-flex justify-content-between">
-                            <a class="badge bg-purple-300" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen Penyiapan Produk" data-original-title="Cetak Dokumen Penyiapan Produk"
-                                href="{{ route('do.printPenyiapan', $order->id) }}">
-                                <i class="fa fa-print me-0" aria-hidden="true"></i>
-                            </a>
-                            <form action="{{ route('so.shippingStatus') }}" method="POST" class="confirmation-form">
-                                @method('PUT')
-                                @csrf
-                                <input type="hidden" name="id" value="{{ $order->id }}">
-                                <input type="hidden" name="shipping_status" id="shipping_status_{{ $order->id }}">
-                            
-                                <div class="btn-group">
-                                    <a class="text text-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa-solid fa-truck" data-bs-toggle="tooltip" data-bs-placement="top" title="Perbarui status pengiriman"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-left">
-                                        <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-1')">Pengiriman ke-1</button>
-                                        <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-2')">Pengiriman ke-2</button>
-                                        <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-3')">Pengiriman ke-3</button>
-                                        <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-4')">Pengiriman ke-4</button>
-                                        <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-5')">Pengiriman ke-5</button>
-                                        <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Terkirim')">Terkirim</button>
-                                    </div>
-                                </div>
-                            </form>
-                    @endif
-                            @if ($order->shipping_status === 'Terkirim' && $order->order_status === 'Selesai')
-                            @elseif ($order->shipping_status === 'Terkirim')
-                                <span data-bs-toggle="tooltip" class="badge bg-success w-100">{{ $order->shipping_status }}</span>
-                            @else
-                                <span data-bs-toggle="tooltip" class="badge bg-danger w-100">{{ $order->shipping_status }}</span>
-                            @endif
+                    <div class="d-flex justify-content-center">
+                        <a class="badge bg-purple-300 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen Penyiapan Produk" data-original-title="Cetak Dokumen Penyiapan Produk"
+                            href="{{ route('do.printPenyiapan', $order->id) }}">
+                            <i class="fa fa-print me-0" aria-hidden="true"></i>
+                        </a>
+                        <!-- Shipping Update -->
+                        @include('layout.partials.shipping-update')
                     </div>
                 </td>
+            @endif
+            @if ($order->shipping_status === 'Belum ada pengiriman')
+                <td colspan="2"><a class="badge bg-danger w-100" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">{{ $order->shipping_status }}</a></td>
+                @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Admin Gudang']))
                 <td>
-                    @if($order->deliveries->isNotEmpty())
-                        <a class="badge bg-info" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" role="button" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}"><i class="ti ti-eye"></i></a>
+                    <a href="{{ route('input.do', ['order_id' => $order->id]) }}" class="badge bg-purple-500" data-bs-toggle="tooltip" data-bs-placement="top" title="Buat DO">
+                        <i class="ti ti-plus"></i>
+                    </a>
+                </td>
+                @endif
+            @else
+                <td>
+                    @if ($order->shipping_status === 'Terkirim')
+                        <a class="badge bg-success w-100" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">{{ $order->shipping_status }}</a>
+                    @else
+                        <a class="badge bg-info w-100" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">{{ $order->shipping_status }}</a>    
                     @endif
                 </td>
-            @endif
-            @if($order->deliveries->isNotEmpty())
-            <tr>
-                <td class="collapse" colspan="12" id="detailsDO{{ $order->id }}">
-                    @include('warehouse.delivery.partials.details', ['deliveries' => $order->deliveries])
+                <td>
+                    @foreach($order->deliveries as $delivery)
+                    <a class="badge 
+                        {{ strpos($delivery->invoice_no, '-RO') !== false ? 'bg-primary' : 
+                           (strpos($delivery->invoice_no, '-HO') !== false ? 'bg-danger' : 
+                           (strpos($delivery->invoice_no, '-RS') !== false ? 'bg-success' : 
+                           (strpos($delivery->invoice_no, '-HS') !== false ? 'bg-warning' : 'bg-secondary'))) }}" 
+                       href="{{ route('do.deliveryDetails', $delivery->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" 
+                       title="Lihat Detail Pengiriman">
+                        {{ $delivery->invoice_no }}
+                    </a>
+                @endforeach
                 </td>
-            </tr>
+                @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Admin Gudang']))
+                <td>
+                    @if ($order->shipping_status === 'Terkirim')
+                    @else
+                        <a href="{{ route('input.do', ['order_id' => $order->id]) }}" class="badge bg-purple-500" data-bs-toggle="tooltip" data-bs-placement="top" title="Buat DO">
+                            <i class="ti ti-plus"></i>
+                        </a>
+                    @endif
+                </td>
+                @endif
+                @if($order->deliveries->isNotEmpty())
+                    <tr>
+                        <td class="collapse" colspan="14" id="detailsDO{{ $order->id }}">
+                            @include('warehouse.delivery.partials.details', ['deliveries' => $order->deliveries])
+                        </td>
+                    </tr>
+                @endif
             @endif
         </tr>
         @endforeach

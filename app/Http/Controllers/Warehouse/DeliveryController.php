@@ -228,7 +228,8 @@ class DeliveryController extends Controller
         Cart::destroy();
         
         // Redirect with success message
-        return redirect()->route('input.do')->with('created', 'Delivery Order berhasil dibuat!');
+        return redirect()->route('do.index')->with('created', 'Delivery Order berhasil dibuat!');
+        // return redirect()->route('input.do')->with('created', 'Delivery Order berhasil dibuat!');
     }
 
     // Store
@@ -323,8 +324,9 @@ class DeliveryController extends Controller
         $statusFilter = request('delivery_status', null);
 
         // Query dasar
-        $ordersQuery = Order::whereIn('order_status', ['Disetujui', 'Selesai']);
-        $query = Delivery::with('salesorder');
+        $ordersQuery = Order::whereIn('order_status', ['Disetujui', 'Selesai'])->with('deliveries');
+        // $query = Delivery::with('salesorder');
+        $query = Order::with('deliveries');
 
         // Filter berdasarkan status jika diberikan
         if (!empty($statusFilter)) {
@@ -335,8 +337,9 @@ class DeliveryController extends Controller
         if ($user->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang'])) {
             $deliveries = $query;
         } elseif ($user->hasRole('Sales')) {
-            $deliveries = $query->whereHas('salesorder.customer', function ($query) use ($user) {
-                $query->where('employee_id', $user->employee_id);
+            // $deliveries = $query->whereHas('salesorder.customer', function ($query) use ($user) {
+            $deliveries = $ordersQuery->whereHas('customer', function ($ordersQuery) use ($user) {
+                $ordersQuery->where('employee_id', $user->employee_id);
             });
         } else {
             abort(403, 'Unauthorized action.');

@@ -1,4 +1,5 @@
-<table class="table table-light">
+<h4>Riwayat Pengiriman</h4>
+<table class="table bg-gray-100">
     <thead class="bg-danger">
         <th>Pengiriman ke-</th>
         <th>Tgl. DO</th>
@@ -23,7 +24,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <a class="badge {{ strpos($delivery->invoice_no, '-RO') !== false ? 'bg-primary' : (strpos($delivery->invoice_no, '-HO') !== false ? 'bg-danger' : 
                             (strpos($delivery->invoice_no, '-RS') !== false ? 'bg-success' : (strpos($delivery->invoice_no, '-HS') !== false ? 'bg-warning' : 'bg-secondary'))) }}" 
-                            href="{{ route('do.deliveryDetails', $delivery->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail Pesanan">
+                            href="{{ route('do.deliveryDetails', $delivery->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail Pengiriman">
                             {{ $delivery->invoice_no }}
                         </a>
                         @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
@@ -35,7 +36,7 @@
                 @else
                 <a class="badge {{ strpos($delivery->invoice_no, '-RO') !== false ? 'bg-primary' : (strpos($delivery->invoice_no, '-HO') !== false ? 'bg-danger' : 
                     (strpos($delivery->invoice_no, '-RS') !== false ? 'bg-success' : (strpos($delivery->invoice_no, '-HS') !== false ? 'bg-warning' : 'bg-secondary'))) }}" 
-                    href="{{ route('do.deliveryDetails', $delivery->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail Pesanan">
+                    href="{{ route('do.deliveryDetails', $delivery->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail Pengiriman">
                     {{ $delivery->invoice_no }}
                 </a>
                 @endif
@@ -47,10 +48,10 @@
             <td class="text-center">
                 @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
                     @if ($delivery->delivery_status === 'Siap dikirim')
-                        <a href="#" class="badge bg-danger w-100" data-bs-toggle="modal" data-bs-target="#sent{{ $delivery->id }}" data-id="{{ $delivery->id }}">{{ $delivery->delivery_status }}</a>
+                        <a href="#" class="badge bg-danger w-100" data-bs-toggle="modal" data-bs-target="#sent{{ $delivery->id }}">{{ $delivery->delivery_status }}</a>
                         @include('warehouse.delivery.partials.modal-sent')
                     @elseif ($delivery->delivery_status === 'Dalam Pengiriman')
-                        <a href="#" class="badge bg-warning w-100" data-bs-toggle="modal" data-bs-target="#delivered{{ $delivery->id }}" data-id="{{ $delivery->id }}">{{ $delivery->delivery_status }}</a>
+                        <a href="#" class="badge bg-warning w-100" data-bs-toggle="modal" data-bs-target="#delivered{{ $delivery->id }}">{{ $delivery->delivery_status }}</a>
                         @include('warehouse.delivery.partials.modal-delivered')
                     @else
                         <span class="badge bg-success w-100">{{ $delivery->delivery_status }}</span>
@@ -60,14 +61,16 @@
                         <span class="badge bg-danger w-100">{{ $delivery->delivery_status }}</span>
                     @elseif ($delivery->delivery_status === 'Dalam Pengiriman')
                         <span class="badge bg-warning w-100">{{ $delivery->delivery_status }}</span>
+                    @else
+                        <span class="badge bg-success w-100">{{ $delivery->delivery_status }}</span>
                     @endif
                 @endif
             </td>
         </tr>
         @endforeach
     </tbody>
-    <tfoot class="bg-secondary">
-        <th class="text-start">Total Pengiriman</th>
+    <tfoot class="bg-teal-100">
+        <th class="text-end">Total Pengiriman</th>
         <th class="text-start"><span class="badge bg-success">{{ number_format($order->deliveries->count('sub_total')) }} kali</span></th>
         <th class="text-end">Total Subtotal</th>
         <th class="text-end"><span class="badge bg-success">Rp {{ number_format($order->deliveries->sum('sub_total')) }}</span></th>

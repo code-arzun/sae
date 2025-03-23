@@ -77,6 +77,7 @@
         <tr>
             <!-- Partial Head -->
             @include('layout.table.so-head')
+            <th class="bg-primary text-white"><i class="fas fa-cog me-3"></i>Status SO</th>
             <th class="bg-warning">
                 <a href="{{ route('do.index') }}" class="text-white">
                     <i class="fas fa-truck me-3"></i>Delivery Order
@@ -136,40 +137,18 @@
                 </td>
                 <!-- Status DO -->
                 <td class="text-center">
-                    @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']) && $order->order_status === 'Disetujui' && $order->shipping_status === 'Pengiriman ke-1')
-                        <div class="d-flex justify-content-between">
-                            <a class="badge bg-purple-300" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen Penyiapan Produk" data-original-title="Cetak Dokumen Penyiapan Produk"
-                                href="{{ route('do.printPenyiapan', $order->id) }}">
-                                <i class="fa fa-print me-0" aria-hidden="true"></i>
-                            </a>
-                            <form action="{{ route('so.shippingStatus') }}" method="POST" class="confirmation-form">
-                                @method('PUT')
-                                @csrf
-                                <input type="hidden" name="id" value="{{ $order->id }}">
-                                <input type="hidden" name="shipping_status" id="shipping_status_{{ $order->id }}">
-                            
-                                <div class="btn-group">
-                                    <a class="text text-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa-solid fa-truck" data-bs-toggle="tooltip" data-bs-placement="top" title="Perbarui status pengiriman"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-left">
-                                        <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-1')">Pengiriman ke-1</button>
-                                        <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-2')">Pengiriman ke-2</button>
-                                        <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-3')">Pengiriman ke-3</button>
-                                        <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-4')">Pengiriman ke-4</button>
-                                        <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-5')">Pengiriman ke-5</button>
-                                        <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Terkirim')">Terkirim</button>
-                                    </div>
-                                </div>
-                            </form>
-                    @endif
-                            @if ($order->shipping_status === 'Terkirim' && $order->order_status === 'Selesai')
-                            @elseif ($order->shipping_status === 'Terkirim')
-                                <a class="badge bg-success w-100" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" role="button" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">{{ $order->shipping_status }}</a>
-                                {{-- <span data-bs-toggle="tooltip" class="badge bg-success w-100">{{ $order->shipping_status }}</span> --}}
+                    <div class="d-flex justify-content-between">
+                        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
+                            <!-- Shipping Update -->
+                            @include('layout.partials.shipping-update')
+                        @endif
+                        @if ($order->shipping_status === 'Terkirim')
+                            <a class="badge bg-success w-100" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">{{ $order->shipping_status }}</a>
+                            @elseif ($order->shipping_status === 'Belum ada pengiriman')
+                            <a class="badge bg-danger w-100" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">{{ $order->shipping_status }}</a>    
                             @else
-                                <span data-bs-toggle="tooltip" class="badge bg-danger w-100">{{ $order->shipping_status }}</span>
-                            @endif
+                            <a class="badge bg-info w-100" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">{{ $order->shipping_status }}</a>    
+                        @endif                        
                     </div>
                 </td>
                 <!-- Status Collection -->
@@ -184,7 +163,7 @@
                 </td>
                 @if($order->deliveries->isNotEmpty())
             <tr>
-                <td class="collapse" colspan="10" id="detailsDO{{ $order->id }}">
+                <td class="collapse" colspan="12" id="detailsDO{{ $order->id }}">
                     @include('warehouse.delivery.partials.details', ['deliveries' => $order->deliveries])
                 </td>
             </tr>

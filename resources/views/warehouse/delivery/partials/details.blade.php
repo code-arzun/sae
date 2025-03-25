@@ -22,16 +22,17 @@
             <td class="text-center">
                 @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
                     <div class="d-flex justify-content-between align-items-center">
-                        <a class="badge {{ strpos($delivery->invoice_no, '-RO') !== false ? 'bg-primary' : (strpos($delivery->invoice_no, '-HO') !== false ? 'bg-danger' : 
+                        <a class="badge me-2 {{ strpos($delivery->invoice_no, '-RO') !== false ? 'bg-primary' : (strpos($delivery->invoice_no, '-HO') !== false ? 'bg-danger' : 
                             (strpos($delivery->invoice_no, '-RS') !== false ? 'bg-success' : (strpos($delivery->invoice_no, '-HS') !== false ? 'bg-warning' : 'bg-secondary'))) }}" 
                             href="{{ route('do.deliveryDetails', $delivery->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail Pengiriman">
                             {{ $delivery->invoice_no }}
                         </a>
-                        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
-                            <a href="{{ route('do.invoiceDownload', $delivery->id) }}" class="badge bg-secondary me-2" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Cetak Dokumen DO"><i class="fa fa-print me-0" aria-hidden="true"></i> 
-                            </a>
-                        @endif
+                        <a href="{{ route('do.invoiceDownload', $delivery->id) }}" class="badge bg-secondary me-2" data-bs-toggle="tooltip"
+                            data-bs-placement="top" title="Cetak Dokumen DO"><i class="fa fa-print me-0" aria-hidden="true"></i> 
+                        </a>
+                        <a href="{{ route('do.labelPengiriman', $delivery->id) }}" class="badge bg-purple-500 me-2" data-bs-toggle="tooltip"
+                            data-bs-placement="top" title="Cetak Label Pengiriman"><i class="fa fa-print me-0" aria-hidden="true"></i> 
+                        </a>
                     </div>
                 @else
                 <a class="badge {{ strpos($delivery->invoice_no, '-RO') !== false ? 'bg-primary' : (strpos($delivery->invoice_no, '-HO') !== false ? 'bg-danger' : 

@@ -3,25 +3,26 @@
 namespace App\Http\Controllers\Warehouse;
 
 use Exception;
+use App\Models\Writer;
 use App\Models\Product;
+use App\Models\Publisher;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
-use App\Models\Publisher;
-use App\Models\Writer;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\Redirect;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Table;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class ProductController extends Controller
 {
@@ -37,13 +38,14 @@ class ProductController extends Controller
         $mapel = request('mapel', null);
         
         $user = auth()->user();
+        // $query = Product::query()->orderBy('id', 'desc')->with('category', 'publisher', 'writer');
         $query = Product::query()->orderBy('id', 'desc')->with('category', 'publisher', 'writer');
 
         if ($user->hasAnyRole(['Manajer Publishing', 'Admin Publishing', 'Staf Publishing'])) {
-            $query->where('publisher_id', '1');
-        } elseif ($user->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Sales'])) {
-        } else {
-            abort(403, 'Anda tidak memiliki izin untuk mengakses data ini.');
+                $query->where('publisher_id', '1');
+            } elseif ($user->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Sales'])) {
+            } else {
+                abort(403, 'Anda tidak memiliki izin untuk mengakses data ini.');
         }
         
         if ($categoryFilter)  {
@@ -70,9 +72,12 @@ class ProductController extends Controller
             $query->where('product_name', 'like', "%$mapel%");
         }
 
-        $categories = Product::select('category_id')->distinct()->get();
-        $publishers = Product::select('publisher_id')->distinct()->get();
-        $writers = Product::select('writer_id')->distinct()->get();
+        // $categories = Product::select('category_id')->distinct()->get();
+        $categories = ProductCategory::all();
+        // $publishers = Product::select('publisher_id')->distinct()->get();
+        $publishers = Publisher::all();
+        // $writers = Product::select('writer_id')->distinct()->get();
+        $writers = Writer::all();
 
         return view('warehouse.products.index', [
             'products' => $query->filter(request(['search']))->sortable()
@@ -80,6 +85,7 @@ class ProductController extends Controller
             'categories' => $categories,
             'publishers' => $publishers,
             'writers' => $writers,
+            'title' => 'Data Produk'
         ]);
     }
 
@@ -152,11 +158,22 @@ class ProductController extends Controller
              * Handle upload image with Storage.
              */
             if ($file = $request->file('product_image')) {
-                $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+                // Format nama file: nama-produk-timestamp.extensi
+                $productName = Str::slug($request->product_name); // Membuat slug dari nama produk
+                $timestamp = time(); // atau format date('YmdHis')
+                $extension = $file->getClientOriginalExtension();
+                
+                $fileName = "{$productName}-{$timestamp}.{$extension}";
                 $path = 'public/products/';
-
+            
+                // Simpan file
                 $file->storeAs($path, $fileName);
-                $validatedData['product_image'] = $fileName;
+                
+                // Simpan path yang bisa diakses publik
+                $validatedData['product_image'] = 'storage/products/'.$fileName;
+            } else {
+                // Set default image jika tidak ada upload
+                $validatedData['product_image'] = 'storage/products/default.png';
             }
 
             Product::create($validatedData);
@@ -223,7 +240,11 @@ class ProductController extends Controller
              * Handle upload image with Storage.
              */
             if ($file = $request->file('product_image')) {
-                $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+                $productName = Str::slug($request->product_name); // Membuat slug dari nama produk
+                $timestamp = time(); // atau format date('YmdHis')
+                $extension = $file->getClientOriginalExtension();
+                
+                $fileName = "{$productName}-{$timestamp}.{$extension}";
                 $path = 'public/products/';
 
                 /**
@@ -233,8 +254,14 @@ class ProductController extends Controller
                     Storage::delete($path . $product->product_image);
                 }
 
+                // Simpan file
                 $file->storeAs($path, $fileName);
-                $validatedData['product_image'] = $fileName;
+                
+                // Simpan path yang bisa diakses publik
+                $validatedData['product_image'] = 'storage/products/'.$fileName;
+
+            } else {
+                $validatedData['product_image'] = 'storage/products/default.png';
             }
 
             Product::where('id', $product->id)->update($validatedData);
@@ -304,26 +331,26 @@ class ProductController extends Controller
                         });
                     }], 'quantity')
             // DO 
-            ->withSum(['deliveryDetails as rekap_DOterpacking' => function ($query) {
-                    $query->whereHas('delivery', function ($q) {
-                        $q->where('delivery_status', 'siap dikirim');
-                    });
-                }], 'quantity')
-            ->withSum(['deliveryDetails as rekap_DOpengiriman' => function ($query) {
-                    $query->whereHas('delivery', function ($q) {
-                        $q->where('delivery_status', 'dalam pengiriman');
-                    });
-                }], 'quantity')
-            ->withSum(['deliveryDetails as rekap_DOterkirim' => function ($query) {
-                    $query->whereHas('delivery', function ($q) {
-                        $q->where('delivery_status', 'terkirim'); // Hanya pengiriman yang berstatus terkirim
-                    });
-                }], 'quantity')
-            ->withSum(['orderDetails as rekap_selesai' => function ($query) {
-                    $query->whereHas('order', function ($q) {
-                        $q->where('order_status', 'selesai'); // Hanya order yang disetujui
-                    });
-                }], 'quantity')
+                ->withSum(['deliveryDetails as rekap_DOterpacking' => function ($query) {
+                        $query->whereHas('delivery', function ($q) {
+                            $q->where('delivery_status', 'siap dikirim');
+                        });
+                    }], 'quantity')
+                ->withSum(['deliveryDetails as rekap_DOpengiriman' => function ($query) {
+                        $query->whereHas('delivery', function ($q) {
+                            $q->where('delivery_status', 'dalam pengiriman');
+                        });
+                    }], 'quantity')
+                ->withSum(['deliveryDetails as rekap_DOterkirim' => function ($query) {
+                        $query->whereHas('delivery', function ($q) {
+                            $q->where('delivery_status', 'terkirim'); // Hanya pengiriman yang berstatus terkirim
+                        });
+                    }], 'quantity')
+                ->withSum(['orderDetails as rekap_selesai' => function ($query) {
+                        $query->whereHas('order', function ($q) {
+                            $q->where('order_status', 'selesai'); // Hanya order yang disetujui
+                        });
+                    }], 'quantity')
             ->orderBy('id', 'asc');
         
         if ($categoryFilter) {

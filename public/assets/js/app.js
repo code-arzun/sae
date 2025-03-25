@@ -466,3 +466,29 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// $('#published').datepicker({
+//     uiLibrary: 'bootstrap4',
+//     format: 'mm-yyyy',
+//     startView: "year", 
+//     minViewMode: "year"
+//     // https://gijgo.com/datetimepicker/configuration/format
+// });
+// $('#buying_date').datepicker({
+//     uiLibrary: 'bootstrap4',
+//     format: 'yyyy-mm-dd'
+//     // https://gijgo.com/datetimepicker/configuration/format
+// });
+// $('#expire_date').datepicker({
+//     uiLibrary: 'bootstrap4',
+//     format: 'yyyy-mm-dd'
+//     // https://gijgo.com/datetimepicker/configuration/format
+// });
+
+// // Slug Generator
+// const title = document.querySelector("#product_name");
+// const slug = document.querySelector("#slug");
+// title.addEventListener("keyup", function() {
+//     let preslug = title.value;
+//     preslug = preslug.replace(/ /g,"-");
+//     slug.value = preslug.toLowerCase();
+// });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Marketing;
 use App\Models\Order;
 use App\Models\Customer;
 use App\Models\Employee;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
@@ -122,10 +123,22 @@ class CustomerController extends Controller
 
         // Handle upload gambar jika ada
         if ($file = $request->file('FotoCustomer')) {
-            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
+            // Format nama file: nama-produk-timestamp.extensi
+            $customer = Str::slug($request->NamaCustomer); // Membuat slug dari nama produk
+            $timestamp = time(); // atau format date('YmdHis')
+            $extension = $file->getClientOriginalExtension();
+            
+            $fileName = "{$customer}-{$timestamp}.{$extension}";
             $path = 'public/customers/';
+        
+            // Simpan file
             $file->storeAs($path, $fileName);
-            $validatedData['FotoCustomer'] = $fileName;
+            
+            // Simpan path yang bisa diakses publik
+            $validatedData['FotoCustomer'] = 'storage/customers/'.$fileName;
+        } else {
+            // Set default image jika tidak ada upload
+            $validatedData['FotoCustomer'] = 'storage/customers/default.jpg';
         }
 
         // Simpan data ke database
@@ -195,9 +208,14 @@ class CustomerController extends Controller
          * Handle upload image with Storage.
          */
         if ($file = $request->file('FotoCustomer')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+            // Format nama file: nama-produk-timestamp.extensi
+            $namaLembaga = Str::slug($request->NamaLembaga); // Membuat slug dari nama produk
+            $namaCustomer = Str::slug($request->NamaCustomer); // Membuat slug dari nama produk
+            $timestamp = time(); // atau format date('YmdHis')
+            $extension = $file->getClientOriginalExtension();
+            
+            $fileName = "{$namaLembaga}_{$namaCustomer}_{$timestamp}.{$extension}";
             $path = 'public/customers/';
-
             /**
              * Delete photo if exists.
              */
@@ -206,8 +224,12 @@ class CustomerController extends Controller
             }
 
             $file->storeAs($path, $fileName);
-            $validatedData['FotoCustomer'] = $fileName;
+            $validatedData['FotoCustomer'] = 'storage/customers/'.$fileName;
+        } else {
+            // Set default image jika tidak ada upload
+            $validatedData['FotoCustomer'] = 'storage/customers/default.jpg';
         }
+
 
         Customer::where('id', $customer->id)->update($validatedData);
 

@@ -152,7 +152,7 @@
                                             <div class="col-md-12">
                                                 <div class="profile-img-edit">
                                                     <div class="crm-profile-img-edit">
-                                                        <img class="crm-profile-pic rounded-circle avatar-100" id="image-preview" src="{{ asset('assets/images/user/1.jpg') }}" alt="profile-pic">
+                                                        <img class="crm-profile-pic rounded-circle avatar-100" id="image-preview" src="{{ asset('storage/product/default.jpg') }}" alt="profile-pic">
                                                     </div>
                                                 </div>
                                             </div>

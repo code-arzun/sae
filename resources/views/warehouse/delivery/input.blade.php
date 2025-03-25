@@ -23,12 +23,13 @@
     </div>
 </div>
 
-<div class="row" hidden>
+<div class="row">
     <form action="#" method="get">
     <!-- Filter berdasarkan SO -->
     <div class="col-sm-12 mb-3">
         <select class="form-control order_id" name="order_id"
-            data-bs-toggle="tooltip" data-bs-placement="top" title="Filter berdasarkan SO" onchange="this.form.submit()">
+            {{-- data-bs-toggle="tooltip" data-bs-placement="top" title="Filter berdasarkan SO" onchange="this.form.submit()" --}}
+            disabled>
             <option selected="" disabled="">-- Pilih SO --</option>
             <option value="" @if(request('order_id') == 'null') selected="selected" @endif>Semua</option>
             @foreach ($salesorders as $salesorder)
@@ -42,7 +43,7 @@
     </form>
 </div>
 <!-- Sales Order -->
-<div class="card">
+{{-- <div class="card">
     <div class="card-body d-flex justify-content-between">
         <div class="d-flex flex-column align-items-center text-center">
             <label class="text-secondary mb-2">Tanggal Pemesanan</label>
@@ -72,7 +73,7 @@
             <h4>{{ explode(' ', $salesorder->customer->employee->name)[0] }}</h4>
         </div>
     </div>
-</div>
+</div> --}}
 
 <div class="row">
     <div class="col-lg-6 col-md-12">

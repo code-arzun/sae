@@ -76,6 +76,7 @@
         </li>
         @endif --}}
 
+        @if (auth()->user()->can('do'))
         <li class="pc-item pc-caption">
           <label>Gudang</label>
           <i class="ti ti-news"></i>
@@ -92,18 +93,21 @@
             <span class="pc-mtext">Retur</span>
           </a>
         </li>
+        @if (auth()->user()->can('input.do'))
         <li class="pc-item">
           <a href="{{ route('stock.all') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-lock"></i></span>
             <span class="pc-mtext">Stok</span>
           </a>
         </li>
+        @endif
         <li class="pc-item">
           <a href="{{ route('products.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
             <span class="pc-mtext">Produk</span>
           </a>
         </li>
+        @endif
         {{-- <li class="pc-item pc-hasmenu">
           <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-truck-delivery"></i></span><span class="pc-mtext">Delivery Order</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
           <ul class="pc-submenu">

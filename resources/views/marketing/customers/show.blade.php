@@ -78,9 +78,10 @@
         <h4>Data Customer</h4>
         <div class="card">
             <div class="card-body row">
-                <div class="col-md-4">
+                <div class="form-group col-md-2">
                     <div class="profile-img position-relative">
-                        <img src="{{ $customer->photo ? asset('storage/customers/' . $customer->photo) : asset('assets/images/user/1.png') }}" class="img-fluid rounded avatar-110" alt="profile-image">
+                        {{-- <img src="{{ $customer->photo ? asset('storage/customers/' . $customer->photo) : asset('assets/images/user/1.png') }}" class="img-fluid rounded avatar-110" alt="profile-image"> --}}
+                        <img src="{{ $customer->FotoCustomer ? asset($customer->FotoCustomer) : asset(Storage::url('customers/default.jpg')) }}" alt="{{ $customer->NamaCustomer }}" class="img-fluid">
                     </div>
                 </div>
                 <div class="form-group col-md-5">

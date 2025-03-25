@@ -25,15 +25,6 @@
     <i class="fa fa-plus"></i>
 </button> --}}
 
-{{-- @if (session()->has('success'))
-    <div class="alert text-white bg-success" role="alert">
-        <div class="iq-alert-text">{{ session('success') }}</div>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <i class="ri-close-line"></i>
-        </button>
-    </div>
-@endif --}}
-
 <!-- Filter -->
 <form action="{{ route('customers.index') }}" method="get">
     <div class="row align-items-start">
@@ -85,27 +76,28 @@
         <thead>
             {{-- <th width="3px">No.</th> --}}
             <th>Nama Lembaga</th>
-            <th>Nama Customer</th>
-            <th>Jabatan</th>
-            <th>Potensi</th>
+            <th colspan="2">Nama Customer</th>
+            <th width="150px">Jabatan</th>
+            <th width="100px">Potensi</th>
             @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
-            <th>Sales</th>
+            <th width="250px">Sales</th>
             @endif
-            <th>Aksi</th>
+            <th width="50px">#</th>
         </thead>
         <tbody>
             @foreach ($customers as $customer)
             <tr>
                 {{-- <td>{{ (($customers->currentPage() * 10) - 10) + $loop->iteration  }}</td> --}}
                 <td><b data-bs-toggle="popover" title="{{ $customer->NamaLembaga }}" data-content="{{ $customer->AlamatLembaga }}">{{ $customer->NamaLembaga }}</b></td>
+                <td width="100px"><img src="{{ $customer->FotoCustomer ? asset($customer->FotoCustomer) : asset(Storage::url('customers/default.jpg')) }}" alt="{{ $customer->NamaCustomer }}" class="img-fluid"></td>
                 <td>
                     <div class="d-flex align-items-center">
-                        <img class="avatar-60 rounded" src="{{ $customer->photo ? asset('storage/customers/'.$customer->photo) : asset('assets/images/user/1.png') }}">
+                        
                         <b class="ml-3">{{ $customer->NamaCustomer }}</b>
                     </div>
                 </td>
                 <td>{{ $customer->Jabatan }}</td>
-                <td>
+                <td class="text-center">
                     <span class="badge {{ strpos($customer->Potensi, 'Tinggi') !== false ? 'bg-success' : (strpos($customer->Potensi, 'Sedang') !== false ? 'bg-warning' : 
                         (strpos($customer->Potensi, 'Rendah') !== false ? 'bg-danger' : '-')) }}">
                         {{ $customer->Potensi }}
@@ -120,8 +112,8 @@
                                 href="{{ route('customers.show', $customer->id) }}"><i class="ti ti-eye"></i>
                         </a>
                         @if (auth()->user()->hasAnyRole('Super Admin', 'Manajer Marketing', 'Admin'))
-                        <a href="#" class="badge bg-warning" data-bs-toggle="modal" data-bs-target="#editCustomer{{ $customer->id }}"><i class="ti ti-edit"></i></a>
                         <!-- Edit -->
+                        <a href="#" class="badge bg-warning" data-bs-toggle="modal" data-bs-target="#editCustomer{{ $customer->id }}"><i class="ti ti-edit"></i></a>
                         @include('marketing.customers.edit')
                         <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" class="confirmation-form">
                             @method('delete')

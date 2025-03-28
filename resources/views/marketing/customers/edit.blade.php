@@ -161,8 +161,23 @@
                                         </div>
                                         <div class="input-group col-lg-6">
                                             <div class="custom-file">
+                                                {{-- <input type="file" class="custom-file-input @error('FotoCustomer') is-invalid @enderror" id="image" name="FotoCustomer" accept="image/*" onchange="previewImage();"> --}}
+                                                {{-- <label class="custom-file-label" for="FotoCustomer">Pilih Foto Customer</label> --}}
                                                 <input type="file" class="custom-file-input @error('FotoCustomer') is-invalid @enderror" id="image" name="FotoCustomer" accept="image/*" onchange="previewImage();">
-                                                <label class="custom-file-label" for="FotoCustomer">Pilih Foto Customer</label>
+                                                <!-- Tambahkan elemen untuk preview gambar yang sudah ada -->
+                                                <div class="mt-2">
+                                                    <img id="existingImagePreview" src="{{ asset('storage/path/to/your/images/' . $customer->FotoCustomer) }}" class="img-thumbnail" width="150" style="display: {{ $customer->FotoCustomer ? 'block' : 'none' }};">
+                                                    <small class="form-text text-muted">
+                                                        Gambar saat ini
+                                                    </small>
+                                                </div>
+                                                <!-- Preview untuk gambar baru yang dipilih -->
+                                                <div class="mt-2">
+                                                    <img id="imagePreview" class="img-thumbnail" width="150" style="display: none;">
+                                                    <small class="form-text text-muted">
+                                                        Preview gambar baru
+                                                    </small>
+                                                </div>
                                             </div>
                                             @error('FotoCustomer')
                                             <div class="invalid-feedback">
@@ -201,3 +216,34 @@
         </div>
     </div>
   </div>
+
+  <script>
+    function previewImage() {
+    const fileInput = document.getElementById('image');
+    const existingPreview = document.getElementById('existingImagePreview');
+    const newPreview = document.getElementById('imagePreview');
+    
+    // Jika memilih file baru
+    if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            newPreview.src = e.target.result;
+            newPreview.style.display = 'block';
+            existingPreview.style.display = 'none'; // Sembunyikan gambar lama
+        }
+        
+        reader.readAsDataURL(fileInput.files[0]);
+    } else {
+        newPreview.style.display = 'none';
+        existingPreview.style.display = 'block'; // Tampilkan kembali gambar lama
+    }
+}
+
+// Saat modal ditutup, reset preview
+$('#yourEditModal').on('hidden.bs.modal', function () {
+    document.getElementById('image').value = '';
+    document.getElementById('imagePreview').style.display = 'none';
+    document.getElementById('existingImagePreview').style.display = 'block';
+});
+  </script>

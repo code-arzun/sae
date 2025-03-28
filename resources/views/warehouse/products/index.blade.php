@@ -21,7 +21,7 @@
 </div>
 
 <!-- Row & Pencarian -->
-<form action="{{ route('products.index') }}" method="get">
+<form action="#" method="get">
     <div class="row align-items-center">
         @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Sales', 'Manajer Marketing']))
         <!-- Publisher -->
@@ -121,8 +121,24 @@
     </div>
 </form>
 
-<!-- Table -->
-@include('warehouse.products.partials.table')
+<ul class="nav nav-tabs mb-3" id="product" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link " id="all-tab" data-bs-toggle="tab" href="#all" role="tab"><h5><i class="ti ti-table me-2"></i>Data</h5></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" id="datarecap-tab" data-bs-toggle="tab" href="#datarecap" role="tab"><h5><i class="ti ti-table me-2"></i>Statistik</h5></a>
+    </li>
+</ul>
+<div class="tab-content" id="productContent">
+    <!-- All Data -->
+    <div class="tab-pane fade " id="all" role="tabpanel">
+        @include('warehouse.products.partials.table')
+    </div>
+    <!-- Data Recap -->
+    <div class="tab-pane fade show active" id="datarecap" role="tabpanel">
+        @include('warehouse.products.partials.statistic')
+    </div>
+</div>
 
 
 @endsection

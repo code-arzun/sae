@@ -90,6 +90,15 @@ class Product extends Model
         return $model;
     }
 
+    public function getStokDibutuhkanAttribute()
+    {
+        return ($this->rekap_SOdisetujui ?? 0) - 
+            ($this->rekap_DOterpacking ?? 0) - 
+            ($this->rekap_DOpengiriman ?? 0) - 
+            ($this->rekap_DOterkirim ?? 0) - 
+            ($this->product_store ?? 0);
+    }
+
     public function category()
     {
         return $this->belongsTo(ProductCategory::class, 'category_id');

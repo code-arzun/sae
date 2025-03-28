@@ -111,10 +111,10 @@
                         <a class="badge bg-primary me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail"
                                 href="{{ route('customers.show', $customer->id) }}"><i class="ti ti-eye"></i>
                         </a>
-                        @if (auth()->user()->hasAnyRole('Super Admin', 'Manajer Marketing', 'Admin'))
                         <!-- Edit -->
                         <a href="#" class="badge bg-warning" data-bs-toggle="modal" data-bs-target="#editCustomer{{ $customer->id }}"><i class="ti ti-edit"></i></a>
                         @include('marketing.customers.edit')
+                        @if (auth()->user()->hasAnyRole('Super Admin', 'Manajer Marketing', 'Admin'))
                         <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" class="confirmation-form">
                             @method('delete')
                             @csrf

@@ -5,13 +5,13 @@
                 <h3 class="modal-title text-white" id="editProdukLabel">Edit {{ $title }}</h3>
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="ti ti-x"></i></button>
             </div>
+            <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             <div class="modal-body bg-gray-100">
-                <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('put')
                 <div class="row">
                     <!-- begin: Input Image -->
-                        <div class="form-group row align-items-center">
+                        <div class="form-group row align-items-start">
                             <div class="col-md-12">
                                 <div class="profile-img-edit">
                                     <div class="crm-profile-img-edit">
@@ -36,7 +36,7 @@
                     <!-- end: Input Image -->
 
                     <!-- begin: Input Data -->
-                    <div class="row align-items-center">
+                    <div class="row justify-content-start">
                         <!-- Nama Produk -->
                         <div class="form-group col-md-12">
                             <label for="product_name">Nama Produk<span class="text-danger">*</span></label>
@@ -69,7 +69,7 @@
                                 <select class="form-control @error('category_id') is-invalid @enderror" name="category_id" required>
                                     <option selected="" disabled>-- Pilih Kategori --</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                                 @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Sales', 'Manajer Marketing']))
@@ -92,7 +92,7 @@
                                 <select class="form-control @error('published_id') is-invalid @enderror" name="publisher_id" required>
                                     <option selected="" disabled>-- Pilih Penerbit --</option>
                                     @foreach ($publishers as $publisher)
-                                        <option value="{{ $publisher->id }}" {{ old('publisher_id') == $publisher->id ? 'selected' : '' }}>{{ $publisher->NamaPenerbit }}</option>
+                                        <option value="{{ $publisher->id }}" {{ old('publisher_id', $product->publisher_id) == $publisher->id ? 'selected' : '' }}>{{ $publisher->NamaPenerbit }}</option>
                                     @endforeach
                                 </select>
                                 @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Sales', 'Manajer Marketing']))
@@ -115,7 +115,7 @@
                             <select class="form-control @error('writer_id') is-invalid @enderror"  name="writer_id" required>
                                 <option selected="" disabled>-- Pilih Penulis --</option>
                                 @foreach ($writers as $writer)
-                                    <option value="{{ $writer->id }}" {{ old('writer_id') == $writer->id ? 'selected' : '' }}>{{ $writer->NamaPenulis }}</option>
+                                    <option value="{{ $writer->id }}" {{ old('writer_id', $product->writer_id) == $writer->id ? 'selected' : '' }}>{{ $writer->NamaPenulis }}</option>
                                 @endforeach
                             </select>
                             @error('writer_id')
@@ -129,8 +129,8 @@
                             <label for="cover">Jenis Cover<span class="text-danger">*</span></label>
                             <select class="form-control @error('cover') is-invalid @enderror" name="cover" required>
                                 <option value="" selected disabled>-- Jenis Cover --</option>
-                                <option value="Soft Cover">Soft Cover</option>
-                                <option value="Hard Cover">Hard Cover</option>
+                                <option value="Soft Cover" @if (old('cover', $product->cover) == 'Soft Cover') selected @endif>Soft Cover</option>
+                                <option value="Hard Cover" @if (old('cover', $product->cover) == 'Hard Cover') selected @endif>Hard Cover</option>
                             </select>
                             @error('cover')
                             <div class="invalid-feedback">
@@ -170,7 +170,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="row align-items-center">
+                    <div class="row justify-content-start">
                         <!-- Halaman -->
                         <div class="form-group col-md-1">
                             <label for="page">Halaman<span class="text-danger">*</span></label>
@@ -318,9 +318,8 @@
                         <div class="form-group col-md-12">
                             <label for="description">Deskripsi<span class="text-danger">*</span></label>
                             <div class="input-group">
-                                <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" value="{{ old('description') }}"
+                                <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" value="{{ old('description', $product->description) }}"
                                     rows="3">
-                                    {{ $product->description }}
                                 </textarea>
                             </div>
                             @error('description')

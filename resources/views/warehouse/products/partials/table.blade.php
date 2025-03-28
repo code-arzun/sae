@@ -58,24 +58,24 @@
                 <td class="text-end">
                     <b>{{ $product->product_store }}</b> {{ $product->category->productunit->name }}
                 </td>
-                <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="margin-bottom: 5px">
-                    <td class="text-center">
-                        <div class="d-flex justify-content-center">
-                            <a class="badge bg-primary me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail"
-                                href="{{ route('products.show', $product->id) }}"><i class="ti ti-eye"></i>
-                            </a>
-                            @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Admin Gudang']))
-                            <!-- Edit -->
-                            <a href="#" class="badge bg-warning me-1" data-bs-toggle="modal" data-bs-target="#editProduk{{ $product->id }}"><i class="ti ti-edit"></i></a>
-                            @include('warehouse.products.edit')
-                            <!-- Delete -->
-                                @method('delete')
-                                @csrf
-                                    <button type="submit" class="badge bg-danger" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus"><i class="ti ti-trash"></i></button>
-                            @endif
-                        </div>
-                    </td>
-                </form>
+                <td class="text-center">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <a class="badge bg-primary me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail"
+                            href="{{ route('products.show', $product->id) }}"><i class="ti ti-eye"></i>
+                        </a>
+                        @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Admin Gudang']))
+                        <!-- Edit -->
+                        <a href="#" class="badge bg-warning me-1" data-bs-toggle="modal" data-bs-target="#editProduk{{ $product->id }}"><i class="ti ti-edit"></i></a>
+                        @include('warehouse.products.edit')
+                        <!-- Delete -->
+                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="margin-bottom: 5px">
+                            @method('delete')
+                            @csrf
+                                <button type="submit" class="badge bg-danger" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus"><i class="ti ti-trash"></i></button>
+                        </form>
+                        @endif
+                    </div>
+                </td>
             </tr>
 
             @empty

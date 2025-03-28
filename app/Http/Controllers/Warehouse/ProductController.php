@@ -38,8 +38,50 @@ class ProductController extends Controller
         $mapel = request('mapel', null);
         
         $user = auth()->user();
-        // $query = Product::query()->orderBy('id', 'desc')->with('category', 'publisher', 'writer');
-        $query = Product::query()->orderBy('id', 'desc')->with('category', 'publisher', 'writer');
+        $query = Product::query()->orderBy('id', 'desc')->with('category', 'publisher', 'writer')
+            // SO
+                ->withSum(['orderDetails as rekap_SOdiajukan' => function ($query) {
+                        $query->whereHas('order', function ($q) {
+                            $q->where('order_status', 'menunggu persetujuan');
+                        });
+                    }], 'quantity')
+                ->withSum(['orderDetails as rekap_SOdisetujui' => function ($query) {
+                        $query->whereHas('order', function ($q) {
+                            $q->where('order_status', 'disetujui'); // Hanya order yang disetujui
+                        });
+                    }], 'quantity')
+                ->withSum(['orderDetails as rekap_SOditolak' => function ($query) {
+                        $query->whereHas('order', function ($q) {
+                            $q->where('order_status', 'ditolak'); // Hanya order yang disetujui
+                        });
+                    }], 'quantity')
+                ->withSum(['orderDetails as rekap_SOdibatalkan' => function ($query) {
+                        $query->whereHas('order', function ($q) {
+                            $q->where('order_status', 'dibatalkan'); // Hanya order yang disetujui
+                        });
+                    }], 'quantity')
+            // DO 
+                ->withSum(['deliveryDetails as rekap_DOterpacking' => function ($query) {
+                        $query->whereHas('delivery', function ($q) {
+                            $q->where('delivery_status', 'siap dikirim');
+                        });
+                    }], 'quantity')
+                ->withSum(['deliveryDetails as rekap_DOpengiriman' => function ($query) {
+                        $query->whereHas('delivery', function ($q) {
+                            $q->where('delivery_status', 'dalam pengiriman');
+                        });
+                    }], 'quantity')
+                ->withSum(['deliveryDetails as rekap_DOterkirim' => function ($query) {
+                        $query->whereHas('delivery', function ($q) {
+                            $q->where('delivery_status', 'terkirim'); // Hanya pengiriman yang berstatus terkirim
+                        });
+                    }], 'quantity')
+                ->withSum(['orderDetails as rekap_selesai' => function ($query) {
+                        $query->whereHas('order', function ($q) {
+                            $q->where('order_status', 'selesai'); // Hanya order yang disetujui
+                        });
+                    }], 'quantity')
+        ->orderBy('id', 'asc');
 
         if ($user->hasAnyRole(['Manajer Publishing', 'Admin Publishing', 'Staf Publishing'])) {
                 $query->where('publisher_id', '1');
@@ -193,7 +235,7 @@ class ProductController extends Controller
 
         public function update(Request $request, Product $product)
         {
-            $rolesPublishing = ['Manajer Publishing', 'Staf Publishing', 'Admin Publishing', 'Superadmin'];
+            $rolesPublishing = ['Manajer Publishing', 'Staf Publishing', 'Admin Publishing', 'Super Admin'];
             // Set publisher_id menjadi 1 jika user memiliki salah satu dari peran tersebut
             if ($request->user()->hasAnyRole($rolesPublishing)) {
                 $request->merge(['publisher_id' => 1]);
@@ -285,8 +327,6 @@ class ProductController extends Controller
         }
     //
 
-    
-
     public function show(Product $product)
     {
         // Barcode Generator
@@ -309,49 +349,73 @@ class ProductController extends Controller
         $mapel = request('mapel', null);
 
         $query = Product::query()
-            // SO
-                ->withSum(['orderDetails as rekap_SOdiajukan' => function ($query) {
-                        $query->whereHas('order', function ($q) {
-                            $q->where('order_status', 'menunggu persetujuan');
-                        });
-                    }], 'quantity')
-                ->withSum(['orderDetails as rekap_SOdisetujui' => function ($query) {
-                        $query->whereHas('order', function ($q) {
-                            $q->where('order_status', 'disetujui'); // Hanya order yang disetujui
-                        });
-                    }], 'quantity')
-                ->withSum(['orderDetails as rekap_SOditolak' => function ($query) {
-                        $query->whereHas('order', function ($q) {
-                            $q->where('order_status', 'ditolak'); // Hanya order yang disetujui
-                        });
-                    }], 'quantity')
-                ->withSum(['orderDetails as rekap_SOdibatalkan' => function ($query) {
-                        $query->whereHas('order', function ($q) {
-                            $q->where('order_status', 'dibatalkan'); // Hanya order yang disetujui
-                        });
-                    }], 'quantity')
-            // DO 
-                ->withSum(['deliveryDetails as rekap_DOterpacking' => function ($query) {
-                        $query->whereHas('delivery', function ($q) {
-                            $q->where('delivery_status', 'siap dikirim');
-                        });
-                    }], 'quantity')
-                ->withSum(['deliveryDetails as rekap_DOpengiriman' => function ($query) {
-                        $query->whereHas('delivery', function ($q) {
-                            $q->where('delivery_status', 'dalam pengiriman');
-                        });
-                    }], 'quantity')
-                ->withSum(['deliveryDetails as rekap_DOterkirim' => function ($query) {
-                        $query->whereHas('delivery', function ($q) {
-                            $q->where('delivery_status', 'terkirim'); // Hanya pengiriman yang berstatus terkirim
-                        });
-                    }], 'quantity')
-                ->withSum(['orderDetails as rekap_selesai' => function ($query) {
-                        $query->whereHas('order', function ($q) {
-                            $q->where('order_status', 'selesai'); // Hanya order yang disetujui
-                        });
-                    }], 'quantity')
-            ->orderBy('id', 'asc');
+        // SO
+        ->withSum(['orderDetails as rekap_SOdiajukan' => function ($query) {
+            $query->whereHas('order', function ($q) {
+                $q->where('order_status', 'menunggu persetujuan');
+            });
+        }], 'quantity')
+        ->withSum(['orderDetails as rekap_SOdisetujui' => function ($query) {
+            $query->whereHas('order', function ($q) {
+                $q->where('order_status', 'disetujui');
+            });
+        }], 'quantity')
+        ->withSum(['orderDetails as rekap_SOditolak' => function ($query) {
+            $query->whereHas('order', function ($q) {
+                $q->where('order_status', 'ditolak');
+            });
+        }], 'quantity')
+        ->withSum(['orderDetails as rekap_SOdibatalkan' => function ($query) {
+            $query->whereHas('order', function ($q) {
+                $q->where('order_status', 'dibatalkan');
+            });
+        }], 'quantity')
+        // DO 
+        ->withSum(['deliveryDetails as rekap_DOterpacking' => function ($query) {
+            $query->whereHas('delivery', function ($q) {
+                $q->where('delivery_status', 'siap dikirim');
+            });
+        }], 'quantity')
+        ->withSum(['deliveryDetails as rekap_DOpengiriman' => function ($query) {
+            $query->whereHas('delivery', function ($q) {
+                $q->where('delivery_status', 'dalam pengiriman');
+            });
+        }], 'quantity')
+        ->withSum(['deliveryDetails as rekap_DOterkirim' => function ($query) {
+            $query->whereHas('delivery', function ($q) {
+                $q->where('delivery_status', 'terkirim');
+            });
+        }], 'quantity')
+        ->withSum(['orderDetails as rekap_selesai' => function ($query) {
+            $query->whereHas('order', function ($q) {
+                $q->where('order_status', 'selesai');
+            });
+        }], 'quantity')
+        // Hitung stok yang dibutuhkan langsung di query (jika kurang, tampilkan selisih; jika cukup, tampilkan 0)
+        // ->selectRaw('*, 
+        //     GREATEST(0, 
+        //         COALESCE((SELECT SUM(quantity) FROM order_details 
+        //                 JOIN orders ON order_details.order_id = orders.id 
+        //                 WHERE order_details.product_id = products.id 
+        //                 AND orders.order_status = "disetujui"), 0)
+        //         - 
+        //         COALESCE((SELECT SUM(quantity) FROM delivery_details 
+        //                 JOIN deliveries ON delivery_details.delivery_id = deliveries.id 
+        //                 WHERE delivery_details.product_id = products.id 
+        //                 AND deliveries.delivery_status IN ("siap dikirim", "dalam pengiriman", "terkirim")), 0)
+        //         - 
+        //         COALESCE(products.product_store, 0)
+        //     ) as stok_dibutuhkan'
+        // )
+        // ->selectRaw('
+        //     products.*,
+        //     COALESCE(rekap_SOdisetujui, 0) - 
+        //     COALESCE(rekap_DOterpacking, 0) - 
+        //     COALESCE(rekap_DOpengiriman, 0) - 
+        //     COALESCE(rekap_DOterkirim, 0) - 
+        //     COALESCE(product_store, 0) AS stok_dibutuhkan
+        // ')
+        ->orderBy('id', 'asc');
         
         if ($categoryFilter) {
                 $query->where('category_id', $categoryFilter);

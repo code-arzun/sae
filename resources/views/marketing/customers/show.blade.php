@@ -28,11 +28,6 @@
 </div>
 
 <div class="row mb-3">
-    <div class="col-lg-12 mb-3">
-        <h4>Sales</h4>
-        <input type="text" class="form-control bg-white text-strong" value="{{ $customer->employee->name }}" readonly>
-    </div>
-    
     <div class="col-lg-6">
         <h4>Data Lembaga</h4>
         <div class="card">
@@ -97,6 +92,10 @@
                                 (strpos($customer->Jabatan, 'Operator') !== false ? 'bg-danger' : 'bg-secondary')) }}">
                             {{ $customer->Jabatan }}
                     </span>
+                </div>
+                <div class="form-group col-md-2">
+                    <label class="text-muted mb-1">Sales</label>
+                    <h5>{{ $customer->employee->name }}</h5>
                 </div>
                 <div class="form-group col-md-12">
                     <label class="text-muted mb-1">Alamat</label>

@@ -184,6 +184,8 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
+        $user = auth()->user();
+
         $rules = [
             'NamaLembaga' => 'required|string|max:100',
             'AlamatLembaga' => 'nullable|string|max:500',
@@ -199,10 +201,18 @@ class CustomerController extends Controller
             'EmailCustomer' => 'nullable|email|max:50',
             'CatatanCustomer' => 'max:500',
             'FotoCustomer' => 'image|file|max:1024',
-            'employee_id' => 'required|integer',
+            // 'employee_id' => 'required|integer',
         ];
 
         $validatedData = $request->validate($rules);
+
+        // Tentukan employee_id berdasarkan role
+        if ($user->hasRole('Sales')) {
+            $validatedData['employee_id'] = $user->employee_id;
+        } else {
+            $rules['employee_id'] = 'required|integer';
+            $validatedData = $request->validate($rules);
+        }
 
         /**
          * Handle upload image with Storage.
@@ -222,6 +232,11 @@ class CustomerController extends Controller
             if($customer->FotoCustomer){
                 Storage::delete($path . $customer->FotoCustomer);
             }
+            if ($customer->FotoCustomer && $customer->FotoCustomer != 'storage/customers/default.jpg') {
+                // Ubah path dari 'storage/' ke 'public/' untuk kompatibilitas Storage::delete
+                $oldFilePath = str_replace('storage/', 'public/', $customer->FotoCustomer);
+                Storage::delete($oldFilePath);
+            }
 
             $file->storeAs($path, $fileName);
             $validatedData['FotoCustomer'] = 'storage/customers/'.$fileName;
@@ -233,7 +248,8 @@ class CustomerController extends Controller
 
         Customer::where('id', $customer->id)->update($validatedData);
 
-        return Redirect::route('customers.index')->with('success', 'Data customer telah berhasil diperbarui!');
+        // return Redirect::route('customers.index')->with('success', 'Data customer telah berhasil diperbarui!');
+        return back()->with('success', 'Data customer telah berhasil diperbarui!');
     }
 
     /**

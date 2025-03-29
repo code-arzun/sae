@@ -183,19 +183,19 @@ function calculateCollection() {
     var dataDue = $('#data-due').val(dataDue);
 
     // Perhitungan diskon
-    var discount_rp = due * discount_percent / 100;
+    var discount_rp = pay * discount_percent / 100;
         $('#discount_rp').val(discount_rp);
 
     // Perhitungan PPh22
-        var PPh22_rp = due * PPh22_percent / 100;
+        var PPh22_rp = pay * PPh22_percent / 100;
         $('#PPh22_rp').val(PPh22_rp);
 
     // Perhitungan PPh23
-        var PPh23_rp = due * PPh23_percent / 100;
+        var PPh23_rp = pay * PPh23_percent / 100;
         $('#PPh23_rp').val(PPh23_rp);
 
     // Perhitungan PPN
-        var PPN_rp = due * PPN_percent / 100;
+        var PPN_rp = pay * PPN_percent / 100;
         $('#PPN_rp').val(PPN_rp);
 
     // Total akhir (grandtotal)

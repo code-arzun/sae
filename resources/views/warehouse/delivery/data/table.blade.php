@@ -70,13 +70,6 @@
             @endif
             @if ($order->shipping_status === 'Belum ada pengiriman')
                 <td colspan="2"><a class="badge bg-danger w-100" data-bs-toggle="collapse" href="#detailsDO{{ $order->id }}" aria-expanded="false" aria-controls="detailsDO{{ $order->id }}">{{ $order->shipping_status }}</a></td>
-                @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Admin Gudang']))
-                <td>
-                    <a href="{{ route('input.do', ['order_id' => $order->id]) }}" class="badge bg-purple-500" data-bs-toggle="tooltip" data-bs-placement="top" title="Buat DO">
-                        <i class="ti ti-plus"></i>
-                    </a>
-                </td>
-                @endif
             @else
                 <td>
                     @if ($order->shipping_status === 'Terkirim')
@@ -98,6 +91,7 @@
                     </a>
                 @endforeach
                 </td>
+                @endif
                 @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Admin Gudang']))
                 <td>
                     @if ($order->shipping_status === 'Terkirim')
@@ -115,7 +109,6 @@
                         </td>
                     </tr>
                 @endif
-            @endif
         </tr>
         @endforeach
     </tbody>

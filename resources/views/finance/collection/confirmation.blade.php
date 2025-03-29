@@ -228,7 +228,7 @@
                                 <input type="hidden" name="admin_fee" value="{{ $admin_fee }}">
                                 <input type="hidden" name="other_fee" value="{{ $other_fee }}">
                                 <input type="hidden" name="grandtotal" value="{{ $grandtotal }}">
-                                <button type="button" class="btn bg-success me-3 confirm-button"><b>{{ $collection['label'] }}</b></button>
+                                <button type="submit" class="btn bg-success me-3 confirm-button"><b>{{ $collection['label'] }}</b></button>
                             </form>
                         @endforeach
                     </div>

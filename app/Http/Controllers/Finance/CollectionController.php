@@ -170,7 +170,7 @@ class CollectionController extends Controller
                 'payment_status' => $paymentStatus,
             ]);
 
-        return Redirect::route('input.collection')->with('created', 'Collection berhasil dibuat!');
+        return Redirect::route('collection.index')->with('created', 'Collection berhasil dibuat!');
     }
 
         // Store
@@ -194,9 +194,9 @@ class CollectionController extends Controller
                 return $this->storeCollection($request, 'HS');
             }
 
-        //
+    //
 
-    private function getCollection($view, $status = null)
+    public function index()
     {
         $row = (int) request('row', 10000);
 
@@ -204,23 +204,24 @@ class CollectionController extends Controller
         $collectionInvoiceNo = request('collection_invoice_no', null);
         $orderInvoiceNo = request('order_invoice_no', null);
         $salesFilter = request('employee_id', null);
+        $statusFilter = request('delivery_status', null);
 
+        $ordersQuery = Order::whereIn('order_status', ['Disetujui', 'Selesai'])->with('collections');
         $query = Collection::query();
-        $ordersQuery = Order::query();
 
-        if ($status) {
-            $query->where('payment_status', 'like', "%$status%");
-            $ordersQuery->where('payment_status', 'like', "%$status%");
+        if (!empty($statusFilter)) {
+            $query->where('payment_status', 'like', "%$statusFilter%");
+            $ordersQuery->where('payment_status', 'like', "%$statusFilter%");
         }
 
         if ($user->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin'])) {
             $collections = $query;
-            $salesorders = $ordersQuery;
+            $orders = $ordersQuery;
         } elseif ($user->hasRole('Sales')) {
             $collections = $query->whereHas('salesorder.customer', function ($query) use ($user) {
                 $query->where('employee_id', $user->employee_id);
             });
-            $salesorders = $ordersQuery->whereHas('customer', function ($ordersQuery) use ($user) {
+            $orders = $ordersQuery->whereHas('customer', function ($ordersQuery) use ($user) {
                 $ordersQuery->where('employee_id', $user->employee_id);
             });
         } else {
@@ -237,7 +238,7 @@ class CollectionController extends Controller
             });
         });
 
-        $salesorders = $salesorders->when($collectionInvoiceNo, function ($ordersQuery, $collectionInvoiceNo) {
+        $orders = $orders->when($collectionInvoiceNo, function ($ordersQuery, $collectionInvoiceNo) {
             return $ordersQuery->where('invoice_no', 'like', "%$collectionInvoiceNo%");
         });
 
@@ -249,38 +250,17 @@ class CollectionController extends Controller
 
         $collections = $collections->sortable()->filter(request(['search']))->orderBy('id', 'desc')->paginate($row);
 
-        $salesorders = $salesorders->sortable()->filter(request(['search']))->orderBy('id', 'desc')->paginate($row);
+        $orders = $orders->sortable()->filter(request(['search']))->orderBy('id', 'desc')->paginate($row);
 
         $sales = Customer::select('employee_id')->distinct()->get();
 
-        return view("finance.collection.$view", [
-            'salesorders' => $salesorders,
+        return view("finance.collection.index", [
+            'orders' => $orders,
             'collections' => $collections, // Send orders variable to view
             'sales' => $sales, // Pass sales employees for dropdown
         ]);
     }
-        // View
-            public function all()
-            {
-                return $this->getCollection('all', null);
-            }
-
-            public function unpaid()
-            {
-                return $this->getCollection('unpaid', '%Belum dibayar%');
-            }
-
-            public function onProgress()
-            {
-                return $this->getCollection('onProgress', '%Belum Lunas%');
-            }
-
-            public function paid()
-            {
-                return $this->getCollection('paid', '%Lunas%');
-            }
-        // 
-    
+      
     public function collectionDetails(Int $collection_id)
     {
         $collection = Collection::where('id', $collection_id)->first();
@@ -293,9 +273,9 @@ class CollectionController extends Controller
     public function invoiceDownload(Int $collection_id)
     {
         $salesorder = Order::where('id', ['order_id'])->first();
-        $collections = Delivery::where('id', $collection_id)->first();
+        $collections = Collection::where('id', $collection_id)->first();
 
-        return view('warehouse.delivery.invoice-delivery',
+        return view('finance.collection.invoice-collection',
             compact('salesorder', 'collection')
         );
     }

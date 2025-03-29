@@ -4,10 +4,10 @@
             <tr>
                 <th colspan="2">Nama Produk</th>
                 <th width="200px">Kategori</th>
-                @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Sales', 'Manajer Marketing']))
+                @if (auth()->user()->hasAnyRole(['Super Admin', 'Staf Publishing', 'Admin Publishing', 'Manajer Publishing']))
                 <th width="200px">Penulis</th>
                 @endif
-                @if (auth()->user()->hasAnyRole(['Super Admin', 'Staf Publishing', 'Admin Publishing', 'Manajer Publishing']))
+                @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Adming Gudang', 'Sales', 'Manajer Marketing']))
                 <th width="150px">Penerbit</th>
                 @endif
                 <th width="100px">Harga 
@@ -36,7 +36,7 @@
                     @endif
                 </td>
                 @endif
-                @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Sales', 'Manajer Marketing']))
+                @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Adming Gudang', 'Sales', 'Manajer Marketing']))
                 <td>
                     @if ($product->publisher_id)
                         <b>{{ $product->publisher->NamaPenerbit }}</b>

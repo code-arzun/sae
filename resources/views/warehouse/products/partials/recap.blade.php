@@ -1,4 +1,3 @@
-
 <ul class="nav nav-pills mb-3" id="productStats" role="tablist">
     <a class="btn btn-outline-primary me-3" data-bs-toggle="collapse" href="#stock" aria-expanded="false">Stok</a>
     <a class="btn btn-outline-primary me-3" data-bs-toggle="collapse" href="#so" aria-expanded="false">Sales Order</a>
@@ -6,22 +5,18 @@
 </ul>
 
 <div class="dt-responsive table-responsive mb-3">
-    <table class="table table-bordered mb-0">
+    <table class="table mb-0">
         <thead>
             <tr>
-                <th rowspan="2" colspan="2">Nama Produk</th>
-                <th rowspan="2" class="collapse show" id="stock" width="120px">Stok</th>
-                <th rowspan="2" class="collapse" id="so">SO diajukan</th>
-                <th colspan="2" class="collapse" id="so">SO disetujui</th>
-                {{-- <th>SO disetujui</th> --}}
-                <th rowspan="2" class="collapse show" id="stock" >Stok dibutuhkan</th>
-                <th rowspan="2"  class="collapse" id="do">DO terpacking</th>
-                <th rowspan="2"  class="collapse" id="do">DO dalam pengiriman</th>
-                <th rowspan="2"  class="collapse" id="do">DO terkirim</th>
-            </tr>
-            <tr>
-                <th width="50px" class="collapse" id="so">Belum ada pengiriman</th>
-                <th width="50px" class="collapse" id="so">Sudah ada pengiriman</th>
+                <th colspan="2">Nama Produk</th>
+                <th class="collapse show" id="stock" width="120px">Stok Tersedia</th>
+                <th class="collapse show bg-danger" id="stock" >Stok dibutuhkan</th>
+                <th class="collapse bg-primary" id="so">SO diajukan</th>
+                <th class="collapse bg-primary" id="so">SO Belum Ada Pengiriman</th>
+                <th class="collapse bg-primary" id="so">SO Proses Pengiriman</th>
+                <th class="collapse bg-warning" id="do">DO terpacking</th>
+                <th class="collapse bg-warning" id="do">DO dalam pengiriman</th>
+                <th class="collapse bg-warning" id="do">DO terkirim</th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +34,17 @@
                     @endif
                     {{-- <h5 class="ml-1">{{ $product->category->productunit->name }}</h5> --}}
                 </td>
+                <!-- Stok dibutuhkan -->
+                <td class="text-center collapse show" id="stock" >
+                    @if ($product->stok_dibutuhkan > 0)
+                        <h5 class="text-danger">{{ $product->stok_dibutuhkan }}</h5>
+                    @else
+                    @endif
+                    {{-- @if ($product->rekap_SOdisetujui - ($product->rekap_DOterpacking + $product->rekap_DOpengiriman + $product->rekap_DOterkirim + $product->product_store) > 0)
+                        <h5 class="text-danger">{{ $product->rekap_SOdisetujui - ($product->rekap_DOterpacking + $product->rekap_DOpengiriman + $product->rekap_DOterkirim + $product->product_store) }}</h5>
+                    @else
+                    @endif --}}
+                </td>
                 <!-- SO Diajukan -->
                 <td class="text-center collapse" id="so">
                     {{-- @if ($product->rekap_SOdiajukan = 0)
@@ -55,7 +61,6 @@
                     @if ($product->rekap_SOdisetujui - $product->rekap_DOterpacking - $product->rekap_DOpengiriman - $product->rekap_DOterkirim > 0)
                         <h5 class="text-danger">{{ $product->rekap_SOdisetujui - $product->rekap_DOterpacking - $product->rekap_DOpengiriman - $product->rekap_DOterkirim }}</h5>
                     @else
-                        <h5 class="text-success">{{ $product->rekap_SOdisetujui - $product->rekap_DOterpacking - $product->rekap_DOpengiriman - $product->rekap_DOterkirim }}</h5>
                     @endif
                 </td>
                 <!-- SO disetujui sudah ada DO-->
@@ -65,17 +70,6 @@
                     @else
                         <h5 class="text-success">{{ $product->rekap_SOdisetujui - ($product->rekap_SOdisetujui - $product->rekap_DOterpacking - $product->rekap_DOpengiriman - $product->rekap_DOterkirim) }}</h5>
                     @endif
-                </td>
-                <!-- Stok dibutuhkan -->
-                <td class="text-center collapse show" id="stock" >
-                    @if ($product->stok_dibutuhkan > 0)
-                        <h5 class="text-danger">{{ $product->stok_dibutuhkan }}</h5>
-                    @else
-                    @endif
-                    {{-- @if ($product->rekap_SOdisetujui - ($product->rekap_DOterpacking + $product->rekap_DOpengiriman + $product->rekap_DOterkirim + $product->product_store) > 0)
-                        <h5 class="text-danger">{{ $product->rekap_SOdisetujui - ($product->rekap_DOterpacking + $product->rekap_DOpengiriman + $product->rekap_DOterkirim + $product->product_store) }}</h5>
-                    @else
-                    @endif --}}
                 </td>
                 <!-- DO terpacking -->
                 <td class="text-center collapse" id="do">
@@ -101,7 +95,6 @@
                         <h5 class="text-success">{{ $product->rekap_DOterkirim }}</h5>
                     @endif
                 </td>
-                
             </tr>
 
             @empty

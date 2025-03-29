@@ -121,22 +121,25 @@
     </div>
 </form>
 
+@if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Admin Gudang', 'Manajer Marketing']))
 <ul class="nav nav-tabs mb-3" id="product" role="tablist">
     <li class="nav-item">
-        <a class="nav-link " id="all-tab" data-bs-toggle="tab" href="#all" role="tab"><h5><i class="ti ti-table me-2"></i>Data</h5></a>
+        <a class="nav-link active" id="all-tab" data-bs-toggle="tab" href="#all" role="tab"><h5><i class="ti ti-table me-2"></i>Data</h5></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" id="datarecap-tab" data-bs-toggle="tab" href="#datarecap" role="tab"><h5><i class="ti ti-table me-2"></i>Statistik</h5></a>
+        <a class="nav-link" id="datarecap-tab" data-bs-toggle="tab" href="#datarecap" role="tab"><h5><i class="ti ti-table me-2"></i>Rekap</h5></a>
     </li>
 </ul>
+@endif
+
 <div class="tab-content" id="productContent">
     <!-- All Data -->
-    <div class="tab-pane fade " id="all" role="tabpanel">
+    <div class="tab-pane fade show active" id="all" role="tabpanel">
         @include('warehouse.products.partials.table')
     </div>
     <!-- Data Recap -->
-    <div class="tab-pane fade show active" id="datarecap" role="tabpanel">
-        @include('warehouse.products.partials.statistic')
+    <div class="tab-pane fade" id="datarecap" role="tabpanel">
+        @include('warehouse.products.partials.recap')
     </div>
 </div>
 

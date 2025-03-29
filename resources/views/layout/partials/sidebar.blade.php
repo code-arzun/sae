@@ -1,4 +1,5 @@
-<nav class="pc-sidebar pc-sidebar-hide">
+{{-- <nav class="pc-sidebar pc-sidebar-hide"> --}}
+<nav class="pc-sidebar">
   <div class="navbar-wrapper">
     <div class="m-header">
       <a href="{{ route('dashboard') }}" class="b-brand text-primary">
@@ -108,6 +109,26 @@
           </a>
         </li>
         @endif
+
+        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Finance']))
+        <li class="pc-item pc-caption">
+          <label>Finance</label>
+          <i class="ti ti-report-money"></i>
+        </li>
+        <li class="pc-item">
+          <a href="{{ route('customers.index') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-users"></i></span>
+            <span class="pc-mtext">Kas</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="{{ route('collection.index') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-report-money"></i></span>
+            <span class="pc-mtext">Collection</span>
+          </a>
+        </li>
+        @endif
+        
         {{-- <li class="pc-item pc-hasmenu">
           <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-truck-delivery"></i></span><span class="pc-mtext">Delivery Order</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
           <ul class="pc-submenu">

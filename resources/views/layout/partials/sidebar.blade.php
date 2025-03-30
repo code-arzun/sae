@@ -119,6 +119,12 @@
         @endif
         @if (auth()->user()->can('input.collection'))
         <li class="pc-item">
+          <a href="{{ route('category.index') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-users"></i></span>
+            <span class="pc-mtext">Kategori Kas</span>
+          </a>
+        </li>
+        <li class="pc-item">
           <a href="{{ route('customers.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-users"></i></span>
             <span class="pc-mtext">Kas</span>

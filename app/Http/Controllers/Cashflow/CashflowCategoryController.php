@@ -18,33 +18,32 @@ class CashflowCategoryController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
-        return view('cashflow.category.index', [
-            'cashflowcategories' => CashflowCategory::with(['cashflowtype'])
-                ->sortable()
-                ->paginate($row)
-                ->appends(request()->query()),
+        return view('finance.cashflow.category.index', [
+            'cashflowcategories' => CashflowCategory::get()
+                // ->sortable()
+                // ->paginate($row)
+                // ->appends(request()->query()),
         ]);
     }
 
     public function create()
     {
-        return view('cashflow.category.create', [
-            'cashflowtypes' => CashflowType::all(),
-        ]);
+        return view('finance.cashflow.category.create');
     }
 
     public function store(Request $request)
     {
         $rules = [
-            'cashflowtype_id' => 'required|integer',
-            'name' => 'required|string',
+            'type' => 'required|string',
+            'category' => 'required|string',
+            'detail' => 'required|string',
         ];
 
         $validatedData = $request->validate($rules);
 
         CashflowCategory::create($validatedData);
 
-        return Redirect::route('cashflowcategory.index')->with('success', 'Category has been created!');
+        return Redirect::route('category.index')->with('success', 'Category has been created!');
     }
 
     public function show(Cashflowcategory $cashflowcategory)
@@ -54,7 +53,7 @@ class CashflowCategoryController extends Controller
 
     public function edit(Cashflowcategory $cashflowcategory)
     {
-        return view('cashflow.category.edit', [
+        return view('finance.cashflow.category.edit', [
             'cashflowcategory' => $cashflowcategory
         ]);
     }
@@ -62,21 +61,22 @@ class CashflowCategoryController extends Controller
     public function update(Request $request, Cashflowcategory $cashflowcategory)
     {
         $rules = [
-            'cashflowtype_id' => 'required|integer',
-            'name' => 'required|string',
+            'type' => 'required|string',
+            'category' => 'required|string',
+            'detail' => 'required|string',
         ];
 
         $validatedData = $request->validate($rules);
 
         CashflowCategory::where('id', $cashflowcategory->id)->update($validatedData);
 
-        return Redirect::route('cashflowcategory.index')->with('success', 'Category has been updated!');
+        return Redirect::route('category.index')->with('success', 'Category has been updated!');
     }
 
     public function destroy(Cashflowcategory $cashflowcategory)
     {
         CashflowCategory::destroy($cashflowcategory->id);
 
-        return Redirect::route('cashflowcategory.index')->with('success', 'Category has been deleted!');
+        return Redirect::route('category.index')->with('success', 'Category has been deleted!');
     }
 }

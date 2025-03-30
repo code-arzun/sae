@@ -13,23 +13,20 @@ class CashflowCategory extends Model
     protected $table = 'cashflowcategories';
 
     protected $fillable = [
-        'cashflowtype_id',
-        'name',
+        'type',
+        'category',
+        'detail',
     ];
 
     protected $sortable = [
-        'cashflowtype_id',
-        'name',
+        'type',
+        'category',
+        'detail',
     ];
 
     protected $guarded = [
         'id',
     ];
-
-    public function cashflowtype()
-    {
-        return $this->belongsTo(CashflowType::class, 'cashflowtype_id');
-    }
 
     public function scopeFilter($query, array $filters)
     {

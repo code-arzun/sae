@@ -14,11 +14,10 @@ class CashflowExpense extends Model
     protected $table = 'cashflowexpenses';
     
     protected $fillable = [
+        'cashflowcategory_id',
         'user_id',
         'department_id',
-        // 'cashflowtype_id',
-        // 'cashflowcategory_id',
-        'cashflowdetail_id',
+        'cashflow_code',
         'nominal',
         'notes',
         'receipt',
@@ -27,11 +26,10 @@ class CashflowExpense extends Model
     ];
 
     public $sortable = [
+        'cashflowcategory_id',
         'user_id',
         'department_id',
-        // 'cashflowtype_id',
-        // 'cashflowcategory_id',
-        'cashflowdetail_id',
+        'cashflow_code',
         'nominal',
         'notes',
         'expense_code',
@@ -41,20 +39,6 @@ class CashflowExpense extends Model
     protected $guarded = [
         'id',
     ];
-
-    protected $with = [
-        // 'cashflowtype',
-        // 'cashflowcategory',
-        'cashflowdetail',
-    ];
-
-    // public function cashflowtype(){
-    //     return $this->belongsTo(CashflowType::class, 'cashflowtype_id');
-    // }
-
-    // public function cashflowcategory(){
-    //     return $this->belongsTo(CashflowCategory::class, 'cashflowcategory_id');
-    // }
 
     public function user(){
         return $this->belongsTo(User::class, 'user_id');

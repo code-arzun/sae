@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cashflowtypes', function (Blueprint $table) {
+        Schema::create('cashflowcategories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('type');
+            $table->string('category');
+            $table->string('detail');
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cashflowtypes');
+        Schema::dropIfExists('cashflowcategories');
     }
 };

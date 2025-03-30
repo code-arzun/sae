@@ -28,7 +28,7 @@ use App\Models\Bank;
     use App\Http\Controllers\Cashflow\CashflowTypeController;
     use App\Http\Controllers\Cashflow\CashflowDetailController;
     use App\Http\Controllers\Cashflow\CashflowIncomeController;
-    use App\Http\Controllers\Cashflow\CashflowExpenseController;
+    use App\Http\Controllers\Cashflow\CashflowController;
     use App\Http\Controllers\Cashflow\CashflowCategoryController;
 //
 
@@ -380,30 +380,31 @@ use App\Http\Controllers\Publishing\WriterCategoryController;
 
 // CASHFLOW
     // Arus Kas
-    Route::prefix('cashflow')->group(function () {
-        Route::middleware(['permission:input.cashflow'])->prefix('input')->group(function () {
-            Route::get('expense', [CashflowExpenseController::class,'create'])->name('input.expense');
-            Route::get('income', [CashflowIncomeController::class,'create'])->name('input.income');
-        });
-        Route::middleware(['permission:cashflow'])->group(function () {
-            // Jenis Transaksi
-            Route::resource('type', CashflowTypeController::class);
-            // Kategori Transaksi
-            Route::resource('category', CashflowCategoryController::class);
-            // Detail/Keterangan Transaksi
-            Route::resource('detail', CashflowDetailController::class);
-            // Pengeluaran
-            Route::resource('expense', CashflowExpenseController::class);
-            Route::get('/expense/import', [CashflowExpenseController::class, 'importView'])->name('expense.importView');
-            Route::post('/expense/import', [CashflowExpenseController::class, 'importStore'])->name('expense.importStore');
-            Route::get('/expense/export', [CashflowExpenseController::class, 'exportData'])->name('expense.exportData');
-            // Pemasukan
-            Route::resource('income', CashflowIncomeController::class);
-            Route::get('/income/import', [CashflowIncomeController::class, 'importView'])->name('income.importView');
-            Route::post('/income/import', [CashflowIncomeController::class, 'importStore'])->name('income.importStore');
-            Route::get('/income/export', [CashflowIncomeController::class, 'exportData'])->name('income.exportData');
-        });
+    Route::middleware(['permission:cashflow'])->group(function () {
+        Route::resource('cashflow', CashflowController::class);
+        Route::resource('cashflowcategory', CashflowCategoryController::class);
     });
+    // Route::prefix('cashflow')->group(function () {
+    //     Route::middleware(['permission:input.cashflow'])->prefix('input')->group(function () {
+    //         Route::get('', [CashflowController::class,'create'])->name('input.expense');
+    //         Route::get('income', [CashflowIncomeController::class,'create'])->name('input.income');
+    //         Route::get('income', [CashflowIncomeController::class,'create'])->name('input.income');
+    //     });
+    //     Route::middleware(['permission:cashflow'])->group(function () {
+    //         // Kategori Transaksi
+    //         Route::resource('cashflowcategory', CashflowCategoryController::class);
+    //         // Pengeluaran
+    //         Route::resource('expense', CashflowController::class);
+    //         Route::get('/expense/import', [CashflowController::class, 'importView'])->name('expense.importView');
+    //         Route::post('/expense/import', [CashflowController::class, 'importStore'])->name('expense.importStore');
+    //         Route::get('/expense/export', [CashflowController::class, 'exportData'])->name('expense.exportData');
+    //         // Pemasukan
+    //         Route::resource('income', CashflowIncomeController::class);
+    //         Route::get('/income/import', [CashflowIncomeController::class, 'importView'])->name('income.importView');
+    //         Route::post('/income/import', [CashflowIncomeController::class, 'importStore'])->name('income.importStore');
+    //         Route::get('/income/export', [CashflowIncomeController::class, 'exportData'])->name('income.exportData');
+    //     });
+    // });
 //
 
 // PUBLISHING

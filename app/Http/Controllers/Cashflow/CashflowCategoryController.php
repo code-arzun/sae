@@ -12,17 +12,16 @@ class CashflowCategoryController extends Controller
 {
     public function index()
     {
-        $row = (int) request('row', 10);
+        $row = (int) request('row', 100);
 
         if ($row < 1 || $row > 100) {
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
         return view('finance.cashflow.category.index', [
-            'cashflowcategories' => CashflowCategory::get()
-                // ->sortable()
-                // ->paginate($row)
-                // ->appends(request()->query()),
+            'cashflowcategories' => CashflowCategory::sortable()
+                ->paginate($row)
+                ->appends(request()->query()),
         ]);
     }
 
@@ -43,7 +42,7 @@ class CashflowCategoryController extends Controller
 
         CashflowCategory::create($validatedData);
 
-        return Redirect::route('category.index')->with('success', 'Category has been created!');
+        return Redirect::route('cashflowcategory.index')->with('success', 'Category has been created!');
     }
 
     public function show(Cashflowcategory $cashflowcategory)
@@ -61,22 +60,22 @@ class CashflowCategoryController extends Controller
     public function update(Request $request, Cashflowcategory $cashflowcategory)
     {
         $rules = [
-            'type' => 'required|string',
-            'category' => 'required|string',
-            'detail' => 'required|string',
+            'type' => 'nullable|string',
+            'category' => 'nullable|string',
+            'detail' => 'nullable|string',
         ];
 
         $validatedData = $request->validate($rules);
 
         CashflowCategory::where('id', $cashflowcategory->id)->update($validatedData);
 
-        return Redirect::route('category.index')->with('success', 'Category has been updated!');
+        return Redirect::route('cashflowcategory.index')->with('success', 'Kategori Transaksi has been updated!');
     }
 
     public function destroy(Cashflowcategory $cashflowcategory)
     {
         CashflowCategory::destroy($cashflowcategory->id);
 
-        return Redirect::route('category.index')->with('success', 'Category has been deleted!');
+        return Redirect::route('cashflowcategory.index')->with('success', 'Category has been deleted!');
     }
 }

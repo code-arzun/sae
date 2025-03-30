@@ -7,11 +7,11 @@ use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CashflowExpense extends Model
+class Cashflow extends Model
 {
     use HasFactory, Sortable;
 
-    protected $table = 'cashflowexpenses';
+    protected $table = 'cashflows';
     
     protected $fillable = [
         'cashflowcategory_id',
@@ -21,7 +21,6 @@ class CashflowExpense extends Model
         'nominal',
         'notes',
         'receipt',
-        'expense_code',
         'date',
     ];
 
@@ -32,7 +31,6 @@ class CashflowExpense extends Model
         'cashflow_code',
         'nominal',
         'notes',
-        'expense_code',
         'date',
     ];
 
@@ -41,16 +39,16 @@ class CashflowExpense extends Model
     ];
 
     public function user(){
-        return $this->belongsTo(User::class, 'user_id');
+        // return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'id');
     }
 
     public function department(){
         return $this->belongsTo(Department::class, 'department_id');
     }
 
-    public function cashflowdetail(){
-        return $this->belongsTo(CashflowDetail::class);
-        // return $this->belongsTo(CashflowDetail::class, 'cashflowdetail_id');
+    public function cashflowcategory(){
+        return $this->belongsTo(cashflowcategory::class);
     }
 
     public function scopeFilter($query, array $filters)

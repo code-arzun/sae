@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Cashflow;
 
 use Exception;
-use App\Models\CashflowExpense;
-use App\Models\CashflowType;
-use Illuminate\Http\Request;
-use App\Models\CashflowDetail;
+use App\Models\Cashflow;
+use App\Models\Department;
+use Illuminate\Support\Str;
 
+use Illuminate\Http\Request;
 use App\Models\CashflowCategory;
 use App\Http\Controllers\Controller;
-use App\Models\Department;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -20,7 +19,7 @@ use Picqer\Barcode\BarcodeGeneratorHTML;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 
-class CashflowExpenseController extends Controller
+class CashflowController extends Controller
 {
     public function index()
     {
@@ -30,87 +29,102 @@ class CashflowExpenseController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
-        return view('cashflow.expense.index', [
-            'cashflowexpenses' => CashflowExpense::with(['user', 'department', 'cashflowdetail'])->filter(request(['search']))
+        return view('finance.cashflow.index', [
+            'cashflows' => Cashflow::with(['user', 'department', 'cashflowcategory'])
+                ->filter(request(['search']))
                 ->sortable()->orderBy('date', 'desc')
-                ->paginate($row)->appends(request()->query()),
+                ->paginate($row)
+                ->appends(request()->query()),
+            'departments' => Department::all(),
+            'cashflowcategories' => CashflowCategory::all(),
         ]);
     }
 
     public function create()
     {
-        return view('cashflow.expense.create', [
+        return view('finance.cashflow.create', [
             'departments' => Department::all(),
-            'cashflowtypes' => CashflowType::all(),
-            // 'cashflowdetails' => CashflowDetail::all(),
-            'cashflowdetails' => CashflowDetail::with('cashflowcategory')->whereHas('cashflowcategory', function ($query) {
-                $query->where('cashflowtype_id', 2);})->get(),
+            'cashflows' => Cashflow::all(),
         ]);
     }
 
     public function store(Request $request)
     {
-        $expense_code = IdGenerator::generate([
-            'table' => 'cashflowexpenses',
-            'field' => 'expense_code',
-            'length' => 7,
-            'prefix' => 'KK-'
-        ]);
-
-        $rules = [
-            'user_id' => 'required|integer',
-            'department_id' => 'required|integer',
-            'cashflowdetail_id' => 'required|integer',
-            'receipt' => 'image|file|max:1024',
-            // 'date' => 'date_format:d-m-Y|max:10|nullable',
-            'date' => 'date_format:Y-m-d|max:10|required',
-            'nominal' => 'required|integer',
-            'notes' => 'nullable|string',
-        ];
-
-        $validatedData = $request->validate($rules);
-
-        // save product code value
-        $validatedData['expense_code'] = $expense_code;
-
-        if ($file = $request->file('receipt')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $path = 'public/cashflowexpense/';
-
-            $file->storeAs($path, $fileName);
-            $validatedData['receipt'] = $fileName;
+        $user = auth()->user();
+        
+        $category = CashflowCategory::find($request->cashflowcategory_id);
+    
+        if (!$category) {
+            return Redirect::back()->withErrors(['cashflowcategory_id' => 'Kategori tidak ditemukan']);
         }
-
-        CashflowExpense::create($validatedData);
-
-        return Redirect::route('expense.index')->with('success', 'Cashflowexpense has been created!');
+    
+        // Tentukan prefix berdasarkan tipe kategori
+        $prefix = ($category->type === 'Pemasukan') ? 'KM-' : 'KK-';
+    
+        $cashflow_code = IdGenerator::generate([
+            'table' => 'cashflows',
+            'field' => 'cashflow_code',
+            'length' => 7,
+            'prefix' => $prefix
+        ]);
+    
+        $rules = [
+            'cashflowcategory_id' => 'required|integer',
+            'department_id' => 'required|integer',
+            'nominal' => 'required|integer',
+            'notes' => 'required|string',
+            'receipt' => 'image|file|max:1024|nullable',
+            'date' => 'date_format:Y-m-d|max:10|required',
+        ];
+    
+        $validatedData = $request->validate($rules);
+        $validatedData['user_id'] = $user->id; // Tambahkan user_id setelah validasi
+        $validatedData['cashflow_code'] = $cashflow_code; // Simpan cashflow_code
+    
+        if ($file = $request->file('receipt')) {
+            $cashflow_code_slug = Str::slug($cashflow_code);
+            $timestamp = time();
+            $extension = $file->getClientOriginalExtension();
+    
+            $fileName = "{$cashflow_code_slug}-{$timestamp}.{$extension}";
+            $path = 'public/cashflow/';
+    
+            $file->storeAs($path, $fileName);
+            $validatedData['receipt'] = 'storage/cashflow/'.$fileName;
+        } else {
+            $validatedData['receipt'] = 'storage/cashflow/default.jpg';
+        }
+    
+        Cashflow::create($validatedData);
+    
+        return Redirect::route('cashflow.index')->with('success', 'Transaksi berhasil ditambahkan!');
     }
+    
 
-    public function show(CashflowExpense $cashflowexpense)
+    public function show(Cashflow $cashflow)
     {
-        return view('cashflow.expense.show', [
-            'cashflowexpense' => $cashflowexpense,
-            'cashflowexpenses' => CashflowExpense::all(),
-            'cashflowdetail' => CashflowDetail::all(),
+        return view('finance.cashflow.show', [
+            'cashflow' => $cashflow,
+            'cashflowcategory' => Cashflowcategory::all(),
         ]);
     }
 
-    public function edit(CashflowExpense $cashflowexpense)
+    public function edit(Cashflow $cashflow)
     {
-        return view('cashflow.expense.edit', [
-            'cashflowexpense' => $cashflowexpense,
+        return view('finance.cashflow.edit', [
+            'cashflow' => $cashflow,
             'departments' => Department::all(),
-            'cashflowexpenses' => CashflowExpense::all(),
-            'cashflowdetails' => CashflowDetail::all(),
+            'cashflows' => Cashflow::all(),
+            'cashflowcategories' => Cashflowcategory::all(),
         ]);
     }
 
-    public function update(Request $request, Cashflowexpense $cashflowexpense)
+    public function update(Request $request, Cashflow $cashflow)
     {
         $rules = [
             'user_id' => 'required|integer',
             'department_id' => 'required|integer',
-            'cashflowdetail_id' => 'required|integer',
+            'cashflowcategory_id' => 'required|integer',
             'receipt' => 'image|file|max:1024',
             'date' => 'date_format:d-m-Y|max:10|nullable',
             'nominal' => 'required|integer',
@@ -122,35 +136,35 @@ class CashflowExpenseController extends Controller
         if ($file = $request->file('receipt')) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
             // $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $path = 'public/cashflowexpense/';
+            $path = 'public/cashflow/';
 
-            if($cashflowexpense->receipt){
-                Storage::delete($path . $cashflowexpense->receipt);
+            if($cashflow->receipt){
+                Storage::delete($path . $cashflow->receipt);
             }
 
             $file->storeAs($path, $fileName);
             $validatedData['receipt'] = $fileName;
         }
 
-        CashflowExpense::where('id', $cashflowexpense->id)->update($validatedData);
+        Cashflow::where('id', $cashflow->id)->update($validatedData);
 
-        return Redirect::route('cashflowexpense.index')->with('success', 'Cashflowexpense has been updated!');
+        return Redirect::route('cashflow.index')->with('success', 'Cashflow has been updated!');
     }
 
-    public function destroy(Cashflowexpense $cashflowexpense)
+    public function destroy(Cashflow $cashflow)
     {
-        if($cashflowexpense->receipt){
-            Storage::delete('public/cashflowexpense/' . $cashflowexpense->receipt);
+        if($cashflow->receipt){
+            Storage::delete('public/cashflow/' . $cashflow->receipt);
         }
 
-        CashflowExpense::destroy($cashflowexpense->id);
+        Cashflow::destroy($cashflow->id);
 
-        return Redirect::route('cashflowexpense.index')->with('success', 'Product has been deleted!');
+        return Redirect::route('cashflow.index')->with('success', 'Product has been deleted!');
     }
 
     // public function importView()
     // {
-    //     return view('cashflowexpense.import');
+    //     return view('cashflow.import');
     // }
 
     // public function importStore(Request $request)
@@ -175,7 +189,7 @@ class CashflowExpenseController extends Controller
     //                 'product_name' => $sheet->getCell( 'A' . $row )->getValue(),
     //                 'category_id' => $sheet->getCell( 'B' . $row )->getValue(),
     //                 'supplier_id' => $sheet->getCell( 'C' . $row )->getValue(),
-    //                 'product_code' => $sheet->getCell( 'D' . $row )->getValue(),
+    //                 'productcashflow_code' => $sheet->getCell( 'D' . $row )->getValue(),
     //                 'product_garage' => $sheet->getCell( 'E' . $row )->getValue(),
     //                 'product_image' => $sheet->getCell( 'F' . $row )->getValue(),
     //                 'product_store' =>$sheet->getCell( 'G' . $row )->getValue(),
@@ -190,10 +204,10 @@ class CashflowExpenseController extends Controller
     //         Product::insert($data);
 
     //     } catch (Exception $e) {
-    //         // $error_code = $e->errorInfo[1];
-    //         return Redirect::route('cashflowexpense.index')->with('error', 'There was a problem uploading the data!');
+    //         // $errorcashflow_code = $e->errorInfo[1];
+    //         return Redirect::route('cashflow.index')->with('error', 'There was a problem uploading the data!');
     //     }
-    //     return Redirect::route('cashflowexpense.index')->with('success', 'Data has been successfully imported!');
+    //     return Redirect::route('cashflow.index')->with('success', 'Data has been successfully imported!');
     // }
 
     // public function exportExcel($cashout){
@@ -235,7 +249,7 @@ class CashflowExpenseController extends Controller
     //             'Tanggal' => $product->product_name,
     //             'Kode' => $product->category->name,
     //             'Kategori' => $product->supplier_id,
-    //             'Detail' => $product->product_code,
+    //             'Detail' => $product->productcashflow_code,
     //             'Nominal' => $product->product_garage,
     //             'Catatan' => $product->product_image,
 

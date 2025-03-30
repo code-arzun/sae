@@ -8,6 +8,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-default-icon">
                 @include('finance.cashflow.category.partials.breadcrumb')
+                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('cashflowcategory.index') }}">Kategori</a></li>
             </ol>
         </nav>
     </div>
@@ -19,8 +20,9 @@
 </div>
 
 
+
 <div class="row">
-    <div class="card col-md-4">
+    {{-- <div class="card col-md-4">
         <div class="card-body">
             <h3>Tambah {{ $title }} Baru</h3>
             <form action="{{ route('category.store') }}" method="POST" enctype="multipart/form-data">
@@ -72,37 +74,16 @@
                     </form>
                 </div>
         </div>
-    </div>
+    </div> --}}
 
-    <div class="dt-responsive table-responsive col-md-4">
+    <div class="dt-responsive table-responsive col-md-6">
         <h4 class="text-success">Pemasukan</h4>
         <table class="table table-hover bg-white mb-0">
-            <thead>
-                <tr>
-                    <th width="20%">Kategori</th>
-                    <th width="75%">Detail</th>
-                    <th width="5%">#</th>
-                </tr>
-            </thead>
+            @include('finance.cashflow.category.partials.head')
             <tbody>
                 @forelse ($cashflowcategories as $cashflowcategory)
                 @if ($cashflowcategory->type === 'Pemasukan')
-                <tr>
-                    <td>{{ $cashflowcategory->category }}</td>
-                    <td>{{ $cashflowcategory->detail }}</td>
-                    <td>
-                        <div class="d-flex align-items-center list-action">
-                            <a class="badge bg-success me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
-                                href="{{ route('category.edit', $cashflowcategory->id) }}"><i class="ri-pencil-line me-0"></i>
-                            </a>
-                            <form action="{{ route('category.destroy', $cashflowcategory->id) }}" method="POST" style="margin-bottom: 5px">
-                                @method('delete')
-                                @csrf
-                                <button type="submit" class="badge bg-warning me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="ri-delete-bin-line me-0"></i></button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
+                    @include('finance.cashflow.category.partials.data')
                 @endif
         
                 @empty
@@ -111,35 +92,14 @@
             </tbody>
         </table>
     </div>
-    <div class="dt-responsive table-responsive col-md-4">
+    <div class="dt-responsive table-responsive col-md-6">
         <h4 class="text-danger">Pengeluaran</h4>
         <table class="table table-hover bg-white mb-0">
-            <thead>
-                <tr>
-                    <th width="20%">Kategori</th>
-                    <th width="75%">Detail</th>
-                    <th width="5%">#</th>
-                </tr>
-            </thead>
+            @include('finance.cashflow.category.partials.head')
             <tbody>
                 @forelse ($cashflowcategories as $cashflowcategory)
                 @if ($cashflowcategory->type === 'Pengeluaran')
-                <tr>
-                    <td>{{ $cashflowcategory->category }}</td>
-                    <td>{{ $cashflowcategory->detail }}</td>
-                    <td>
-                        <div class="d-flex align-items-center list-action">
-                            <a class="badge bg-success me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
-                                href="{{ route('category.edit', $cashflowcategory->id) }}"><i class="ri-pencil-line me-0"></i>
-                            </a>
-                            <form action="{{ route('category.destroy', $cashflowcategory->id) }}" method="POST" style="margin-bottom: 5px">
-                                @method('delete')
-                                @csrf
-                                <button type="submit" class="badge bg-warning me-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="ri-delete-bin-line me-0"></i></button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
+                    @include('finance.cashflow.category.partials.data')
                 @endif
         
                 @empty

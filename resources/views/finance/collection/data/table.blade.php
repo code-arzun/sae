@@ -31,7 +31,7 @@
                 </td>
             @endif
             @if ($order->payment_status === 'Belum dibayar')
-                <td colspan="2"><a class="badge bg-danger w-100" data-bs-toggle="collapse" href="#detailsColl{{ $order->id }}" aria-expanded="false" aria-controls="detailsColl{{ $order->id }}">Belum ada Pembayaran</a></td>
+                <td colspan="2"><span class="badge bg-danger w-100">Belum ada Pembayaran</span></td>
             @else
                 <td>
                     @if ($order->payment_status === 'Lunas')
@@ -76,74 +76,3 @@
     </tbody>
 </table>
 {{ $orders->links() }}
-
-{{-- <div class="col-lg-12">
-    <div class="dt-responsive table-responsive mb-3">
-        <table class="table mb-0">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Tgl. SO</th>
-                    <th>No. SO</th>
-                    <th> 'Customer</th>
-                    @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
-                    <th> 'Sales</th>
-                    @endif
-                    <th>Bruto</th>
-                    <th>Netto</th>
-                    <th>Tagihan</th>
-                    <th>Dibayar</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($salesorders as $salesorder)
-                <tr>
-                    <td>{{ $loop->iteration  }}</td>
-                    <td>
-                        <a class="badge badge-primary" href="{{ route('so.orderDetails', $salesorder->id) }}" 
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail">{{ $salesorder->invoice_no }}
-                        </a>
-                    </td>
-                    <td>
-                        <span class="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Carbon\Carbon::parse($salesorder->order_date)->translatedformat('l, d F Y') }}">
-                            {{ Carbon\Carbon::parse($salesorder->order_date)->translatedformat('d M Y') }}
-                        </span>
-                    </td>
-                    <td>
-                        <h6>{{ $salesorder->customer->NamaLembaga }}</h6>
-                            {{ $salesorder->customer->NamaCustomer }}
-                    </td>
-                    @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
-                    <td>{{ $salesorder->customer->employee->name }}</td>
-                    @endif
-                    <td class="text-end"><span class="badge bg-success">Rp {{ number_format($salesorder->sub_total) }}</span></td>
-                    <td class="text-end"><span class="badge bg-warning">Rp {{ number_format($salesorder->grandtotal) }}</span></td>
-                    <td class="text-end">
-                        @if ($salesorder->due > 0)
-                                <span class="badge bg-danger">Rp {{ number_format($salesorder->due) }}</span>
-                            @else
-                        @endif
-                    </td>
-                    <td class="text-end">
-                        @if ($salesorder->pay > 0)
-                                <span class="badge bg-primary">Rp {{ number_format($salesorder->pay) }}</span>
-                            @else
-                        @endif
-                    </td>
-                    <td>
-                        @if ($salesorder->payment_status === 'Belum dibayar')
-                            <span class="badge bg-danger">{{ $salesorder->payment_status }}</span>
-                        @elseif ($salesorder->payment_status === 'Belum Lunas')
-                            <span class="badge bg-warning">{{ $salesorder->payment_status }}</span>
-                        @else
-                            <span class="badge bg-success">{{ $salesorder->payment_status }}</span>
-                        @endif
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    {{ $salesorders->links() }}
-</div> --}}

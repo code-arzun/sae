@@ -110,17 +110,22 @@
         </li>
         @endif
 
-        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Finance']))
+        {{-- @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Finance'])) --}}
+        @if (auth()->user()->can('collection'))
         <li class="pc-item pc-caption">
           <label>Finance</label>
           <i class="ti ti-report-money"></i>
         </li>
+        @endif
+        @if (auth()->user()->can('input.collection'))
         <li class="pc-item">
           <a href="{{ route('customers.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-users"></i></span>
             <span class="pc-mtext">Kas</span>
           </a>
         </li>
+        @endif
+        @if (auth()->user()->can('collection'))
         <li class="pc-item">
           <a href="{{ route('collection.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-report-money"></i></span>

@@ -136,7 +136,7 @@ class CollectionController extends Controller
         $validatedData = $request->validate($rules);
 
         // Ambil invoice terakhir tanpa mempertimbangkan suffix (RO, HO, RS, HS)
-        $lastOrder = Order::where('invoice_no', 'like', 'Co-%-%')->orderByDesc('id')->first();
+        $lastOrder = Collection::where('invoice_no', 'like', 'Co-%-%')->orderByDesc('id')->first();
 
         // Ambil angka terakhir dari invoice terakhir
         if ($lastOrder) {
@@ -256,8 +256,9 @@ class CollectionController extends Controller
 
         return view("finance.collection.index", [
             'orders' => $orders,
-            'collections' => $collections, // Send orders variable to view
-            'sales' => $sales, // Pass sales employees for dropdown
+            'collections' => $collections,
+            'sales' => $sales,
+            'title' => 'Data Collection',
         ]);
     }
       

@@ -84,7 +84,7 @@
                 </a>
             </th>
             <th class="bg-danger">
-                <a href="{{ route('collection.all') }}" class="text-white">
+                <a href="{{ route('collection.index') }}" class="text-white">
                     <i class="fas fa-money-bill-alt me-3"></i>Collection
                 </a>
             </th>

@@ -1,127 +1,179 @@
 @extends('layout.main')
 
 @section('container')
-<div class="container-fluid">
-    <div class="row">
+
+<div class="d-flex justify-content-between mb-3">
+    <div>
+        <h2>{{ $title }}</h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-default-icon">
+                @include('finance.collection.partials.breadcrumb')
+                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('collection.details', $collection->id) }}">Detail</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><b>{{ $collection->invoice_no }}</b>
+            </ol>
+        </nav>
+    </div>
+    <div>
         
-        <div class="col-lg-12">
-            <div class="row">
-                <div class="col-md">
-                    <div class="row">
-                        <div class="col-lg-12 mb-3">
-                            <div class="d-flex justify-content-between align-items-center list-action">
-                                <a href="{{ url()->previous() }}"
-                                   class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Kembali">
-                                   <i class="fa fa-arrow-left"></i>
-                                </a>
-                                @if ($collection->payment_status == 'Belum dibayar' && auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
-                                <div class="d-flex ml-auto">
-                                    {{-- <form action="{{ route('col.sentStatus') }}" method="POST" class="mr-2">
-                                        @method('put')
-                                        @csrf
-                                        <input type="hidden" name="id" value="{{ $collection->id }}">
-                                        <button type="submit" class="btn bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Kirim"><b>Kirim</b></button>
-                                    </form> --}}
-                                </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
+    </div>
+</div>
+
+<div class="mb-3">
+    <h4>Sales Order</h4>
+    <div class="card">
+        <div class="card-body row">
+            <div class="col-md-2 d-flex flex-column mb-3">
+                <label class="mb-2">Tanggal SO</label>
+                <h5>{{Carbon\Carbon::parse($collection->salesorder->order_date)->translatedformat('l, d F Y') }}</h5>
+            </div>
+            <div class="col-md-2 d-flex flex-column mb-3">
+                <label class="mb-2">Nomor SO</label>
+                <div>
+                    <a href="{{ route('so.orderDetails', $collection->salesorder->id) }}" class="badge {{ strpos($collection->salesorder->invoice_no, '-R') !== false ? 'bg-primary' : (strpos($collection->salesorder->invoice_no, '-H') !== false ? 'bg-danger' : 
+                            (strpos($collection->salesorder->invoice_no, '-RS') !== false ? 'bg-success' : (strpos($collection->salesorder->invoice_no, '-HS') !== false ? 'bg-warning' : 'bg-secondary'))) }}">
+                        {{ $collection->salesorder->invoice_no }}
+                    </a>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <div class="header-title">
-                        <h4 class="card-title">Informasi Detail Pembayaran</h4>
+            <div class="col-md-2 d-flex flex-column mb-3">
+                <label class="mb-2">Nama Lembaga</label>
+                <a data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail Customer"
+                    href="{{ route('customers.show', $collection->salesorder->customer->id) }}">
+                    <h5>{{ $collection->salesorder->customer->NamaLembaga }}</h5>
+                </a>
+            </div>
+            <div class="col-md-2 d-flex flex-column mb-3">
+                <label class="mb-2">Nama Customer</label>
+                <a data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail Customer"
+                    href="{{ route('customers.show', $collection->salesorder->customer->id) }}">
+                    <h5>{{ $collection->salesorder->customer->NamaCustomer }}</h5>
+                </a>
+            </div>
+            <div class="col-md-2 d-flex flex-column mb-3">
+                <label class="mb-2">Jabatan</label>
+                <div>
+                    <span class="badge bg-secondary">{{ $collection->salesorder->customer->Jabatan }}</span>
+                </div>
+            </div>
+            <div class="col-md-2 d-flex flex-column mb-3">
+                <label class="mb-2">Sales</label>
+                <h5>{{ $collection->salesorder->customer->employee->name }}</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4>Detail Collection</h4>
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-md-4 d-flex flex-column mb-3">
+                    <label class="mb-2">Tanggal Collection</label>
+                    <h5>{{Carbon\Carbon::parse($collection->collection_date)->translatedformat('l, d F Y') }}</h5>
+                </div>
+                <div class="col-md-4 d-flex flex-column mb-3">
+                    <label class="mb-2">Nomor Collection</label>
+                    <div>
+                        <span class="badge {{ strpos($collection->invoice_no, '-R') !== false ? 'bg-primary' : (strpos($collection->invoice_no, '-H') !== false ? 'bg-danger' : 
+                                (strpos($collection->invoice_no, '-RS') !== false ? 'bg-success' : (strpos($collection->invoice_no, '-HS') !== false ? 'bg-warning' : 'bg-secondary'))) }}">
+                            {{ $collection->invoice_no }}
+                        </span>
                     </div>
                 </div>
-
-                <div class="card-body">
-                    <div class="row align-items-top">
-                        <div class="form-group col-md-3">
-                            <label>Tanggal DO</label> <br>
-                                <span class="badge bg-primary">{{Carbon\Carbon::parse($collection->collection_date)->translatedformat('l, d F Y') }}</span>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label>Nomor</label> <br>
-                                <span class="badge 
-                                    {{ strpos($collection->invoice_no, 'DOR') !== false ? 'badge-primary' : 
-                                    (strpos($collection->invoice_no, 'DOH') !== false ? 'badge-danger' : 
-                                    (strpos($collection->invoice_no, 'DORS') !== false ? 'badge-success' : 
-                                    (strpos($collection->invoice_no, 'DOHS') !== false ? 'badge-warning' : 'badge-secondary'))) }}">
-                                    {{ $collection->invoice_no }}
-                                </span>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label>Status </label> <br>
-                                <span class="badge 
-                                    {{ strpos($collection->payment_status, 'Siap dikirim') !== false ? 'badge-warning' : 
-                                       (strpos($collection->payment_status, 'Dikirim') !== false ? 'badge-primary' : 
-                                       (strpos($collection->payment_status, 'Terkirim') !== false ? 'badge-success' : 'badge-secondary')) }}">
-                                    {{ $collection->payment_status }}
-                                </span>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label>Nomor SO</label> <br>
-                            <a class="badge 
-                                    {{ strpos($collection->salesorder->invoice_no, 'SOR') !== false ? 'badge-primary' : 
-                                    (strpos($collection->salesorder->invoice_no, 'SOH') !== false ? 'badge-danger' : 
-                                    (strpos($collection->salesorder->invoice_no, 'SORS') !== false ? 'badge-success' : 
-                                    (strpos($collection->salesorder->invoice_no, 'SOHS') !== false ? 'badge-warning' : 'badge-secondary'))) }}" 
-                                    href="{{ route('so.orderDetails', $collection->salesorder->id) }}" 
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail">
-                                    {{ $collection->salesorder->invoice_no }}
-                            </a>
-                        </div>
-                        
-                        <div class="form-group col-md-3">
-                            <label>Sales</label> <br>
-                                <span class="badge bg-primary">
-                                {{ $collection->salesorder->customer->employee->name }}
-                                </span>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label>Nama Customer</label>
-                            <input type="text" class="form-control bg-white" value="{{ $collection->salesorder->customer->NamaCustomer }}" readonly>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label>Jabatan</label>
-                            <input type="text" class="form-control bg-white" value="{{ $collection->salesorder->customer->Jabatan }}" readonly>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label>Telp.</label>
-                            <input type="text" class="form-control bg-white" value="{{ $collection->salesorder->customer->TelpCustomer }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Alamat</label>
-                            <input type="text" class="form-control bg-white" value="{{ $collection->salesorder->customer->AlamatCustomer }}" readonly>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label>Nama Lembaga</label>
-                            <input type="text" class="form-control bg-white" value="{{ $collection->salesorder->customer->NamaLembaga }}" readonly>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label>Telp.</label>
-                            <input type="text" class="form-control bg-white" value="{{ $collection->salesorder->customer->TelpLembaga }}" readonly>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label>E-Mail</label>
-                            <input type="text" class="form-control bg-white" value="{{ $collection->salesorder->customer->EmailLembaga }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Alamat</label>
-                            <input type="text" class="form-control bg-white" value="{{ $collection->salesorder->customer->AlamatLembaga }}" readonly>
-                        </div>
-                        
+                <div class="col-md-4 d-flex flex-column mb-3">
+                    <label class="mb-2">Pembayaran</label>
+                    <div class="d-flex">
+                        ke-<h5>{{ $collection->payment_order }}</h5>
+                    </div>
+                    {{-- <h5>{{ $collection->getUrutanDalamOrder() }}</h5> --}}
+                </div>
+                <div class="col-md-4 d-flex flex-column mb-3">
+                    <label class="mb-2">Dibayar oleh</label>
+                    <h5>{{ $collection->paid_by }}</h5>
+                </div>
+                <div class="col-md-4 d-flex flex-column mb-3">
+                    <label class="mb-2">Metode Pembayaran</label>
+                    <h5>{{ $collection->payment_method }}</h5>
+                </div>
+                @if ($collection->payment_method == 'Tunai')
+                    <div class="col-md-4 d-flex flex-column mb-3">
+                        <label class="mb-2">Diterima oleh</label>
+                        <h5>{{ $collection->employee->name }}</h5>
+                    </div>
+                @else
+                    <div class="col-md-4 d-flex flex-column mb-3">
+                        <label class="mb-2">Rekening Pengirim</label>
+                        <h5>{{ $collection->bank->name }} - {{ $collection->no_rek }}</h5>
+                    </div>
+                    <div class="col-md-4 d-flex flex-column mb-3">
+                        <label class="mb-2">Dibayar ke</label>
+                        <h5>{{ $collection->rekening->bank->name }} - {{ $collection->rekening->no_rek }} - {{ $collection->rekening->nama }}</h5>
+                    </div>
+                @endif
+                <div class="col-md-4 d-flex flex-column mb-3">
+                    <label class="mb-2">Status Pembayaran</label>
+                    <div>
+                        <span class="badge {{ strpos($collection->payment_status, 'Belum Lunas') !== false ? 'bg-warning' : (strpos($collection->payment_status, 'Dalam Pengiriman') !== false ? 'bg-warning' : 'bg-success') }}">
+                            {{ $collection->payment_status }}
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
-
-
-        
     </div>
-    <!-- Page end  -->
+    <div class="dt-responsive table-responsive col-md-4">
+        <table class="table table-hover bg-white">
+            <thead>
+                <tr>
+                    <th width="55%">Keterangan</th>
+                    <th width="15%">%</th>
+                    <th width="30%">Nominal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="text-danger" colspan="2">Total Tagihan</th>
+                    <td class="accounting discountRp">{{ number_format($collection->salesorder->sub_total) }}</td>
+                </tr>
+                <tr>
+                    <th class="text-success" colspan="2">Jumlah diibayarkan</th>
+                    <td class="accounting subtotal">{{ number_format($collection->pay) }}</td>
+                </tr>
+                <tr>
+                    <td>Diskon</td>
+                    <td class="accounting discountPercent">{{ number_format($collection->discount_percent, 2) }}</td>
+                    <td class="accounting discountRp">{{ number_format($collection->discount_rp) }}</td>
+                </tr>
+                <tr>
+                    <td>PPh22</td>
+                    <td class="accounting discountPercent">{{ number_format($collection->PPh22_percent, 2) }}</td>
+                    <td class="accounting discountRp">{{ number_format($collection->PPh22_rp) }}</td>
+                </tr>
+                <tr>
+                    <td>PPN</td>
+                    <td class="accounting discountPercent">{{ number_format($collection->PPN_percent, 2) }}</td>
+                    <td class="accounting discountRp">{{ number_format($collection->PPN_rp) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Biaya admin</td>
+                    <td class="accounting discountRp">{{ number_format($collection->admin_fee) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Biaya lainnya</td>
+                    <td class="accounting discountRp">{{ number_format($collection->other_fee) }}</td>
+                </tr>
+                <tr>
+                    <th class="text-primary" colspan="2">Total diterima</th>
+                    <td class="accounting grandtotal">{{ number_format($collection->grandtotal) }}</td>
+                </tr>
+                <tr>
+                    <th class="text-danger" colspan="2">Sisa Tagihan</th>
+                    <td class="accounting discountRp">{{ number_format($collection->due) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 @include('components.preview-img-form')

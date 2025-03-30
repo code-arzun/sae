@@ -231,27 +231,26 @@ class DeliveryController extends Controller
         return redirect()->route('do.index')->with('created', 'Delivery Order berhasil dibuat!');
         // return redirect()->route('input.do')->with('created', 'Delivery Order berhasil dibuat!');
     }
+        // Store
+            public function storeDOReguler(Request $request)
+            {
+                return $this->storeDeliveryOrder($request, 'RO');
+            }
 
-    // Store
-        public function storeDOReguler(Request $request)
-        {
-            return $this->storeDeliveryOrder($request, 'RO');
-        }
+            public function storeDOHET(Request $request)
+            {
+                return $this->storeDeliveryOrder($request, 'HO');
+            }
 
-        public function storeDOHET(Request $request)
-        {
-            return $this->storeDeliveryOrder($request, 'HO');
-        }
+            public function storeDOROnline(Request $request)
+            {
+                return $this->storeDeliveryOrder($request, 'RS');
+            }
 
-        public function storeDOROnline(Request $request)
-        {
-            return $this->storeDeliveryOrder($request, 'RS');
-        }
-
-        public function storeDOHOnline(Request $request)
-        {
-            return $this->storeDeliveryOrder($request, 'HS');
-        }
+            public function storeDOHOnline(Request $request)
+            {
+                return $this->storeDeliveryOrder($request, 'HS');
+            }
     //
 
     // Update Status

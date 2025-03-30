@@ -73,6 +73,25 @@ class Collection extends Model
         return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 
+    // 1st method
+    protected $appends = ['payment_order'];
+
+    public function getPaymentOrderAttribute()
+    {
+        return self::where('order_id', $this->order_id)
+            ->where('created_at', '<=', $this->created_at)
+            ->count();
+    }
+
+    // 2nd method
+    // public function getUrutanDalamOrder()
+    // {
+    //     return Collection::where('order_id', $this->order_id)
+    //         ->where('created_at', '<=', $this->created_at)
+    //         ->orderBy('created_at', 'asc')
+    //         ->count(); // Hitung berapa data yang lebih tua
+    // }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {

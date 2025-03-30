@@ -359,7 +359,7 @@ use App\Http\Controllers\Publishing\WriterCategoryController;
 
             // View Collection
             Route::middleware(['permission:collection'])->group(function () {
-                // Route::get('all', [SalesOrderController::class, 'allCollection'])->name('collection.all');
+                // Route::get('all', [SalesOrderController::class, 'allCollection'])->name('collection.index');
                 Route::get('', [CollectionController::class, 'index'])->name('collection.index');
                 Route::get('unpaid', [CollectionController::class, 'unpaid'])->name('collection.unpaid');
                 Route::get('onProgress', [CollectionController::class, 'onProgress'])->name('collection.onProgress');

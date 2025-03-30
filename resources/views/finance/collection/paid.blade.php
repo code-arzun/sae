@@ -25,7 +25,7 @@
                                 <b>Lunas</b>
                             </a>
                             <div class="dropdown-menu dropdown-menu-left">
-                                <a class="dropdown-item" href="{{ route('collection.all') }}">Semua</a>
+                                <a class="dropdown-item" href="{{ route('collection.index') }}">Semua</a>
                                 <a class="dropdown-item" href="{{ route('collection.unpaid') }}">Belum dibayar</a>
                                 <a class="dropdown-item" href="{{ route('collection.onProgress') }}">Belum Lunas</a>
                             </div>
@@ -37,7 +37,7 @@
 
         <!-- Row & Pencarian -->
         <div class="col-lg-12">
-            <form action="{{ route('collection.all') }}" method="get">
+            <form action="{{ route('collection.index') }}" method="get">
                 <div class="row align-items-start">
                     @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
                     <div class="form-group col-sm-3">

@@ -15,7 +15,7 @@
             <div class="d-flex flex-wrap align-items-top justify-content-between">
                 <div>
                     <a href="{{ url()->previous() }}" class="badge bg-primary mb-3 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Kembali"><i class="fa fa-arrow-left mb-1 mt-1"></i></a>
-                    <a href="{{ route('collection.all') }}" class="badge bg-secondary me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Muat Ulang Halaman"><i class="fa fa-refresh mb-1 mt-1"></i></a>
+                    <a href="{{ route('collection.index') }}" class="badge bg-secondary me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Muat Ulang Halaman"><i class="fa fa-refresh mb-1 mt-1"></i></a>
                 </div>
                 <div>
                     <h5>
@@ -37,7 +37,7 @@
 
         <!-- Row & Pencarian -->
         <div class="col-lg-12">
-            <form action="{{ route('collection.all') }}" method="get">
+            <form action="{{ route('collection.index') }}" method="get">
                 <div class="row align-items-start">
                     @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
                     <div class="form-group col-sm-3">

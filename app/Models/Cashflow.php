@@ -38,9 +38,13 @@ class Cashflow extends Model
         'id',
     ];
 
-    public function user(){
-        // return $this->belongsTo(User::class, 'user_id');
-        return $this->belongsTo(User::class, 'id');
+    protected $with = [
+        'user'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function department(){
@@ -48,7 +52,7 @@ class Cashflow extends Model
     }
 
     public function cashflowcategory(){
-        return $this->belongsTo(cashflowcategory::class);
+        return $this->belongsTo(CashflowCategory::class);
     }
 
     public function scopeFilter($query, array $filters)

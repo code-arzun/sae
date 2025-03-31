@@ -2,11 +2,11 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.9.13/combined/css/gijgo.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.9.13/combined/js/gijgo.min.js"></script>
 
-<div id="tambahTransaksi" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="tambahTransaksiLabel" aria-hidden="true">
+<div id="createIncome" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createIncomeLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary">
-                <h3 class="modal-title text-white" id="tambahTransaksiLabel">Tambah {{ $title }} Baru</h3>
+                <h3 class="modal-title text-white" id="createIncomeLabel">Tambah {{ $title }} Baru</h3>
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="ti ti-x"></i></button>
             </div>
             <div class="modal-body bg-gray-100">
@@ -44,7 +44,9 @@
                             <select class="form-control" name="cashflowcategory_id" required>
                                 <option selected="" disabled>-- Pilih Kategori --</option>
                                 @foreach ($cashflowcategories as $cashflowcategory)
-                                        <option value="{{ $cashflowcategory->id }}" {{ old('cashflowcategory_id') == $cashflowcategory->id ? 'selected' : '' }}>{{ $cashflowcategory->type }} {{ $cashflowcategory->category }} {{ $cashflowcategory->detail }}</option>
+                                @if ($cashflow->cashflowcategory->type === 'Pemasukan')
+                                    <option value="{{ $cashflowcategory->id }}" {{ old('cashflowcategory_id') == $cashflowcategory->id ? 'selected' : '' }}>{{ $cashflowcategory->type }} {{ $cashflowcategory->category }} {{ $cashflowcategory->detail }}</option>
+                                @endif
                                     {{-- @endif --}}
                                 @endforeach
                             </select>

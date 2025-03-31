@@ -82,12 +82,12 @@
             @include('finance.cashflow.category.partials.head')
             <tbody>
                 @forelse ($cashflowcategories as $cashflowcategory)
-                @if ($cashflowcategory->type === 'Pemasukan')
-                    @include('finance.cashflow.category.partials.data')
-                @endif
+                    @if ($cashflowcategory->type === 'Pemasukan')
+                        @include('finance.cashflow.category.partials.data')
+                    @endif
         
                 @empty
-                @include('layout.partials.alert-danger')
+                    @include('layout.partials.alert-danger')
                 @endforelse
             </tbody>
         </table>
@@ -98,12 +98,12 @@
             @include('finance.cashflow.category.partials.head')
             <tbody>
                 @forelse ($cashflowcategories as $cashflowcategory)
-                @if ($cashflowcategory->type === 'Pengeluaran')
-                    @include('finance.cashflow.category.partials.data')
-                @endif
+                    @if ($cashflowcategory->type === 'Pengeluaran')
+                        @include('finance.cashflow.category.partials.data')
+                    @endif
         
                 @empty
-                @include('layout.partials.alert-danger')
+                    @include('layout.partials.alert-danger')
                 @endforelse
             </tbody>
         </table>

@@ -242,7 +242,8 @@ class CustomerController extends Controller
             $validatedData['FotoCustomer'] = 'storage/customers/'.$fileName;
         } else {
             // Set default image jika tidak ada upload
-            $validatedData['FotoCustomer'] = 'storage/customers/default.jpg';
+            // $validatedData['FotoCustomer'] = 'storage/customers/default.jpg';
+            $validatedData['FotoCustomer'] = $customer->FotoCustomer;
         }
 
 

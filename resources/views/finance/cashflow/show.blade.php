@@ -1,103 +1,91 @@
-@extends('dashboard.body.main')
-
-@section('specificpagestyles')
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
-    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-@endsection
-
-@section('container')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <div class="header-title">
-                        <h4 class="card-title">Detail Pengeluaran 
-                            {{-- <span class="badge badge-danger"><b>{{ $cashflowexpense->expense_code }}</b></span> --}}
-                        </h4>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <form action="{{ route('expense.update', $cashflowexpense->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('put')
-                        <!-- begin: Input Image -->
-                        <div class="form-group row align-items-center">
-                            <div class="col-md-12">
-                                <div class="profile-img-edit">
-                                    <div class="crm-profile-img-edit">
-                                        <img class="crm-profile-pic rounded-circle avatar-100" id="image-preview" src="{{ $cashflowexpense->cashflowexpense_image ? asset('storage/cashflowexpense/'.$cashflowexpense->cashflowexpense_image) : asset('assets/images/cashflowexpense/default.webp') }}" alt="profile-pic">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+<div id="showTransaksi{{ $cashflow->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="showTransaksiLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h3 class="modal-title text-white" id="showTransaksiLabel">{{ $title }}</h3>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="ti ti-x"></i></button>
+            </div>
+            <div class="modal-body bg-white">
+                <div class="row">
+                    <div class="col-md-10">
                         <div class="row">
-                            <div class="input-group mb-4 col-lg-6">
-                                {{-- <div class="custom-file">
-                                    <input type="file" class="custom-file-input @error('cashflowexpense_image') is-invalid @enderror" id="image" name="cashflowexpense_image" accept="image/*" onchange="previewImage();">
-                                    <label class="custom-file-label" for="cashflowexpense_image">Choose file</label>
-                                </div> --}}
-                                @error('cashflowexpense_image')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
+                            <!-- Tanggal -->
+                            <div class="form-group col-md-4">
+                                <label for="date" class="text-muted mb-1">Tanggal</label>
+                                <h5>{{ Carbon\Carbon::parse($cashflow->date)->translatedformat('l, d F Y') }}</h5>
+                            </div>
+                            <!-- Divisi -->
+                            <div class="form-group col-md-4">
+                                <label for="department_id" class="text-muted mb-1">Divisi</label>
+                                <h5>{{ $cashflow->department->name }}</h5>
+                            </div>
+                            <!-- Kode -->
+                            <div class="form-group col-md-4">
+                                <label for="department_id" class="text-muted mb-1">Kode</label>
+                                @if ($cashflow->cashflowcategory->type === 'Pemasukan')
+                                <h5 class="text-success">{{ $cashflow->cashflow_code }}</h5>
+                                @else
+                                <h5 class="text-danger">{{ $cashflow->cashflow_code }}</h5>
+                                @endif
+                            </div>
+                            <!-- Jenis Transaksi -->
+                            <div class="form-group col-md-4 d-flex flex-column">
+                                <label for="cashflowcategory_id" class="text-muted mb-1">Jenis Transaksi</label>
+                                <div>
+                                    @if ($cashflow->cashflowcategory->type === 'Pemasukan')
+                                    <span class="badge bg-success">{{ $cashflow->cashflowcategory->type }}</span>
+                                    @else
+                                    <span class="badge bg-danger">{{ $cashflow->cashflowcategory->type }}</span>
+                                    @endif
                                 </div>
-                                @enderror
+                            </div>
+                            <!-- Kategori -->
+                            <div class="form-group col-md-4">
+                                <label for="cashflowcategory_id" class="text-muted mb-1">Kategori</label>
+                                <h5>{{ $cashflow->cashflowcategory->category }} {{ $cashflow->cashflowcategory->detail }}</h5>
+                            </div>
+                            <!-- Nominal -->
+                            <div class="form-group col-md-4">
+                                <label for="nominal" class="text-muted mb-1">Nominal</label>
+                                <h5>Rp {{ number_format($cashflow->nominal) }}</h5>
+                            </div>
+                            <!-- Detail -->
+                            <div class="form-group col-md-12">
+                                <label for="notes" class="text-muted mb-1">Detail</label>
+                                <h5>{{ $cashflow->cashflowcategory->category }} {{ $cashflow->cashflowcategory->detail }} {{ $cashflow->notes }}</h5>
+                            </div>
+                            <!-- User -->
+                            <div class="form-group col-md-4">
+                                <label for="user_id" class="text-muted mb-1">Diinput oleh</label>
+                                <h5>{{ $cashflow->user->employee->name }}</h5>
+                            </div>
+                            <!-- Created at -->
+                            <div class="form-group col-md-4">
+                                <label for="created_at" class="text-muted mb-1">Diinput pada</label>
+                                <h5>{{ Carbon\Carbon::parse($cashflow->created_at)->translatedformat('h:i:s - l, d F Y') }}</h5>
+                            </div>
+                            <!-- Updated at -->
+                            <div class="form-group col-md-4">
+                                <label for="updated_at" class="text-muted mb-1">Diperbarui pada</label>
+                                @if ($cashflow->created_at == $cashflow->updated_at)
+                                <h5>-</h5>
+                                @else
+                                <h5>{{ Carbon\Carbon::parse($cashflow->updated_at)->translatedformat('h:i:s - l, d F Y') }}</h5>
+                                @endif
                             </div>
                         </div>
-                        <!-- end: Input Image -->
-                        <!-- begin: Input Data -->
-                        <div class=" row align-items-center">
-                            <div class="form-group col-md-4">
-                                <label for="cashflowexpense_date">Tanggal</label>
-                                <input type="text" class="form-control bg-white" value="{{ Carbon\Carbon::parse($cashflowexpense->date)->translatedformat('l, d F Y') }}" readonly>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="user_id">Diinput oleh <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control bg-white" value="{{ $cashflowexpense->user->employee->name }}" readonly>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="department_id">Divisi <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control bg-white" value="{{ $cashflowexpense->department->name }}" readonly>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="cashflowcategory_id">Kategori <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control bg-white" value="{{ $cashflowexpense->cashflowdetail->cashflowcategory->name }}" readonly>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="cashflowdetail_id">Keterangan <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control bg-white" value="{{ $cashflowexpense->cashflowdetail->name }}" readonly>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="nominal">Nominal Kas Keluar<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control bg-white" value="Rp {{ number_format($cashflowexpense->nominal) }}" readonly>
-                            </div>
-                            <div class="form-group col-md-8">
-                                <label for="notes">Catatan</label>
-                                <input type="text" class="form-control bg-white" value="{{ $cashflowexpense->notes }}" readonly>
-                            </div>
+                    </div>
+                    <!-- Bukti Transaksi -->
+                    <div class="col-md-2 d-flex flex-column">
+                        <label for="receipt" class="text-muted mb-1">Bukti Transaksi</label>
+                        <div class="input-group-append">
+                            <a href="{{ asset($cashflow->receipt) }}" target="_blank">
+                                <img src="{{ $cashflow->receipt ? asset($cashflow->receipt) : asset(Storage::url('cashflow/default.jpg')) }}" alt="{{ $cashflow->cashflow_code }} | {{ $cashflow->cashflowcategory->category }} {{ $cashflow->cashflowcategory->detail }} {{ $cashflow->notes }}" class="img-fluid" width="100%">
+                            </a>
                         </div>
-                        <!-- end: Input Data -->
-                        <div class="mt-2">
-                            <a class="btn bg-warning" href="{{ route('expense.index') }}">Kembali</a>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Page end  -->
-</div>
-
-<script>
-    $('#cashflowexpense_date').datepicker({
-        uiLibrary: 'bootstrap4',
-        format: 'dd-mm-yyyy'
-        // https://gijgo.com/datetimepicker/configuration/format
-    });
-</script>
-
-@include('components.preview-img-form')
-@endsection
+  </div>

@@ -1,24 +1,15 @@
 @extends('layout.main')
 
+@section('breadcrumb')
+<li class="breadcrumb-item active" aria-current="page"><a href="{{ route('customers.index') }}">Data Customer</a></li>
+@endsection
+
+@section('action-button')
+<a href="{{ route('customers.create') }}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahCustomer">Tambah Customer Baru</a>
+@endsection
+
+
 @section('container')
-
-<div class="d-flex justify-content-between mb-3">
-    <div>
-        <h2>{{ $title }}</h2>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-default-icon">
-                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="ti ti-home-2"></i></a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('customers.index') }}">Data Customer</a></li>
-            </ol>
-        </nav>
-    </div>
-    <div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahCustomer">Tambah Customer Baru</button>
-        <!-- Create -->
-        @include('marketing.customers.create')
-    </div>
-</div>
-
 
 {{-- <button type="button" class="badge bg-success"
     data-bs-toggle="modal" data-target="#inputCustomer">

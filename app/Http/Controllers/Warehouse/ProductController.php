@@ -309,7 +309,7 @@ class ProductController extends Controller
             Product::where('id', $product->id)->update($validatedData);
             // Product::where('slug', $product->slug)->update($validatedData);
 
-            return Redirect::route('products.index')->with('success', 'Product has been updated!');
+            return back()->with('success', 'Data Produk telah berhasil diperbarui!');
         }
 
         public function destroy(Product $product)
@@ -334,9 +334,20 @@ class ProductController extends Controller
 
         $barcode = $generator->getBarcode($product->product_code, $generator::TYPE_CODE_128);
 
+        // $categories = Product::select('category_id')->distinct()->get();
+        $categories = ProductCategory::all();
+        // $publishers = Product::select('publisher_id')->distinct()->get();
+        $publishers = Publisher::all();
+        // $writers = Product::select('writer_id')->distinct()->get();
+        $writers = Writer::all();
+
         return view('warehouse.products.show', [
             'product' => $product,
             'barcode' => $barcode,
+            'categories' => $categories,
+            'publishers' => $publishers,
+            'writers' => $writers,
+            'title' => 'Detail Produk'
         ]);
     }
 

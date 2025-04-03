@@ -1,12 +1,13 @@
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.9.13/combined/css/gijgo.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.9.13/combined/js/gijgo.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.9.13/combined/js/gijgo.min.js"></script>
 
-<div id="createIncome" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createIncomeLabel" aria-hidden="true">
+
+<div id="createExpenditure" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createExpenditureLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-success">
-                <h3 class="modal-title text-white" id="createIncomeLabel">Tambah Pemasukan Baru</h3>
+            <div class="modal-header bg-danger">
+                <h3 class="modal-title text-white" id="createExpenditureLabel">Tambah Pengeluaran Baru</h3>
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="ti ti-x"></i></button>
             </div>
             <div class="modal-body bg-gray-100">
@@ -16,8 +17,6 @@
                         <!-- Tanggal -->
                         <div class="form-group col-md-2">
                             <label for="date">Tanggal</label>
-                            {{-- <input id="date" class="form-control @error('date') is-invalid @enderror" name="date" value="{{ old('date') }}"> --}}
-                            {{-- <input type="text" class="form-control" @error('date') is-invalid @enderror id="pc-datepicker-1" placeholder="Pilih tanggal" name="date" value="{{ old('date') }}"> --}}
                             <input class="form-control @error('date') is-invalid @enderror" type="date" value="{{ old('date') }}" name="date" id="demo-date-only">
                             @error('date')
                             <div class="invalid-feedback">
@@ -46,7 +45,7 @@
                             <select class="form-control" name="cashflowcategory_id" required>
                                 <option selected="" disabled>-- Pilih Kategori --</option>
                                 @foreach ($cashflowcategories as $cashflowcategory)
-                                @if ($cashflowcategory->type === 'Pemasukan')
+                                @if ($cashflowcategory->type === 'Pengeluaran')
                                     <option value="{{ $cashflowcategory->id }}" {{ old('cashflowcategory_id') == $cashflowcategory->id ? 'selected' : '' }}>{{ $cashflowcategory->category }} {{ $cashflowcategory->detail }}</option>
                                 @endif
                                     {{-- @endif --}}
@@ -101,20 +100,11 @@
     </div>
 </div>
 
-{{-- <script>
+<script>
     $('#date').datepicker({
         uiLibrary: 'bootstrap4',
         // format: 'dd-mm-yyyy'
         format: 'yyyy-mm-dd'
         // https://gijgo.com/datetimepicker/configuration/format
     });
-</script> --}}
-<script src="{{ asset('assets/js/plugins/datepicker-full.min.js') }}"></script>
-<script>
-    // minimum setup
-    (function () {
-    const d_week = new Datepicker(document.querySelector('#pc-datepicker-1'), {
-        buttonClass: 'btn'
-    });
-    })();
 </script>

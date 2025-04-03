@@ -23,186 +23,222 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 class CashflowController extends Controller
 {
     public function index()
-    {
-        $row = (int) request('row', 10000);
+{
+    $cashflows = Cashflow::with(['user', 'department', 'cashflowcategory'])
+        ->filter(request(['search']))
+        ->sortable()
+        ->orderBy('date', 'desc')
+        ->get();
 
-        if ($row < 1 || $row > 10000) {
-            abort(400, 'The per-page parameter must be an integer between 1 and 100.');
-        }
+    $annualCashflows = $cashflows->groupBy(fn ($item) => $item->date->format('Y'))->sortKeysDesc()->map(fn ($items) => $items->sortBy('date'));
 
-        return view('finance.cashflow.index', [
-            'cashflows' => Cashflow::with(['user', 'department', 'cashflowcategory'])
-                ->filter(request(['search']))
-                ->sortable()->orderBy('date', 'desc')
-                ->paginate($row)
-                ->appends(request()->query()),
-            'departments' => Department::all(),
-            'cashflowcategories' => CashflowCategory::all(),
-            'user' => User::all(),
-        ]);
-    }
+    $monthlyCashflows = $cashflows->groupBy(fn ($item) => $item->date->format('Y-m'))->sortKeysDesc()->map(fn ($items) => $items->sortBy('date'));
 
-    public function create()
-    {
-        return view('finance.cashflow.create', [
-            'departments' => Department::all(),
-            'cashflows' => Cashflow::all(),
-        ]);
-    }
+    return view('finance.cashflow.index', [
+        'cashflows' => $cashflows,
+        'annualCashflows' => $annualCashflows,
+        'monthlyCashflows' => $monthlyCashflows,
+        'departments' => Department::all(),
+        'cashflowcategories' => CashflowCategory::all(),
+        'user' => User::all(),
+        'title' => 'Arus Kas',
+        'totalCashflow' => Cashflow::sum('nominal'),
+    ]);
+}
 
-    public function store(Request $request)
-    {
-        $user = auth()->user();
-        
-        $category = CashflowCategory::find($request->cashflowcategory_id);
-        if (!$category) {
-            return Redirect::back()->withErrors(['cashflowcategory_id' => 'Kategori tidak ditemukan']);
-        }
-    
-        // Tentukan prefix berdasarkan tipe kategori
-        $prefix = ($category->type === 'Pemasukan') ? 'KM-' : 'KK-';
-    
-        // **Cari nomor terakhir berdasarkan prefix**
-        $lastCashflow = Cashflow::where('cashflow_code', 'LIKE', "$prefix%")
-                                ->orderBy('cashflow_code', 'desc')
-                                ->first();
-    
-        // Ambil nomor terakhir, jika tidak ada mulai dari 1
-        if ($lastCashflow) {
-            $lastNumber = (int) str_replace($prefix, '', $lastCashflow->cashflow_code);
-            $nextNumber = $lastNumber + 1;
-        } else {
-            $nextNumber = 1;
-        }
-    
-        // Format angka menjadi 4 digit (0001, 0002, dst.)
-        $cashflow_code = $prefix . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
-    
-        // Validasi input
-        $rules = [
-            'cashflowcategory_id' => 'required|integer',
-            'department_id' => 'required|integer',
-            'nominal' => 'required|integer',
-            'notes' => 'required|string',
-            'receipt' => 'image|file|max:1024|nullable',
-            'date' => 'date_format:Y-m-d|max:10|required',
-        ];
-    
-        $validatedData = $request->validate($rules);
-        $validatedData['user_id'] = $user->id;
-        $validatedData['cashflow_code'] = $cashflow_code;
-    
-        // Proses upload file
-        if ($file = $request->file('receipt')) {
-            $fileName = Str::slug($cashflow_code) . '-' . time() . '.' . $file->getClientOriginalExtension();
-            $path = 'public/cashflow/';
-            $file->storeAs($path, $fileName);
-            $validatedData['receipt'] = 'storage/cashflow/' . $fileName;
-        } else {
-            $validatedData['receipt'] = 'storage/cashflow/default.jpg';
-        }
-    
-        Cashflow::create($validatedData);
-    
-        return Redirect::route('cashflow.index')->with('success', 'Transaksi berhasil ditambahkan!');
-    }
-    
     
 
+    // Suggestion di Index
+        // 'totalCashflowIn' => Cashflow::where('cashflowcategory_id', 1)->sum('nominal'),
+        // 'totalCashflowOut' => Cashflow::where('cashflowcategory_id', 2)->sum('nominal'),
+        // 'totalCashflowInCount' => Cashflow::where('cashflowcategory_id', 1)->count(),
+        // 'totalCashflowOutCount' => Cashflow::where('cashflowcategory_id', 2)->count(),
+        // 'totalCashflowCount' => Cashflow::count(),
+        // 'totalCashflowInCount' => Cashflow::where('cashflowcategory_id', 1)->count(),
+        // 'totalCashflowOutCount' => Cashflow::where('cashflowcategory_id', 2)->count(),
+        // 'totalCashflowCount' => Cashflow::count(),
+        // 'totalCashflowIn' => Cashflow::where('cashflowcategory_id', 1)->sum('nominal'),
+        // 'totalCashflowOut' => Cashflow::where('cashflowcategory_id', 2)->sum('nominal'),
+        // 'totalCashflowInCount' => Cashflow::where('cashflowcategory_id', 1)->count(),
+        // 'totalCashflowOutCount' => Cashflow::where('cashflowcategory_id', 2)->count(),
+        // 'totalCashflowCount' => Cashflow::count(),
+        // 'totalCashflowIn' => Cashflow::where('cashflowcategory_id', 1)->sum('nominal'),
+        // 'totalCashflowOut' => Cashflow::where('cashflowcategory_id', 2)->sum('nominal'),
+        // 'totalCashflowInCount' => Cashflow::where('cashflowcategory_id', 1)->count(),
+        // 'totalCashflowOutCount' => Cashflow::where('cashflowcategory_id', 2)->count(), 
+        // 'totalCashflowCount' => Cashflow::count(),
+        // 'totalCashflowIn' => Cashflow::where('cashflowcategory_id', 1)->sum('nominal'),
+        // 'totalCashflowOut' => Cashflow::where('cashflowcategory_id', 2)->sum('nominal'),
+    // 
+    
     public function show(Cashflow $cashflow)
     {
         return view('finance.cashflow.show', [
             'cashflow' => $cashflow,
             'cashflowcategory' => Cashflowcategory::all(),
+            'title' => 'Detail Arus Kas',
         ]);
     }
 
-    public function edit(Cashflow $cashflow)
-    {
-        return view('finance.cashflow.edit', [
-            'cashflow' => $cashflow,
-            'departments' => Department::all(),
-            'cashflows' => Cashflow::all(),
-            'cashflowcategories' => Cashflowcategory::all(),
-        ]);
-    }
+    // CRUD
+        public function create()
+        {
+            return view('finance.cashflow.create', [
+                'departments' => Department::all(),
+                'cashflows' => Cashflow::all(),
+            ]);
+        }
 
-    public function update(Request $request, Cashflow $cashflow)
-    {
-        $user = auth()->user();
+        public function store(Request $request)
+        {
+            $user = auth()->user();
+            
+            $category = CashflowCategory::find($request->cashflowcategory_id);
+            if (!$category) {
+                return Redirect::back()->withErrors(['cashflowcategory_id' => 'Kategori tidak ditemukan']);
+            }
         
-        $category = CashflowCategory::find($request->cashflowcategory_id);
-        if (!$category) {
-            return Redirect::back()->withErrors(['cashflowcategory_id' => 'Kategori tidak ditemukan']);
+            // Tentukan prefix berdasarkan tipe kategori
+            $prefix = ($category->type === 'Pemasukan') ? 'KM-' : 'KK-';
+        
+            // **Cari nomor terakhir berdasarkan prefix**
+            $lastCashflow = Cashflow::where('cashflow_code', 'LIKE', "$prefix%")
+                                    ->orderBy('cashflow_code', 'desc')
+                                    ->first();
+        
+            // Ambil nomor terakhir, jika tidak ada mulai dari 1
+            if ($lastCashflow) {
+                $lastNumber = (int) str_replace($prefix, '', $lastCashflow->cashflow_code);
+                $nextNumber = $lastNumber + 1;
+            } else {
+                $nextNumber = 1;
+            }
+        
+            // Format angka menjadi 4 digit (0001, 0002, dst.)
+            $cashflow_code = $prefix . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+        
+            // Validasi input
+            $rules = [
+                'cashflowcategory_id' => 'required|integer',
+                'department_id' => 'required|integer',
+                'nominal' => 'required|integer',
+                'notes' => 'required|string',
+                'receipt' => 'image|file|max:1024|nullable',
+                'date' => 'date_format:Y-m-d|max:10|required',
+            ];
+        
+            $validatedData = $request->validate($rules);
+            $validatedData['user_id'] = $user->id;
+            // Update plan -> change user_id to created_by and updated_by
+                // $validatedData['created_by'] = $user->id;
+                // $validatedData['updated_by'] = $user->id;
+            $validatedData['cashflow_code'] = $cashflow_code;
+        
+            // Proses upload file
+            if ($file = $request->file('receipt')) {
+                $fileName = Str::slug($cashflow_code) . '-' . time() . '.' . $file->getClientOriginalExtension();
+                $path = 'public/cashflow/';
+                $file->storeAs($path, $fileName);
+                $validatedData['receipt'] = 'storage/cashflow/' . $fileName;
+            } else {
+                $validatedData['receipt'] = 'storage/cashflow/default.jpg';
+            }
+        
+            Cashflow::create($validatedData);
+        
+            return Redirect::route('cashflow.index')->with('success', 'Transaksi berhasil ditambahkan!');
         }
-    
-        // Tentukan prefix berdasarkan tipe kategori
-        $prefix = ($category->type === 'Pemasukan') ? 'KM-' : 'KK-';
-    
-        // **Cari nomor terakhir berdasarkan prefix**
-        $lastCashflow = Cashflow::where('cashflow_code', 'LIKE', "$prefix%")
-                                ->orderBy('cashflow_code', 'desc')
-                                ->first();
-    
-        // Ambil nomor terakhir, jika tidak ada mulai dari 1
-        if ($lastCashflow) {
-            $lastNumber = (int) str_replace($prefix, '', $lastCashflow->cashflow_code);
-            $nextNumber = $lastNumber + 1;
-        } else {
-            $nextNumber = 1;
+        
+        public function edit(Cashflow $cashflow)
+        {
+            return view('finance.cashflow.edit', [
+                'cashflow' => $cashflow,
+                'departments' => Department::all(),
+                'cashflows' => Cashflow::all(),
+                'cashflowcategories' => Cashflowcategory::all(),
+            ]);
         }
-    
-        // Format angka menjadi 4 digit (0001, 0002, dst.)
-        $cashflow_code = $prefix . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
-    
-        // Validasi input
-        $rules = [
-            'cashflowcategory_id' => 'required|integer',
-            'department_id' => 'required|integer',
-            'nominal' => 'required|integer',
-            'notes' => 'required|string',
-            'receipt' => 'image|file|max:1024|nullable',
-            'date' => 'date_format:Y-m-d|max:10|required',
-        ];
-    
-        $validatedData = $request->validate($rules);
-        $validatedData['user_id'] = $user->id;
-        $validatedData['cashflow_code'] = $cashflow_code;
-    
-        // Proses upload file
-        if ($file = $request->file('receipt')) {
-            $fileName = Str::slug($cashflow_code) . '-' . time() . '.' . $file->getClientOriginalExtension();
-            $path = 'public/cashflow/';
+
+        public function update(Request $request, Cashflow $cashflow)
+        {
+            $user = auth()->user();
+            
+            $category = CashflowCategory::find($request->cashflowcategory_id);
+            if (!$category) {
+                return Redirect::back()->withErrors(['cashflowcategory_id' => 'Kategori tidak ditemukan']);
+            }
+        
+            // Tentukan prefix berdasarkan tipe kategori
+            $prefix = ($category->type === 'Pemasukan') ? 'KM-' : 'KK-';
+        
+            // **Cari nomor terakhir berdasarkan prefix**
+            $lastCashflow = Cashflow::where('cashflow_code', 'LIKE', "$prefix%")
+                                    ->orderBy('cashflow_code', 'desc')
+                                    ->first();
+        
+            // Ambil nomor terakhir, jika tidak ada mulai dari 1
+            if ($lastCashflow) {
+                $lastNumber = (int) str_replace($prefix, '', $lastCashflow->cashflow_code);
+                $nextNumber = $lastNumber + 1;
+            } else {
+                $nextNumber = 1;
+            }
+        
+            // Format angka menjadi 4 digit (0001, 0002, dst.)
+            $cashflow_code = $prefix . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+        
+            // Validasi input
+            $rules = [
+                'cashflowcategory_id' => 'required|integer',
+                'department_id' => 'required|integer',
+                'nominal' => 'required|integer',
+                'notes' => 'required|string',
+                'receipt' => 'image|file|max:1024|nullable',
+                'date' => 'date_format:Y-m-d|max:10|required',
+            ];
+        
+            $validatedData = $request->validate($rules);
+            $validatedData['user_id'] = $user->id;
+            // Update plan -> change user_id to created_by and updated_by
+                // $validatedData['created_by'] = $user->id;
+                // $validatedData['updated_by'] = $user->id;
+            $validatedData['cashflow_code'] = $cashflow_code;
+        
+            // Proses upload file
+            if ($file = $request->file('receipt')) {
+                $fileName = Str::slug($cashflow_code) . '-' . time() . '.' . $file->getClientOriginalExtension();
+                $path = 'public/cashflow/';
+                if($cashflow->receipt){
+                    Storage::delete($path . $cashflow->receipt);
+                }
+                if ($cashflow->receipt && $cashflow->receipt != 'storage/cashflow/default.jpg') {
+                    // Ubah path dari 'storage/' ke 'public/' untuk kompatibilitas Storage::delete
+                    $oldFilePath = str_replace('storage/', 'public/', $cashflow->receipt);
+                    Storage::delete($oldFilePath);
+                }
+                $file->storeAs($path, $fileName);
+                $validatedData['receipt'] = 'storage/cashflow/' . $fileName;
+            } else {
+                // $validatedData['receipt'] = 'storage/cashflow/default.jpg';
+                $validatedData['receipt'] = $cashflow->receipt;
+            }
+
+            Cashflow::where('id', $cashflow->id)->update($validatedData);
+
+            return Redirect::route('cashflow.index')->with('success', 'Cashflow has been updated!');
+        }
+
+        public function destroy(Cashflow $cashflow)
+        {
             if($cashflow->receipt){
-                Storage::delete($path . $cashflow->receipt);
+                Storage::delete('public/cashflow/' . $cashflow->receipt);
             }
-            if ($cashflow->receipt && $cashflow->receipt != 'storage/cashflow/default.jpg') {
-                // Ubah path dari 'storage/' ke 'public/' untuk kompatibilitas Storage::delete
-                $oldFilePath = str_replace('storage/', 'public/', $cashflow->receipt);
-                Storage::delete($oldFilePath);
-            }
-            $file->storeAs($path, $fileName);
-            $validatedData['receipt'] = 'storage/cashflow/' . $fileName;
-        } else {
-            // $validatedData['receipt'] = 'storage/cashflow/default.jpg';
-            $validatedData['receipt'] = $cashflow->receipt;
+
+            Cashflow::destroy($cashflow->id);
+
+            return Redirect::route('cashflow.index')->with('success', 'Product has been deleted!');
         }
-
-        Cashflow::where('id', $cashflow->id)->update($validatedData);
-
-        return Redirect::route('cashflow.index')->with('success', 'Cashflow has been updated!');
-    }
-
-    public function destroy(Cashflow $cashflow)
-    {
-        if($cashflow->receipt){
-            Storage::delete('public/cashflow/' . $cashflow->receipt);
-        }
-
-        Cashflow::destroy($cashflow->id);
-
-        return Redirect::route('cashflow.index')->with('success', 'Product has been deleted!');
-    }
+    // 
 
     // public function importView()
     // {

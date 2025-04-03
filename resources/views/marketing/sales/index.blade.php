@@ -1,14 +1,10 @@
 @extends('layout.main')
 
-@section('container')
+@section('breadcrumb')
+<li class="breadcrumb-item active" aria-current="page"><a href="{{ route('sales') }}">Data Sales</a></li>
+@endsection
 
-<h2>Data Sales</h2>
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb breadcrumb-default-icon">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="ti ti-home-2"></i></a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('sales') }}">Data Sales</a></li>
-    </ol>
-</nav>
+@section('container')
 
 <!-- Data -->
 <div class="col-lg-12">

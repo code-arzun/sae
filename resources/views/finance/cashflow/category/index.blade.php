@@ -1,25 +1,17 @@
 @extends('layout.main')
 
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('cashflow.index') }}">Arus Kas</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('cashflowcategory.index') }}">Kategori</a></li>
+@endsection
+
+@section('action-button')
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahKategoriTransaksi"><i class="ti ti-plus"></i> Tambah Kategori Baru</button>
+    <!-- Create -->
+    @include('finance.cashflow.category.create')
+@endsection
+
 @section('container')
-
-<div class="d-flex justify-content-between mb-3">
-    <div>
-        <h2>{{ $title }}</h2>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-default-icon">
-                @include('finance.cashflow.category.partials.breadcrumb')
-                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('cashflowcategory.index') }}">Kategori</a></li>
-            </ol>
-        </nav>
-    </div>
-    <div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahKategoriTransaksi">Tambah Kategori Baru</button>
-        <!-- Create -->
-        @include('finance.cashflow.category.create')
-    </div>
-</div>
-
-
 
 <div class="row">
     {{-- <div class="card col-md-4">
@@ -77,7 +69,12 @@
     </div> --}}
 
     <div class="dt-responsive table-responsive col-md-6">
-        <h4 class="text-success">Pemasukan</h4>
+        <div class="d-flex justify-content-between mb-3">
+            <h4 class="text-success">Pemasukan</h4>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createIncomeCategory"><i class="ti ti-plus"></i> Tambah Kategori Pemasukan</button>
+            <!-- Create -->
+            @include('finance.cashflow.category.create-income')
+        </div>
         <table class="table table-hover bg-white mb-0">
             @include('finance.cashflow.category.partials.head')
             <tbody>
@@ -93,7 +90,12 @@
         </table>
     </div>
     <div class="dt-responsive table-responsive col-md-6">
-        <h4 class="text-danger">Pengeluaran</h4>
+        <div class="d-flex justify-content-between mb-3">
+            <h4 class="text-danger">Pengeluaran</h4>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#createExpenditureCategory"><i class="ti ti-plus"></i> Tambah Kategori Pengeluaran</button>
+            <!-- Create -->
+            @include('finance.cashflow.category.create-expenditure')
+        </div>
         <table class="table table-hover bg-white mb-0">
             @include('finance.cashflow.category.partials.head')
             <tbody>

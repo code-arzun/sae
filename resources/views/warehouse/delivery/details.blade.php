@@ -1,30 +1,24 @@
 @extends('layout.main')
 
-@section('container')
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('do.index') }}">Delivery Order</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('do.deliveryDetails', $delivery->id) }}">Detail</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><b>{{ $delivery->invoice_no }}</b>
+@endsection
 
-<div class="d-flex justify-content-between mb-3">
-    <div>
-        <h2>{{ $title }}</h2>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-default-icon">
-                @include('warehouse.delivery.partials.breadcrumb')
-                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('do.deliveryDetails', $delivery->id) }}">Detail</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><b>{{ $delivery->invoice_no }}</b>
-            </ol>
-        </nav>
-    </div>
-    <div>
-        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
-            @if ($delivery->delivery_status === 'Siap dikirim')
-                <a href="#" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#sent{{ $delivery->id }}" data-id="{{ $delivery->id }}"><i class="fa fa-info-circle me-2"></i>Perbarui Status Pengiriman</a>
-                @include('warehouse.delivery.partials.modal-sent')
-            @elseif ($delivery->delivery_status === 'Dalam Pengiriman')
-                <a href="#" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#delivered{{ $delivery->id }}" data-id="{{ $delivery->id }}"><i class="fa fa-info-circle me-2"></i>Perbarui Status Pengiriman</a>
-                @include('warehouse.delivery.partials.modal-delivered')
-            @endif
+@section('action-button')
+    @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
+        @if ($delivery->delivery_status === 'Siap dikirim')
+            <a href="#" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#sent{{ $delivery->id }}" data-id="{{ $delivery->id }}"><i class="fa fa-info-circle me-2"></i>Perbarui Status Pengiriman</a>
+            @include('warehouse.delivery.partials.modal-sent')
+        @elseif ($delivery->delivery_status === 'Dalam Pengiriman')
+            <a href="#" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#delivered{{ $delivery->id }}" data-id="{{ $delivery->id }}"><i class="fa fa-info-circle me-2"></i>Perbarui Status Pengiriman</a>
+            @include('warehouse.delivery.partials.modal-delivered')
         @endif
-    </div>
-</div>
+    @endif
+@endsection
+
+@section('container')
 
 <div class="mb-5">
     <h4 class="mb-3">Informasi Umum</h4>

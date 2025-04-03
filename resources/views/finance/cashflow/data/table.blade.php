@@ -8,8 +8,14 @@
                 <!-- <th>Jenis Transaksi</th> -->
                 <th>Kategori</th>
                 <th>Keterangan</th>
-                <th width="10%" class="bg-success">Pemasukan</th>
-                <th width="10%" class="bg-danger">Pengeluaran</th>
+                <th width="10%" class="bg-success">
+                    <span class="me-2">Pemasukan</span>
+                    <span class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Jumlah Pemasukan yang tercatat">{{ number_format($cashflows->where('cashflowcategory.type', 'Pemasukan')->count('nominal')) }}</span>
+                </th>
+                <th width="10%" class="bg-danger">
+                    <span class="me-2">Pengeluaran</span>
+                    <span class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Jumlah Pengeluaran yang tercatat">{{ number_format($cashflows->where('cashflowcategory.type', 'Pengeluaran')->count('nominal')) }}</span>
+                </th>
                 <th width="6%">Diinput</th>
                 <th width="10%">Diinput pada</th>
                 <th width="6%">#</th>
@@ -54,15 +60,17 @@
                         <!-- show -->
                         <a href="#" class="badge bg-primary" data-bs-toggle="modal" data-bs-target="#showTransaksi{{ $cashflow->id }}"><i class="ti ti-eye"></i></a>
                         @include('finance.cashflow.show')
+                        
                         <!-- Edit -->
                         <a href="#" class="badge bg-warning" data-bs-toggle="modal" data-bs-target="#editTransaksi{{ $cashflow->id }}"><i class="ti ti-edit"></i></a>
                         @include('finance.cashflow.edit')
+                        
                         <form action="{{ route('cashflow.destroy', $cashflow->id) }}" method="POST" style="margin-bottom: 5px">
                             @method('delete')
                             @csrf
-                                    <button type="submit" class="badge bg-danger" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="ti ti-trash"></i></button>
-                            </div>
+                                <button type="submit" class="badge bg-danger" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="ti ti-trash"></i></button>
                         </form>
+                        </div>
                 </td>
             </tr>
 
@@ -70,5 +78,18 @@
                 @include('layout.partials.alert-danger')
             @endforelse
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="5" class="text-end">Total</th>
+                <th class="bg-success text-end text-white">Rp {{ number_format($cashflows->where('cashflowcategory.type', 'Pemasukan')->sum('nominal')) }}</th>
+                <th class="bg-danger text-end text-white">Rp {{ number_format($cashflows->where('cashflowcategory.type', 'Pengeluaran')->sum('nominal')) }}</th>
+            </tr>
+            <tr>
+                <th colspan="5" class="text-end">Jumlah Transaksi</th>
+                <th class="bg-success text-center text-white">{{ number_format($cashflows->where('cashflowcategory.type', 'Pemasukan')->count('nominal')) }}</th>
+                <th class="bg-danger text-center text-white">{{ number_format($cashflows->where('cashflowcategory.type', 'Pengeluaran')->count('nominal')) }}</th>
+            </tr>
+            
+        </tfoot>
     </table>
 </div>

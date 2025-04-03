@@ -6,21 +6,20 @@
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 @endsection
 
-@section('container')
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('products.index') }}">Produk</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('products.show', $product->id) }}">Detail Produk</a></li>
+@endsection
 
-<div class="d-flex justify-content-between mb-3">
-    <div>
-        <h2>{{ $title }}</h2>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-default-icon">
-                @include('warehouse.products.partials.breadcrumb')
-                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('products.show', $product->id) }}">Detail Produk</a></li>
-            </ol>
-        </nav>
-    </div>
-    <div>
-    </div>
-</div>
+@section('action-button')
+    @if (auth()->user()->hasAnyRole('Super Admin', 'Admin', 'Admin Gudang', 'Manajer Marketing'))
+    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editProduk{{ $product->id }}"><i class="ti ti-edit"></i> Edit</button>
+    <!-- Create -->
+    @include('warehouse.products.edit')
+    @endif
+@endsection
+
+@section('container')
 
 <div class="row">
     <div class="col-lg-4">

@@ -8,6 +8,7 @@
         <th>Diskon</th>
         <th>Pajak</th>
         <th>Biaya-biaya</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Diskon + Pajak + Biaya">Total Potongan</th>
         <th>Diterima</th>
         <th>Status</th>
     </thead>
@@ -47,6 +48,7 @@
             <td class="accounting discountRp">{{ number_format($collection->discount_rp) }}</td>
             <td class="accounting discountRp">{{ number_format($collection->PPh22_rp + $collection->PPN_rp) }}</td>
             <td class="accounting discountRp">{{ number_format($collection->admin_fee + $collection->other_fee) }}</td>
+            <td class="accounting discountRp">{{ number_format($collection->discount_rp + $collection->PPh22_rp + $collection->PPN_rp + $collection->admin_fee + $collection->other_fee) }}</td>
             <td class="accounting grandtotal">{{ number_format($collection->grandtotal) }}</td>
             <td class="text-center">
                 @if ($collection->payment_status === 'Belum Lunas')
@@ -59,21 +61,42 @@
         @endforeach
     </tbody>
     <tfoot class="bg-teal-100">
-        <th class="text-end">Total Pembayaran</th>
-        <th class="text-start"><span class="badge bg-success">{{ number_format($order->collections->count('pay')) }} kali</span></th>
-        <th class="text-end">Total</th>
-        <th class="text-end"><span class="badge bg-success">Rp {{ number_format($collections->sum('pay')) }}</span></th>
-        <th class="text-end"><span class="badge bg-danger">Rp {{ number_format($collections->sum('discount_rp')) }}</span></th>
-        <th class="text-end">
-            <span class="badge bg-danger">
-                Rp {{ number_format($order->collections->sum('PPh22_rp') + $order->collections->sum('PPN_rp')) }}
-            </span>
-        </th>
-        <th class="text-end">
-            <span class="badge bg-danger">
-                Rp {{ number_format($order->collections->sum('admin_fee') + $order->collections->sum('other_fee')) }}
-            </span>
-        </th>
-        <th class="text-end"><span class="badge bg-primary">Rp {{ number_format($order->collections->sum('grandtotal')) }}</span></th>
+        <tr>
+            <th class="text-end">Total Pembayaran</th>
+            <th class="text-start"><span class="badge bg-success">{{ number_format($order->collections->count('pay')) }} kali</span></th>
+            <th class="text-end">Total</th>
+            <th class="text-end"><span class="badge bg-success">Rp {{ number_format($collections->sum('pay')) }}</span></th>
+            <th class="text-end"><span class="badge bg-danger">Rp {{ number_format($collections->sum('discount_rp')) }}</span></th>
+            <th class="text-end">
+                <span class="badge bg-danger">
+                    Rp {{ number_format($order->collections->sum('PPh22_rp') + $order->collections->sum('PPN_rp')) }}
+                </span>
+            </th>
+            <th class="text-end">
+                <span class="badge bg-danger">
+                    Rp {{ number_format($order->collections->sum('admin_fee') + $order->collections->sum('other_fee')) }}
+                </span>
+            </th>
+            <th class="text-end">
+                <span class="badge bg-warning">
+                    Rp {{ number_format(
+                        $collections->sum('discount_rp') + $order->collections->sum('PPh22_rp') + $order->collections->sum('PPN_rp') +
+                        $order->collections->sum('admin_fee') + $order->collections->sum('other_fee')
+                        ) }}
+                </span>
+            </th>
+            <th class="text-end"><span class="badge bg-primary">Rp {{ number_format($order->collections->sum('grandtotal')) }}</span></th>
+        </tr>
+        @if ($order->due > 0)
+        <tr>
+            <th colspan="3" class="text-end">Sisa Tagihan</th>
+            <th class="text-end">
+                <span class="badge bg-danger">
+                    Rp {{ number_format($order->due) }}
+                </span>
+            </th>
+        </tr>
+        @else
+        @endif
     </tfoot>
 </table>

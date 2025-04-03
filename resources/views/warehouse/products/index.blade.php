@@ -1,24 +1,18 @@
 @extends('layout.main')
 
-@section('container')
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('products.index') }}">Produk</a></li>
+@endsection
 
-<div class="d-flex justify-content-between mb-3">
-    <div>
-        <h2>{{ $title }}</h2>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-default-icon">
-                @include('warehouse.products.partials.breadcrumb')
-            </ol>
-        </nav>
-    </div>
-    <div>
-        @if (auth()->user()->hasAnyRole('Super Admin', 'Admin', 'Admin Gudang', 'Manajer Marketing'))
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahProduk">Tambah Produk Baru</button>
-        <!-- Create -->
-        @include('warehouse.products.create')
-        @endif
-    </div>
-</div>
+@section('action-button')
+    @if (auth()->user()->hasAnyRole('Super Admin', 'Admin', 'Admin Gudang', 'Manajer Marketing'))
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahProduk">Tambah Produk Baru</button>
+    <!-- Create -->
+    @include('warehouse.products.create')
+    @endif
+@endsection
+
+@section('container')
 
 <!-- Row & Pencarian -->
 <form action="#" method="get">

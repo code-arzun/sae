@@ -43,7 +43,7 @@
     <!-- Session -->
     @include('layout.partials.session')
     
-    <!-- Wrapper Start -->
+    <!-- Content Start -->
       <!-- Sidebar -->
       @include('layout.partials.sidebar')
       <!-- Navbar -->
@@ -53,13 +53,17 @@
           <div class="pc-content">
               <div class="row">
                 <div class="col-md-12">
+                  <!-- Page Header -->
+                  @include('layout.partials.page-header')
+                </div>
+                <div class="col-md-12">
                   <!-- Main content -->
                   @yield('container')
                 </div>
               </div>
           </div>
       </div>
-    <!-- Wrapper End -->
+    <!-- Content End -->
     
     <!-- Footer -->
     @include('layout.partials.footer')

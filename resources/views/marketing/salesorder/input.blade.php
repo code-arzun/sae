@@ -3,21 +3,14 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('so.index') }}">Sales Order</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('input.so') }}">Input</a></li>
+@endsection
+
 @section('container')
 
 <div class="row">
-    <div class="d-flex justify-content-between mb-3">
-        <div>
-            <h2>{{ $title }}</h2>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb breadcrumb-default-icon">
-                    @include('marketing.salesorder.partials.breadcrumb')
-                    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('input.so') }}">Input</a></li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-    
     <!-- Produk -->
     <div class="col-lg-5 col-md-12">
         @include('marketing.salesorder.input.product')

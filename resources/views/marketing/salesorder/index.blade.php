@@ -1,18 +1,11 @@
 @extends('layout.main')
 
-@section('container')
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('so.index') }}">Sales Order</a></li>
+@endsection
 
-<div class="d-flex justify-content-between mb-3">
-    <div>
-        <h2>{{ $title }}</h2>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-default-icon">
-                @include('marketing.salesorder.partials.breadcrumb')
-            </ol>
-        </nav>
-    </div>
-    <div>
-        @if (auth()->user()->hasAnyRole('Super Admin', 'Admin', 'Sales', 'Manajer Marketing'))
+@section('action-button')
+    @if (auth()->user()->hasAnyRole('Super Admin', 'Admin', 'Sales', 'Manajer Marketing'))
         <a href="{{ route('input.so') }}" class="btn btn-primary">Buat SO</a>
         @endif
         @if (auth()->user()->hasAnyRole('Super Admin', 'Admin', 'Admin Gudang', 'Manajer Marketing'))
@@ -20,9 +13,10 @@
             <i class="fa fa-file-excel me-2"></i>
             Download Excel
         </a>
-        @endif
-    </div>
-</div>
+    @endif
+@endsection
+
+@section('container')
 
 <ul class="nav nav-tabs mb-3" id="salesorder" role="tablist">
     <li class="nav-item">

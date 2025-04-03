@@ -1,8 +1,14 @@
 @extends('layout.main')
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('collection.index') }}">Collection</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('collection.details', $collection->id) }}">Detail</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><b>{{ $collection->invoice_no }}</b>
+@endsection
+
 
 @section('container')
 
-<div class="d-flex justify-content-between mb-3">
+{{-- <div class="d-flex justify-content-between mb-3">
     <div>
         <h2>{{ $title }}</h2>
         <nav aria-label="breadcrumb">
@@ -16,7 +22,7 @@
     <div>
         
     </div>
-</div>
+</div> --}}
 
 <div class="mb-3">
     <h4>Sales Order</h4>

@@ -3,27 +3,22 @@
 
 @extends('layout.main')
 
-@section('container')
+@section('breadcrumb')
+    @include('marketing.salesorder.partials.breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('so.index') }}">Sales Order</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('so.orderDetails', $order->id) }}">Detail</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><b>{{ $order->invoice_no }}</b>_{{ $order->customer->NamaLembaga }}_{{ $order->customer->NamaCustomer }}_{{ $order->customer->employee->name }}</li>
+@endsection
 
-<div class="d-flex justify-content-between mb-3">
-    <div>
-        <h2>{{ $title }}</h2>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-default-icon">
-                @include('marketing.salesorder.partials.breadcrumb')
-                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('so.orderDetails', $order->id) }}">Detail</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><b>{{ $order->invoice_no }}</b>_{{ $order->customer->NamaLembaga }}_{{ $order->customer->NamaCustomer }}_{{ $order->customer->employee->name }}</li>
-            </ol>
-        </nav>
-    </div>
-    <div>
-        <!-- Update status button -->
-        @if ($order->order_status == 'Menunggu persetujuan')
+@section('action-button')
+    <!-- Update status button -->
+    @if ($order->order_status == 'Menunggu persetujuan')
         <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#confirmation{{ $order->id }}" data-id="{{ $order->id }}"><i class="fa fa-info-circle me-2"></i><span>Perbarui Status Sales Order</span></a>
-        @endif
-        @include('marketing.salesorder.data.status-update')
-    </div>
-</div>
+    @endif
+    @include('marketing.salesorder.data.status-update')
+@endsection
+
+@section('container')
 
 <!-- Informasi Umum -->
 <div class="mb-5">

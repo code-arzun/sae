@@ -6,22 +6,12 @@
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 @endsection
 
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('do.index') }}">Delivery Order</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('input.do') }}">Input</a></li>
+@endsection
+
 @section('container')
-
-<div class="d-flex justify-content-between mb-3">
-    <div>
-        <h2>{{ $title }}</h2>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-default-icon">
-                @include('warehouse.delivery.partials.breadcrumb')
-                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('input.do') }}">Input</a></li>
-            </ol>
-        </nav>
-    </div>
-    <div>
-
-    </div>
-</div>
 
 <div class="row">
     <form action="#" method="get">

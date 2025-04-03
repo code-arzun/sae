@@ -1,31 +1,21 @@
 @extends('layout.main')
 
-@section('container')
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('customers.index') }}">Data Customer</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('customers.show', $customer->id) }}">Detail</a></li>
+    <li class="breadcrumb-item active" aria-current="page">
+        {{ $customer->NamaLembaga }}_{{ $customer->NamaCustomer }}@if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
+        _{{ $customer->employee->name }}
+        @endif
+    </li>
+@endsection
 
-<div class="d-flex justify-content-between mb-3">
-    <div>
-        <h2>{{ $title }}</h2>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-default-icon">
-                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="ti ti-home-2"></i></a></li>
-                <li class="breadcrumb-item"><a href="{{ route('customers.index') }}">Data Customer</a></li>
-                {{-- <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('customers.show', $customer->id) }}">Detail Customer</a></li> --}}
-                <li class="breadcrumb-item active" aria-current="page">
-                    <a href="{{ route('customers.show', $customer->id) }}">{{ $customer->NamaLembaga }}_{{ $customer->NamaCustomer }}
-                        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
-                        _{{ $customer->employee->name }}
-                        @endif
-                    </a>
-                </li>
-                {{-- <li class="breadcrumb-item">{{ $customer->NamaLembaga }}_{{ $customer->NamaCustomer }}_{{ $customer->employee->name }}</li> --}}
-            </ol>
-        </nav>
-    </div>
-    <div>
-        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editCustomer{{ $customer->id }}"><i class="ti ti-edit"></i></button>
-        @include('marketing.customers.edit')
-    </div>
-</div>
+@section('action-button')
+    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editCustomer{{ $customer->id }}"><i class="ti ti-edit"></i></button>
+    @include('marketing.customers.edit')
+@endsection
+
+@section('container')
 
 <div class="row mb-3">
     <div class="col-lg-6">

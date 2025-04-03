@@ -30,7 +30,7 @@ class CollectionController extends Controller
     public function input()
     {
         $row = (int) request('row', 20);
-        $salesorders = request('order_id', null);
+        $salesorderFilter = request('order_id', null);
         $subtotal = request('subtotal', null);
 
         $ordersQuery = Order::query()->where('order_status', 'Disetujui')
@@ -40,12 +40,18 @@ class CollectionController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
+        if ($salesorderFilter) {
+            $ordersQuery->where('id', $salesorderFilter);
+        }
+
         if ($subtotal)  {
             $ordersQuery->where('sub_total', $subtotal);
         }
 
+        $salesorders = $ordersQuery->get();
+
         return view('finance.collection.input', [
-            'salesorders' => $ordersQuery->get(),
+            'salesorders' => $salesorders,
             'employees' => Employee::get(),
             'banks' => Bank::get(),
             'rekenings' => Rekening::get(),

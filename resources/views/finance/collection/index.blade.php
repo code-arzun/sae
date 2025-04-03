@@ -1,25 +1,19 @@
 @extends('layout.main')
 
-@section('container')
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('collection.index') }}">Collection</a></li>
+@endsection
 
-<div class="d-flex justify-content-between mb-3">
-    <div>
-        <h2>{{ $title }}</h2>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-default-icon">
-                @include('finance.collection.partials.breadcrumb')
-            </ol>
-        </nav>
-    </div>
-    <div>
-        @if (auth()->user()->hasAnyRole('Super Admin', 'Admin', 'Admin Gudang', 'Manajer Marketing'))
-        <a href="{{ route('collection.exportData') }}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Download Excel">
-            <i class="fa fa-file-excel me-2"></i>
-            Download Excel
-        </a>
-        @endif
-    </div>
-</div>
+@section('action-button')
+    @if (auth()->user()->hasAnyRole('Super Admin', 'Admin', 'Admin Gudang', 'Manajer Marketing'))
+    <a href="{{ route('collection.exportData') }}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Download Excel">
+        <i class="fa fa-file-excel me-2"></i>
+        Download Excel
+    </a>
+    @endif
+@endsection
+
+@section('container')
 
 <!-- Row & Pencarian -->
 <div class="col-lg-12">

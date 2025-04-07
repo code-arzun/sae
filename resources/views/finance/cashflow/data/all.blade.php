@@ -18,6 +18,7 @@
                 </th>
                 <th width="6%">Diinput</th>
                 <th width="10%">Diinput pada</th>
+                <th width="6%">#</th>
             </tr>
         </thead>
         <tbody>
@@ -52,8 +53,25 @@
                     <td class="text-end">-</td>
                     <td class="accounting discountRp">{{ number_format($cashflow->nominal) }}</td>
                 @endif
-                <th class="text-center">{{ explode(' ', $cashflow->user->employee->name)[0] }}</th>
+                <th class="text-center">{{ explode(' ', $cashflow->createdBy->employee->name)[0] }}</th>
                 <td class="text-center">{{ Carbon\Carbon::parse($cashflow->created_at)->translatedformat('H:i - d M Y') }}</td>
+                <td>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- show -->
+                        <a href="#" class="badge bg-primary" data-bs-toggle="modal" data-bs-target="#showTransaksi{{ $cashflow->id }}"><i class="ti ti-eye"></i></a>
+                        @include('finance.cashflow.show')
+                        
+                        <!-- Edit -->
+                        <a href="#" class="badge bg-warning" data-bs-toggle="modal" data-bs-target="#editTransaksi{{ $cashflow->id }}"><i class="ti ti-edit"></i></a>
+                        @include('finance.cashflow.edit')
+                        
+                        <form action="{{ route('cashflow.destroy', $cashflow->id) }}" method="POST" style="margin-bottom: 5px">
+                            @method('delete')
+                            @csrf
+                                <button type="submit" class="badge bg-danger" onclick="return confirm('Are you sure you want to delete this record?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="ti ti-trash"></i></button>
+                        </form>
+                        </div>
+                </td>
             </tr>
 
             @empty

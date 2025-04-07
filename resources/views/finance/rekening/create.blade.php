@@ -1,67 +1,57 @@
-@extends('layout.main')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.9.13/combined/css/gijgo.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.9.13/combined/js/gijgo.min.js"></script>
 
-@section('container')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <div class="header-title">
-                        <h4 class="card-title">Create Category</h4>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <form action="{{ route('rekening.store') }}" method="POST">
+<div id="createRekening" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createRekeningLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h3 class="modal-title text-white" id="createRekeningLabel">Tambah {{ $title }} Baru</h3>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="ti ti-x"></i></button>
+            </div>
+            <div class="modal-body bg-gray-100">
+                <form action="{{ route('rekening.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                        <!-- begin: Input Data -->
-                        <div class=" row align-items-center">
-                            <div class="form-group col-md-12">
-                                <label for="bank_id">Jenis Transaksi<span class="text-danger">*</span></label>
-                                <select class="form-control" name="bank_id" required>
-                                    <option selected="" disabled>-- Pilih Jenis Transaksi --</option>
-                                    @foreach ($banks as $bank)
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label for="bank_id">Bank<span class="text-danger">*</span></label>
+                            <select class="form-control" name="bank_id" required>
+                                <option selected="" disabled>-- Pilih Bank --</option>
+                                @foreach ($banks as $bank)
                                     <option value="{{ $bank->id }}" {{ old('bank_id') == $bank->id ? 'selected' : '' }}>{{ $bank->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('bank_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
+                                @endforeach
+                            </select>
+                            @error('bank_id')
+                            <div class="invalid-feedback">
+                                {{ $message }}
                             </div>
-                            <div class="form-group col-md-12">
-                                <label for="no_rek">No. Rekening<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('no_rek') is-invalid @enderror" id="no_rek" name="no_rek" required>
-                                @error('no_rek')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label for="nama">Nama<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" required>
-                                @error('nama')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
+                            @enderror
                         </div>
-                        <!-- end: Input Data -->
-                        <div class="mt-2">
-                            <button type="submit" class="btn btn-primary me-2">Simpan</button>
-                            <a class="btn bg-danger" href="{{ route('rekening.index') }}">Batalkan</a>
+                        <div class="form-group col-md-5">
+                            <label for="no_rek">No. Rekening<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control @error('no_rek') is-invalid @enderror" id="no_rek" name="no_rek" placeholder="Masukkan nomor rekening" required>
+                            @error('no_rek')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
                         </div>
-                    </form>
-                </div>
+                        <div class="form-group col-md-4">
+                            <label for="nama">Nama<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" placeholder="Masukkan nama pemilik rekening" required>
+                            @error('nama')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                </form>
             </div>
         </div>
     </div>
-    <!-- Page end  -->
-</div>
-
-
-@include('components.preview-img-form')
-@endsection
+  </div>

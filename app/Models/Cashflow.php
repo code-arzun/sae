@@ -15,13 +15,16 @@ class Cashflow extends Model
     
     protected $fillable = [
         'cashflowcategory_id',
-        'user_id',
         'department_id',
         'cashflow_code',
         'nominal',
         'notes',
         'receipt',
+        'method',
+        'rekening_id',
         'date',
+        'created_by',
+        'updated_by',
     ];
 
     public $sortable = [
@@ -39,16 +42,28 @@ class Cashflow extends Model
     ];
 
     protected $with = [
-        'user'
+        // 'user',
+        'createdBy',
+        'updatedBy',
     ];
 
     protected $casts = [
         'date' => 'date',
     ];
 
-    public function user()
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class, 'user_id', 'id');
+    // }
+
+    public function createdBy()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 
     public function department(){
@@ -57,6 +72,10 @@ class Cashflow extends Model
 
     public function cashflowcategory(){
         return $this->belongsTo(CashflowCategory::class);
+    }
+
+    public function rekening(){
+        return $this->belongsTo(Rekening::class);
     }
 
     public function scopeFilter($query, array $filters)

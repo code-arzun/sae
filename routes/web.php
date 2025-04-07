@@ -1,35 +1,39 @@
 <?php
 
-use App\Models\Bank;
+use App\Http\Controllers\Dashboard\DashboardController;
 
 // Marketing
     // Sales Order
-    use App\Http\Controllers\Marketing\SalesOrderController;
+        use App\Http\Controllers\Marketing\SalesOrderController;
     // Customer
-    use App\Http\Controllers\Marketing\CustomerController;
+        use App\Http\Controllers\Marketing\CustomerController;
 
     
 //
 
 // Warehouse
     // Product
-    use App\Http\Controllers\Warehouse\ProductCategoryController;
-    use App\Http\Controllers\Warehouse\ProductUnitController;
-    use App\Http\Controllers\Warehouse\ProductController;
+        use App\Http\Controllers\Warehouse\ProductCategoryController;
+        use App\Http\Controllers\Warehouse\ProductUnitController;
+        use App\Http\Controllers\Warehouse\ProductController;
     // Delivery Order
-    use App\Http\Controllers\Warehouse\DeliveryController;
+        use App\Http\Controllers\Warehouse\DeliveryController;
     // Supplier
-    use App\Http\Controllers\Warehouse\SupplierController;
+        use App\Http\Controllers\Warehouse\SupplierController;
     // Stok
-    use App\Http\Controllers\Warehouse\StockController;
+        use App\Http\Controllers\Warehouse\StockController;
 //
 
-// Cashflow
-    use App\Http\Controllers\Cashflow\CashflowTypeController;
-    use App\Http\Controllers\Cashflow\CashflowDetailController;
-    use App\Http\Controllers\Cashflow\CashflowIncomeController;
-    use App\Http\Controllers\Cashflow\CashflowController;
-    use App\Http\Controllers\Cashflow\CashflowCategoryController;
+// Finance
+    // Bank
+        use App\Http\Controllers\Finance\BankController;
+    // Rekening
+        use App\Http\Controllers\Finance\RekeningController;
+    // Collection
+        use App\Http\Controllers\Finance\CollectionController;
+    // Cashflow
+        use App\Http\Controllers\Finance\Cashflow\CashflowController;
+        use App\Http\Controllers\Finance\Cashflow\CashflowCategoryController;
 //
 
 // Human Resource
@@ -50,13 +54,11 @@ use App\Models\Bank;
 
 use App\Models\Order;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Finance\BankController;
+
 use App\Http\Controllers\Warehouse\ReturController;
-use App\Http\Controllers\Finance\RekeningController;
-use App\Http\Controllers\Publishing\WriterController;
-use App\Http\Controllers\Finance\CollectionController;
-use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Warehouse\PublisherController;
+
+use App\Http\Controllers\Publishing\WriterController;
 use App\Http\Controllers\Publishing\WriterJobController;
 use App\Http\Controllers\Publishing\WriterCategoryController;
 
@@ -154,189 +156,184 @@ use App\Http\Controllers\Publishing\WriterCategoryController;
 // MARKETING
     // SALES
         // Sales
-        Route::get('/sales', [CustomerController::class, 'sales'])->name('sales');
+            Route::get('/sales', [CustomerController::class, 'sales'])->name('sales');
         
         // Customer
-        Route::middleware(['permission:customer'])->group(function () {
-                Route::resource('/customers', CustomerController::class);
-        });
+            Route::middleware(['permission:customer'])->group(function () {
+                    Route::resource('/customers', CustomerController::class);
+            });
 
         // Sales Order
-        Route::get('details/{order_id}', [SalesOrderController::class, 'orderDetails'])->name('so.orderDetails');
-        Route::prefix('so')->group(function () {
-            // Input Sales Order
-            Route::middleware(['permission:input.so'])->prefix('input')->group(function () {
-                Route::get('', [SalesOrderController::class,'input'])->name('input.so');
-                Route::post('confirmation', [SalesOrderController::class, 'inputsoConfirmation'])->name('inputso.confirmation');
+            Route::get('details/{order_id}', [SalesOrderController::class, 'orderDetails'])->name('so.orderDetails');
+            Route::prefix('so')->group(function () {
+                // Input Sales Order
+                Route::middleware(['permission:input.so'])->prefix('input')->group(function () {
+                    Route::get('', [SalesOrderController::class,'input'])->name('input.so');
+                    Route::post('confirmation', [SalesOrderController::class, 'inputsoConfirmation'])->name('inputso.confirmation');
 
-                Route::post('add', [SalesOrderController::class, 'addCart'])->name('inputso.addCart');
-                Route::post('update/{rowId}', [SalesOrderController::class, 'updateCart'])->name('inputso.updateCart');
-                Route::get('delete/{rowId}', [SalesOrderController::class, 'deleteCart'])->name('inputso.deleteCart');
-                
-                // Sent to Database
-                    Route::post('reguler/store', [SalesOrderController::class, 'storeSOReguler'])->name('store.SOReguler');
-                    Route::post('het/store', [SalesOrderController::class, 'storeSOHet'])->name('store.SOHet');
-                    Route::post('reguler-online/store', [SalesOrderController::class, 'storeSOROnline'])->name('store.SOROnline');
-                    Route::post('het-online/store', [SalesOrderController::class, 'storeSOHOnline'])->name('store.SOHOnline');
+                    Route::post('add', [SalesOrderController::class, 'addCart'])->name('inputso.addCart');
+                    Route::post('update/{rowId}', [SalesOrderController::class, 'updateCart'])->name('inputso.updateCart');
+                    Route::get('delete/{rowId}', [SalesOrderController::class, 'deleteCart'])->name('inputso.deleteCart');
+                    
+                    // Sent to Database
+                        Route::post('reguler/store', [SalesOrderController::class, 'storeSOReguler'])->name('store.SOReguler');
+                        Route::post('het/store', [SalesOrderController::class, 'storeSOHet'])->name('store.SOHet');
+                        Route::post('reguler-online/store', [SalesOrderController::class, 'storeSOROnline'])->name('store.SOROnline');
+                        Route::post('het-online/store', [SalesOrderController::class, 'storeSOHOnline'])->name('store.SOHOnline');
+                });
+
+                // View Sales Order
+                Route::middleware(['permission:so'])->group(function () {
+                    Route::get('', [SalesOrderController::class, 'index'])->name('so.index');
+                    // Route::get('all', [SalesOrderController::class, 'all'])->name('so.all');
+                    Route::get('proposed', [SalesOrderController::class, 'proposed'])->name('so.proposed');
+                    Route::get('approved', [SalesOrderController::class, 'approved'])->name('so.approved');
+                    Route::get('sent', [SalesOrderController::class, 'sent'])->name('so.sent');
+                    Route::get('delivered', [SalesOrderController::class, 'delivered'])->name('so.delivered');
+                    Route::get('declined', [SalesOrderController::class, 'declined'])->name('so.declined');
+                    Route::get('cancelled', [SalesOrderController::class, 'cancelled'])->name('so.cancelled');
+
+                    // Route::get('details/{order_id}', [SalesOrderController::class, 'orderDetails'])->name('so.orderDetails');
+
+                    // Status Update
+                        Route::put('approved/status', [SalesOrderController::class, 'approvedStatus'])->name('so.approvedStatus');
+                        Route::put('declined/status', [SalesOrderController::class, 'declinedStatus'])->name('so.declinedStatus');
+                        Route::put('cancelled/status', [SalesOrderController::class, 'cancelledStatus'])->name('so.cancelledStatus');
+                        Route::put('shipping/status', [SalesOrderController::class, 'shippingStatus'])->name('so.shippingStatus');
+                        Route::put('finished/status', [SalesOrderController::class, 'finishedStatus'])->name('so.finishedStatus');
+
+                    Route::get('invoice/download/{order_id}', [SalesOrderController::class, 'invoiceDownload'])->name('so.invoiceDownload');
+                    Route::get('export', [SalesOrderController::class, 'exportData'])->name('so.exportData');
+                });
             });
-
-            // View Sales Order
-            Route::middleware(['permission:so'])->group(function () {
-                Route::get('', [SalesOrderController::class, 'index'])->name('so.index');
-                // Route::get('all', [SalesOrderController::class, 'all'])->name('so.all');
-                Route::get('proposed', [SalesOrderController::class, 'proposed'])->name('so.proposed');
-                Route::get('approved', [SalesOrderController::class, 'approved'])->name('so.approved');
-                Route::get('sent', [SalesOrderController::class, 'sent'])->name('so.sent');
-                Route::get('delivered', [SalesOrderController::class, 'delivered'])->name('so.delivered');
-                Route::get('declined', [SalesOrderController::class, 'declined'])->name('so.declined');
-                Route::get('cancelled', [SalesOrderController::class, 'cancelled'])->name('so.cancelled');
-
-                // Route::get('details/{order_id}', [SalesOrderController::class, 'orderDetails'])->name('so.orderDetails');
-
-                // Status Update
-                    Route::put('approved/status', [SalesOrderController::class, 'approvedStatus'])->name('so.approvedStatus');
-                    Route::put('declined/status', [SalesOrderController::class, 'declinedStatus'])->name('so.declinedStatus');
-                    Route::put('cancelled/status', [SalesOrderController::class, 'cancelledStatus'])->name('so.cancelledStatus');
-                    Route::put('shipping/status', [SalesOrderController::class, 'shippingStatus'])->name('so.shippingStatus');
-                    Route::put('finished/status', [SalesOrderController::class, 'finishedStatus'])->name('so.finishedStatus');
-
-                Route::get('invoice/download/{order_id}', [SalesOrderController::class, 'invoiceDownload'])->name('so.invoiceDownload');
-                Route::get('export', [SalesOrderController::class, 'exportData'])->name('so.exportData');
-            });
-        });
+// 
             
-    // WAREHOUSE
-        Route::middleware(['permission:warehouse'])->group(function () {
+// WAREHOUSE
+    Route::middleware(['permission:warehouse'])->group(function () {
+    });
+    // Stock
+    Route::prefix('stock')->group(function () {
+        // Input Stock
+        Route::middleware(['permission:input.stock'])->prefix('input')->group(function () {
+            Route::get('', [StockController::class,'input'])->name('input.stock');
+            Route::post('add', [StockController::class, 'addCart'])->name('inputstock.addCart');
+            Route::post('update/{rowId}', [StockController::class, 'updateCart'])->name('inputstock.updateCart');
+            Route::get('delete/{rowId}', [StockController::class, 'deleteCart'])->name('inputstock.deleteCart');
+            Route::post('confirmation', [StockController::class, 'confirmation'])->name('inputstock.confirmation');
+            // Route::post('invoice/print', [InputStockController::class, 'printInvoice'])->name('inputstock.printInvoice');
+
+            // Sent to Database
+            Route::post('/inputstock/entry', [StockController::class, 'storeStock'])->name('inputstock.storeStock');
+        });
+
+        // Stock
+            // Route::get('', [StockController::class, 'stockManage'])->name('product.stock');
+
+        // Entry Stock History
+            Route::get('all', [StockController::class, 'all'])->name('stock.all');
+            Route::get('details/{stock_id}', [StockController::class, 'stockDetails'])->name('stock.Details');
+            Route::get('invoice/download/{stock_id}', [StockController::class, 'invoiceDownload'])->name('stock.invoiceDownload');
+
+    });
+    
+    // Penyiapan Produk
+    Route::middleware(['permission:penyiapan'])->get('download/{order_id}', [SalesOrderController::class, 'printPenyiapan'])->name('do.printPenyiapan');
+
+    Route::prefix('do')->group(function () {
+        // Input DO
+        Route::middleware(['permission:input.do'])->prefix('input')->group(function () {
+            Route::get('', [DeliveryController::class,'input'])->name('input.do');
+            Route::post('confirmation', [DeliveryController::class,'inputdoConfirmation'])->name('inputdo.confirmation');
+
+            Route::post('add', [DeliveryController::class, 'addCart'])->name('inputdo.addCart');
+            Route::post('update/{rowId}', [DeliveryController::class, 'updateCart'])->name('inputdo.updateCart');
+            Route::get('delete/{rowId}', [DeliveryController::class, 'deleteCart'])->name('inputdo.deleteCart');
+
+            // Sent to Database
+                Route::post('reguler/store', [DeliveryController::class, 'storeDOReguler'])->name('store.DOReguler');
+                Route::post('het/store', [DeliveryController::class, 'storeDOHet'])->name('store.DOHet');
+                Route::post('reguler/online/store', [DeliveryController::class, 'storeDOROnline'])->name('store.DOROnline');
+                Route::post('het/online/store', [DeliveryController::class, 'storeDOHOnline'])->name('store.DOHOnline');
+        });
+
+        // Delivery Order
+        Route::middleware(['permission:do'])->group(function () {
+            Route::get('', [DeliveryController::class, 'index'])->name('do.index');
+            Route::get('details/{delivery_id}', [DeliveryController::class, 'deliveryDetails'])->name('do.deliveryDetails');
+
+            // Status Update
+            Route::put('sent/status', [DeliveryController::class, 'sentStatus'])->name('do.sentStatus');
+            Route::put('delivered/status', [DeliveryController::class, 'deliveredStatus'])->name('do.deliveredStatus');
+            
+            // Dokumen
+            Route::get('invoice/download/{delivery_id}', [DeliveryController::class, 'invoiceDownload'])->name('do.invoiceDownload');
+            Route::get('label/{delivery_id}', [DeliveryController::class, 'labelPengiriman'])->name('do.labelPengiriman');
+
+            Route::get('export', [DeliveryController::class, 'exportData'])->name('do.exportData');
+        });
+    });
+
+            // Stock Management
+            // Route::get('/stock', [DeliveryController::class, 'stockManage'])->name('delivery.stockManage');
+            // Route::get('/stock', [StockController::class, 'stockManage'])->name('product.stock');
+
+    // Retur Order
+    Route::prefix('retur')->group(function () {
+        // Input Retur Order
+        Route::middleware(['permission:input.retur'])->prefix('input')->group(function () {
+            Route::get('', [ReturController::class,'input'])->name('input.retur');
+            Route::post('confirmation', [ReturController::class, 'inputreturConfirmation'])->name('inputretur.confirmation');
+
+            Route::post('add', [ReturController::class, 'addCart'])->name('inputretur.addCart');
+            Route::post('update/{rowId}', [ReturController::class, 'updateCart'])->name('inputretur.updateCart');
+            Route::get('delete/{rowId}', [ReturController::class, 'deleteCart'])->name('inputretur.deleteCart');
+            
+            // Sent to Database
+                Route::post('reguler/store', [ReturController::class, 'storeROReguler'])->name('store.ROReguler');
+                Route::post('het/store', [ReturController::class, 'storeROHet'])->name('store.ROHet');
+                Route::post('reguler-online/store', [ReturController::class, 'storeROROnline'])->name('store.ROROnline');
+                Route::post('het-online/store', [ReturController::class, 'storeROHOnline'])->name('store.ROHOnline');
+        });
+
+        // View Retur Order
+        Route::middleware(['permission:retur'])->group(function () {
+            Route::get('all', [ReturController::class, 'all'])->name('retur.all');
+            Route::get('proposed', [ReturController::class, 'proposed'])->name('retur.proposed');
+            Route::get('approved', [ReturController::class, 'approved'])->name('retur.approved');
+            Route::get('declined', [ReturController::class, 'declined'])->name('retur.declined');
+            Route::get('cancelled', [ReturController::class, 'cancelled'])->name('retur.cancelled');
+
+            Route::get('details/{retur_id}', [ReturController::class, 'returDetails'])->name('retur.Details');
+
+            // Status Update
+                Route::put('approved/status', [ReturController::class, 'approvedStatus'])->name('retur.approvedStatus');
+                Route::put('declined/status', [ReturController::class, 'declinedStatus'])->name('retur.declinedStatus');
+                Route::put('cancelled/status', [ReturController::class, 'cancelledStatus'])->name('retur.cancelledStatus');
+
+            Route::get('invoice/download/{order_id}', [ReturController::class, 'invoiceDownload'])->name('retur.invoiceDownload');
+            Route::get('export', [ReturController::class, 'exportData'])->name('retur.exportData');
+        });
+    });
+
+    // Publisher
+        Route::resource('/publisher', PublisherController::class);
+    // Supplier
+        Route::resource('/suppliers', SupplierController::class);
+
+        // Product
+        Route::middleware(['permission:product'])->group(function () {
+            Route::resource('/products', ProductController::class);
+            Route::get('import', [ProductController::class, 'importView'])->name('products.importView');
+            Route::post('import', [ProductController::class, 'importStore'])->name('products.importStore');
+            Route::get('export', [ProductController::class, 'exportData'])->name('products.exportData');
+            // Products Category
+            // Route::resource('/product/category', ProductCategoryController::class);
+            Route::resource('/productcategory', ProductCategoryController::class);
+            // Products Unit
+            Route::resource('productunit', ProductUnitController::class);
         });
         // Stock
-        Route::prefix('stock')->group(function () {
-            // Input Stock
-            Route::middleware(['permission:input.stock'])->prefix('input')->group(function () {
-                Route::get('', [StockController::class,'input'])->name('input.stock');
-                Route::post('add', [StockController::class, 'addCart'])->name('inputstock.addCart');
-                Route::post('update/{rowId}', [StockController::class, 'updateCart'])->name('inputstock.updateCart');
-                Route::get('delete/{rowId}', [StockController::class, 'deleteCart'])->name('inputstock.deleteCart');
-                Route::post('confirmation', [StockController::class, 'confirmation'])->name('inputstock.confirmation');
-                // Route::post('invoice/print', [InputStockController::class, 'printInvoice'])->name('inputstock.printInvoice');
-
-                // Sent to Database
-                Route::post('/inputstock/entry', [StockController::class, 'storeStock'])->name('inputstock.storeStock');
-            });
-
-            // Stock
-                // Route::get('', [StockController::class, 'stockManage'])->name('product.stock');
-
-            // Entry Stock History
-                Route::get('all', [StockController::class, 'all'])->name('stock.all');
-                Route::get('details/{stock_id}', [StockController::class, 'stockDetails'])->name('stock.Details');
-                Route::get('invoice/download/{stock_id}', [StockController::class, 'invoiceDownload'])->name('stock.invoiceDownload');
-
-        });
-        
-        // Penyiapan Produk
-        Route::middleware(['permission:penyiapan'])->prefix('penyiapan-produk')->group(function () {
-            Route::get('', [SalesOrderController::class, 'penyiapanProduk'])->name('do.penyiapanProduk');
-            Route::get('download/{order_id}', [SalesOrderController::class, 'printPenyiapan'])->name('do.printPenyiapan');
-        });
-
-        Route::prefix('do')->group(function () {
-            // Input DO
-            Route::middleware(['permission:input.do'])->prefix('input')->group(function () {
-                Route::get('', [DeliveryController::class,'input'])->name('input.do');
-                Route::post('confirmation', [DeliveryController::class,'inputdoConfirmation'])->name('inputdo.confirmation');
-
-                Route::post('add', [DeliveryController::class, 'addCart'])->name('inputdo.addCart');
-                Route::post('update/{rowId}', [DeliveryController::class, 'updateCart'])->name('inputdo.updateCart');
-                Route::get('delete/{rowId}', [DeliveryController::class, 'deleteCart'])->name('inputdo.deleteCart');
-
-                // Sent to Database
-                    Route::post('reguler/store', [DeliveryController::class, 'storeDOReguler'])->name('store.DOReguler');
-                    Route::post('het/store', [DeliveryController::class, 'storeDOHet'])->name('store.DOHet');
-                    Route::post('reguler/online/store', [DeliveryController::class, 'storeDOROnline'])->name('store.DOROnline');
-                    Route::post('het/online/store', [DeliveryController::class, 'storeDOHOnline'])->name('store.DOHOnline');
-            });
-
-            // Delivery Order
-            Route::middleware(['permission:do'])->group(function () {
-                Route::get('', [DeliveryController::class, 'index'])->name('do.index');
-                Route::get('ready', [DeliveryController::class, 'ready'])->name('do.ready');
-                Route::get('sent', [DeliveryController::class, 'sent'])->name('do.sent');
-                Route::get('delivered', [DeliveryController::class, 'delivered'])->name('do.delivered');
-
-                Route::put('sent/status', [DeliveryController::class, 'sentStatus'])->name('do.sentStatus');
-                Route::put('delivered/status', [DeliveryController::class, 'deliveredStatus'])->name('do.deliveredStatus');
-                Route::get('details/{delivery_id}', [DeliveryController::class, 'deliveryDetails'])->name('do.deliveryDetails');
-
-                Route::put('update/status', [DeliveryController::class, 'updateStatus'])->name('do.updateStatus');
-
-                Route::get('invoice/download/{delivery_id}', [DeliveryController::class, 'invoiceDownload'])->name('do.invoiceDownload');
-                Route::get('label/{delivery_id}', [DeliveryController::class, 'labelPengiriman'])->name('do.labelPengiriman');
-
-                Route::get('export', [DeliveryController::class, 'exportData'])->name('do.exportData');
-            });
-        });
-
-                // Stock Management
-                // Route::get('/stock', [DeliveryController::class, 'stockManage'])->name('delivery.stockManage');
-                // Route::get('/stock', [StockController::class, 'stockManage'])->name('product.stock');
-
-        // Retur Order
-        Route::prefix('retur')->group(function () {
-            // Input Retur Order
-            Route::middleware(['permission:input.retur'])->prefix('input')->group(function () {
-                Route::get('', [ReturController::class,'input'])->name('input.retur');
-                Route::post('confirmation', [ReturController::class, 'inputreturConfirmation'])->name('inputretur.confirmation');
-
-                Route::post('add', [ReturController::class, 'addCart'])->name('inputretur.addCart');
-                Route::post('update/{rowId}', [ReturController::class, 'updateCart'])->name('inputretur.updateCart');
-                Route::get('delete/{rowId}', [ReturController::class, 'deleteCart'])->name('inputretur.deleteCart');
-                
-                // Sent to Database
-                    Route::post('reguler/store', [ReturController::class, 'storeROReguler'])->name('store.ROReguler');
-                    Route::post('het/store', [ReturController::class, 'storeROHet'])->name('store.ROHet');
-                    Route::post('reguler-online/store', [ReturController::class, 'storeROROnline'])->name('store.ROROnline');
-                    Route::post('het-online/store', [ReturController::class, 'storeROHOnline'])->name('store.ROHOnline');
-            });
-
-            // View Retur Order
-            Route::middleware(['permission:retur'])->group(function () {
-                Route::get('all', [ReturController::class, 'all'])->name('retur.all');
-                Route::get('proposed', [ReturController::class, 'proposed'])->name('retur.proposed');
-                Route::get('approved', [ReturController::class, 'approved'])->name('retur.approved');
-                Route::get('declined', [ReturController::class, 'declined'])->name('retur.declined');
-                Route::get('cancelled', [ReturController::class, 'cancelled'])->name('retur.cancelled');
-
-                Route::get('details/{retur_id}', [ReturController::class, 'returDetails'])->name('retur.Details');
-
-                // Status Update
-                    Route::put('approved/status', [ReturController::class, 'approvedStatus'])->name('retur.approvedStatus');
-                    Route::put('declined/status', [ReturController::class, 'declinedStatus'])->name('retur.declinedStatus');
-                    Route::put('cancelled/status', [ReturController::class, 'cancelledStatus'])->name('retur.cancelledStatus');
-
-                Route::get('invoice/download/{order_id}', [ReturController::class, 'invoiceDownload'])->name('retur.invoiceDownload');
-                Route::get('export', [ReturController::class, 'exportData'])->name('retur.exportData');
-            });
-        });
-    
-        // Publisher
-            Route::resource('/publisher', PublisherController::class);
-        // Supplier
-            Route::resource('/suppliers', SupplierController::class);
-
-            // Product
-            Route::middleware(['permission:product'])->group(function () {
-                Route::resource('/products', ProductController::class);
-                Route::get('import', [ProductController::class, 'importView'])->name('products.importView');
-                Route::post('import', [ProductController::class, 'importStore'])->name('products.importStore');
-                Route::get('export', [ProductController::class, 'exportData'])->name('products.exportData');
-                // Products Category
-                // Route::resource('/product/category', ProductCategoryController::class);
-                Route::resource('/productcategory', ProductCategoryController::class);
-                // Products Unit
-                Route::resource('productunit', ProductUnitController::class);
-            });
-            // Stock
-            Route::get('/stock', [ProductController::class, 'stock'])->name('product.stock');
+        Route::get('/stock', [ProductController::class, 'stock'])->name('product.stock');
 //
 
 // FINANCE
@@ -359,19 +356,9 @@ use App\Http\Controllers\Publishing\WriterCategoryController;
 
             // View Collection
             Route::middleware(['permission:collection'])->group(function () {
-                // Route::get('all', [SalesOrderController::class, 'allCollection'])->name('collection.index');
                 Route::get('', [CollectionController::class, 'index'])->name('collection.index');
-                Route::get('unpaid', [CollectionController::class, 'unpaid'])->name('collection.unpaid');
-                Route::get('onProgress', [CollectionController::class, 'onProgress'])->name('collection.onProgress');
-                Route::get('paid', [CollectionController::class, 'paid'])->name('collection.paid');
-
                 Route::get('details/{collection_id}', [CollectionController::class, 'collectionDetails'])->name('collection.details');
-
-                // Status Update
-                    Route::put('approved/status', [CollectionController::class, 'approvedStatus'])->name('collection.approvedStatus');
-                    Route::put('declined/status', [CollectionController::class, 'declinedStatus'])->name('collection.declinedStatus');
-                    Route::put('cancelled/status', [CollectionController::class, 'cancelledStatus'])->name('collection.cancelledStatus');
-
+                
                 Route::get('invoice/download/{collection_id}', [CollectionController::class, 'invoiceDownload'])->name('collection.invoiceDownload');
                 Route::get('export', [CollectionController::class, 'exportData'])->name('collection.exportData');
             });

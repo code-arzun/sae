@@ -11,17 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cashflowexpenses', function (Blueprint $table) {
+        Schema::create('cashflows', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->integer('cashflowcategory_id');
             $table->integer('department_id');
-            // $table->integer('cashflowcategory_id');
-            $table->integer('cashflowdetail_id');
-            $table->string('expense_code')->nullable();
+            $table->string('cashflow_code')->nullable();
             $table->integer('nominal');
-            $table->string('notes')->nullable();
-            $table->date('date')->nullable();
+            $table->string('notes');
+            $table->date('date');
+            $table->string('method')->nullable();
+            $table->integer('rekening_id')->nullable();
             $table->string('receipt')->nullable();
+            $table->integer('created_by');
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cashflowexpenses');
+        Schema::dropIfExists('cashflows');
     }
 };

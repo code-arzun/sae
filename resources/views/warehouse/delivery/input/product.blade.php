@@ -85,19 +85,21 @@
             </div> --}}
         </div>
     </form>
+
     <!-- Daftar Produk -->
-    <div class="dt-responsive table-responsive mb-3 border-none">
+    <div class="dt-responsive table-responsive">
         <table class="table nowrap mb-0">
             <thead>
                 <tr>
                     <th>Nama Produk</th>
                     <th>Kategori</th>
                     <th width="100px">Harga</th>
-                    <th>Dipesan</th>
-                    <th>Terkirim</th>
-                    <th>Dikirim</th>
-                    <th>Belum dikirim</th>
-                    <th>Stok</th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="Jumlah yang dipesan"><i class="ti ti-shopping-cart"></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="Jumlah yang terkirim"><i class="fas fa-check"></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="Jumlah dalam pengiriman"><i class="fas fa-truck"></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="Jumlah yang sudah terpacking [Siap dikirim]"><i class="fas fa-boxes"></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="Jumlah yang belum dikirim"><i class="fas fa-search-minus"></i></th>
+                    <th data-bs-toggle="tooltip" data-bs-placement="top" title="Stok tersedia"><i class="fas fa-warehouse"></i></th>
                     <th>#</th>
                 </tr>
             </thead>
@@ -107,7 +109,7 @@
                     <th>{{ $product->product_name }}</th>
                     <td>{{ $product->category->name }}</td>
                     <td class="accounting price">{{ number_format($product->selling_price) }}</td>
-                    <th class="text-center">
+                    <th class="text-center" data-bs-toggle="tooltip" data-bs-placement="top" title="Jumlah yang dipesan">
                         @if ($product->filteredOrderDetail)
                             {{-- @if ($product->filteredOrderDetail->quantity > 100)
                                     <span class="text-success">{{ number_format($product->filteredOrderDetail->quantity) }}</span>
@@ -119,7 +121,7 @@
                             <span class="text-secondary">{{ number_format($product->filteredOrderDetail->quantity) }}</span>
                         @endif
                     </th>
-                    <th class="text-center">
+                    <th class="text-center" data-bs-placement="top" title="Jumlah yang terkirim>
                         @if ($product->filteredOrderDetail)
                             @if ($product->filteredOrderDetail->delivered === $product->filteredOrderDetail->quantity)
                                 <span class="text-success">{{ number_format($product->filteredOrderDetail->delivered) }}</span>
@@ -130,7 +132,7 @@
                             @endif
                         @endif
                     </th>
-                    <th class="text-center">
+                    <th class="text-center" data-bs-toggle="tooltip" data-bs-placement="top" title="Jumlah dalam pengiriman">
                         @if ($product->filteredOrderDetail)
                             @if ($product->filteredOrderDetail->sent === $product->filteredOrderDetail->quantity)
                                 <span class="text-success">{{ number_format($product->filteredOrderDetail->sent) }}</span>
@@ -141,7 +143,18 @@
                             @endif
                         @endif
                     </th>
-                    <th class="text-center">
+                    <th class="text-center" data-bs-toggle="tooltip" data-bs-placement="top" title="Jumlah yang sudah terpacking [Siap dikirim]">
+                        @if ($product->filteredOrderDetail)
+                            @if ($product->filteredOrderDetail->ready_to_send === $product->filteredOrderDetail->quantity)
+                                <span class="text-danger">{{ number_format($product->filteredOrderDetail->ready_to_send) }}</span>
+                            @elseif ($product->filteredOrderDetail->ready_to_send > 0 && $product->filteredOrderDetail->ready_to_send < $product->filteredOrderDetail->quantity)
+                                <span class="text-secondary">{{ number_format($product->filteredOrderDetail->ready_to_send) }}</span>
+                            @else
+                                
+                            @endif
+                        @endif
+                    </th>
+                    <th class="text-center" data-bs-toggle="tooltip" data-bs-placement="top" title="Jumlah yang belum dikirim">
                         @if ($product->filteredOrderDetail)
                             @if ($product->filteredOrderDetail->to_send === $product->filteredOrderDetail->quantity)
                                 <span class="text-danger">{{ number_format($product->filteredOrderDetail->to_send) }}</span>

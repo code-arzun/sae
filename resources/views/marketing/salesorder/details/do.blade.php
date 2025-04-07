@@ -1,7 +1,6 @@
 <table class="table nowrap mb-3">
             <thead>
                 <tr>
-                    {{-- <th width="3px">No.</th> --}}
                     <th width="500px">Produk</th>
                     <th>Kategori</th>
                     <th>Jumlah</th>
@@ -14,7 +13,6 @@
             <tbody>
                 @foreach ($orderDetails as $item)
                 <tr>
-                    {{-- <td>{{ $loop->iteration  }}</td> --}}
                     <td><b>{{ $item->product->product_name }}</b></td>
                     <td>{{ $item->product->category->name }}</td>
                     <td class="text-center"><span class="badge bg-purple me-2">{{ number_format($item->quantity) }}</span>

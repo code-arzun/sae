@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Cashflow;
+namespace App\Http\Controllers\Finance\Cashflow;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

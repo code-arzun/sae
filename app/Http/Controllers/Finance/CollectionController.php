@@ -272,9 +272,10 @@ class CollectionController extends Controller
     {
         $collection = Collection::where('id', $collection_id)->first();
 
-        return view('finance.collection.details',
-            compact('collection')
-        );
+        return view('finance.collection.details', [
+            'collection' => $collection,
+            'title' => 'Detail Collection',
+        ]);
     }
 
     public function invoiceDownload(Int $collection_id)

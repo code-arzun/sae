@@ -1,19 +1,12 @@
 @extends('layout.main')
 
-@section('container')
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('so.index') }}">Sales Order</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('input.so') }}">Input</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('inputso.confirmation') }}">Konfirmasi</a></li>
+@endsection
 
-<div class="d-flex justify-content-between mb-3">
-    <div>
-        <h2>{{ $title }}</h2>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-default-icon">
-                @include('marketing.salesorder.partials.breadcrumb')
-                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('input.so') }}">Input</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('inputso.confirmation') }}">Konfirmasi</a></li>
-            </ol>
-        </nav>
-    </div>
-</div>
+@section('container')
 
 <div class="card">
     <div class="card-body row">
@@ -65,7 +58,7 @@
     </table>
 </div>
 <div class="col">
-    <a href="#" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#save">
+    <a href="#" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#saveSOModal">
         Simpan
     </a>
     @include('marketing.salesorder.input.save')

@@ -54,7 +54,7 @@
 <div class="card">
     <div class="card-body d-flex justify-content-between">
         <div class="col-md-2">
-            <select class="form-control @error('shipping_status') is-invalid @enderror" name="shipping_status">
+            <select class="form-control @error('shipping_status') is-invalid @enderror" name="shipping_status" required>
                 <option value="" selected disabled>-- Pilih Pengiriman --</option>
                 <option value="Pengiriman ke-1">Pengiriman ke-1</option>
                 <option value="Pengiriman ke-2">Pengiriman ke-2</option>
@@ -69,54 +69,34 @@
             @enderror
         </div>
         <div class="invoice-btn d-flex" data-extra-toggle="confirmation">
-            {{-- @php
-                $deliveryOrders = [
-                    @if ()
-                    ['route' => 'store.DOReguler', 'label' => 'R-Offline'],
-                    ['route' => 'store.DOHet', 'label' => 'H-Offfline'],
-                    ['route' => 'store.DOROnline', 'label' => 'R-Online'],
-                    ['route' => 'store.DOHOnline', 'label' =>  'H-Online']
-                        
-                    @endif
-                ];
-            @endphp --}}
-            
             @php
-            use Illuminate\Support\Str;
-        
-            $deliveryOrders = [];
-                if (Str::contains($salesorder->invoice_no, ['RO', 'SOR'])) {
-                    $deliveryOrders[] = ['route' => 'store.DOReguler'];
-                    // $deliveryOrders[] = ['route' => 'store.DOReguler', 'label' => 'R-Offline'];
-                }
-                if (Str::contains($salesorder->invoice_no, ['HO', 'SOH'])) {
-                    $deliveryOrders[] = ['route' => 'store.DOHet'];
-                    // $deliveryOrders[] = ['route' => 'store.DOHet', 'label' => 'H-Offline'];
-                }
-                if (Str::contains($salesorder->invoice_no, ['RS', 'SORS'])) {
-                    $deliveryOrders[] = ['route' => 'store.DOROnline'];
-                    // $deliveryOrders[] = ['route' => 'store.DOROnline', 'label' => 'R-Online'];
-                }
-                if (Str::contains($salesorder->invoice_no, ['HS', 'SOHS'])) {
-                    $deliveryOrders[] = ['route' => 'store.DOHOnline'];
-                    // $deliveryOrders[] = ['route' => 'store.DOHOnline', 'label' => 'H-Online'];
-                }
+                use Illuminate\Support\Str;
+            
+                $deliveryOrders = [];
+                    if (Str::contains($salesorder->invoice_no, ['RO', 'SOR'])) {
+                        $deliveryOrders[] = ['route' => 'store.DOReguler'];
+                        // $deliveryOrders[] = ['route' => 'store.DOReguler', 'label' => 'R-Offline'];
+                    }
+                    if (Str::contains($salesorder->invoice_no, ['HO', 'SOH'])) {
+                        $deliveryOrders[] = ['route' => 'store.DOHet'];
+                        // $deliveryOrders[] = ['route' => 'store.DOHet', 'label' => 'H-Offline'];
+                    }
+                    if (Str::contains($salesorder->invoice_no, ['RS', 'SORS'])) {
+                        $deliveryOrders[] = ['route' => 'store.DOROnline'];
+                        // $deliveryOrders[] = ['route' => 'store.DOROnline', 'label' => 'R-Online'];
+                    }
+                    if (Str::contains($salesorder->invoice_no, ['HS', 'SOHS'])) {
+                        $deliveryOrders[] = ['route' => 'store.DOHOnline'];
+                        // $deliveryOrders[] = ['route' => 'store.DOHOnline', 'label' => 'H-Online'];
+                    }
             @endphp
     
-            {{-- @foreach ($deliveryOrders as $order)
-                <form action="{{ route($order['route']) }}" method="post" class="confirmation-form">
-                    @csrf
-                    <input type="hidden" name="order_id" value="{{ $salesorder->id }}">
-                    <button type="button" class="btn bg-success me-3 confirm-button"><b>{{ $order['label'] }}</b></button>
-                </form>
-            @endforeach --}}
             @foreach ($deliveryOrders as $order)
                 <form action="{{ route($order['route']) }}" method="post" class="confirmation-form">
                     @csrf
                     <input type="hidden" name="order_id" value="{{ $salesorder->id }}">
                     <input type="hidden" name="shipping_status" id="shipping_status_{{ $order['route'] }}">
                     <button type="submit" class="btn btn-success confirm-button" onclick="submitForm('{{ $order['route'] }}')">
-                        {{-- <b>{{ $order['label'] }}</b> --}}
                         <b>Buat Delivery Order</b>
                     </button>
                 </form>

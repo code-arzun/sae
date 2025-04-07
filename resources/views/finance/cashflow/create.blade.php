@@ -74,6 +74,8 @@
                             </div>
                             @enderror
                         </div>
+                        <!-- Metode -->
+                        
                         <!-- Bukti Transaksi -->
                         <div class="input-group mb-4 col-lg-6">
                             <div class="custom-file">

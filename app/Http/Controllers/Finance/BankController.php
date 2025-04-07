@@ -11,12 +11,6 @@ class BankController extends Controller
 {
     public function index()
     {
-        $row = (int) request('row', 10);
-
-        if ($row < 1 || $row > 100) {
-            abort(400, 'The per-page parameter must be an integer between 1 and 100.');
-        }
-
         return view('finance.bank.index', [
             'banks' => Bank::all()
         ]);
@@ -37,7 +31,7 @@ class BankController extends Controller
 
         Bank::create($validatedData);
 
-        return redirect(route('bank.index'))->with('success', 'Type has been created!');
+        return back()->with('success', 'Data Bank berhasil ditambahkan!');
     }
 
     public function show(Bank $bank)

@@ -84,7 +84,7 @@
                         {{ strpos($delivery->invoice_no, '-RO') !== false ? 'bg-primary' : 
                            (strpos($delivery->invoice_no, '-HO') !== false ? 'bg-danger' : 
                            (strpos($delivery->invoice_no, '-RS') !== false ? 'bg-success' : 
-                           (strpos($delivery->invoice_no, '-HS') !== false ? 'bg-warning' : 'bg-secondary'))) }}" 
+                           (strpos($delivery->invoice_no, '-HS') !== false ? 'bg-warning' : 'bg-secondary'))) }} mt-1 mb-1" 
                        href="{{ route('do.deliveryDetails', $delivery->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" 
                        title="Lihat Detail Pengiriman">
                         {{ $delivery->invoice_no }}

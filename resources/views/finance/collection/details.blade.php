@@ -8,22 +8,6 @@
 
 @section('container')
 
-{{-- <div class="d-flex justify-content-between mb-3">
-    <div>
-        <h2>{{ $title }}</h2>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-default-icon">
-                @include('finance.collection.partials.breadcrumb')
-                <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('collection.details', $collection->id) }}">Detail</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><b>{{ $collection->invoice_no }}</b>
-            </ol>
-        </nav>
-    </div>
-    <div>
-        
-    </div>
-</div> --}}
-
 <div class="mb-3">
     <h4>Sales Order</h4>
     <div class="card">
@@ -120,7 +104,7 @@
                 <div class="col-md-4 d-flex flex-column mb-3">
                     <label class="mb-2">Status Pembayaran</label>
                     <div>
-                        <span class="badge {{ strpos($collection->payment_status, 'Belum Lunas') !== false ? 'bg-warning' : (strpos($collection->payment_status, 'Dalam Pengiriman') !== false ? 'bg-warning' : 'bg-success') }}">
+                        <span class="badge {{ strpos($collection->payment_status, 'Belum Lunas') !== false ? 'bg-warning' : 'bg-success' }}">
                             {{ $collection->payment_status }}
                         </span>
                     </div>

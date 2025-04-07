@@ -19,7 +19,6 @@
         <div class="form-group col-md-12 mb-3">
             <label for="order_id">Pilih Sales Order</label>
             <select class="form-control order_id bg-white text-center" name="order_id" id="order_id" onchange="calculateCollection()" readonly>
-                <option value="">Pilih Sales Order</option>
                 @foreach ($salesorders as $salesorder)
                     <option value="{{ $salesorder->id }}" {{ request('order_id') == $salesorder->id ? 'selected' : '' }}
                         data-due="{{ $salesorder->due }}"
@@ -30,6 +29,8 @@
                     </option>
                 @endforeach
             </select>
+        </div>
+        <div class="col-md-6">
         </div>
     <!-- Metode Pembayaran -->
         <div class="row d-flex mb-3">

@@ -45,6 +45,16 @@ class Delivery extends Model
         return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 
+    // 1st method
+    protected $appends = ['delivery_order'];
+
+    public function getDeliveryOrderAttribute()
+    {
+        return self::where('order_id', $this->order_id)
+            ->where('created_at', '<=', $this->created_at)
+            ->count();
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {

@@ -54,25 +54,7 @@
                                 <label for="notes" class="text-muted mb-1">Detail</label>
                                 <h5>{{ $cashflow->cashflowcategory->category }} {{ $cashflow->cashflowcategory->detail }} {{ $cashflow->notes }}</h5>
                             </div>
-                            <!-- User -->
-                            <div class="form-group col-md-4">
-                                <label for="user_id" class="text-muted mb-1">Diinput oleh</label>
-                                <h5>{{ $cashflow->user->employee->name }}</h5>
-                            </div>
-                            <!-- Created at -->
-                            <div class="form-group col-md-4">
-                                <label for="created_at" class="text-muted mb-1">Diinput pada</label>
-                                <h5>{{ Carbon\Carbon::parse($cashflow->created_at)->translatedformat('h:i:s - l, d F Y') }}</h5>
-                            </div>
-                            <!-- Updated at -->
-                            <div class="form-group col-md-4">
-                                <label for="updated_at" class="text-muted mb-1">Diperbarui pada</label>
-                                @if ($cashflow->created_at == $cashflow->updated_at)
-                                <h5>-</h5>
-                                @else
-                                <h5>{{ Carbon\Carbon::parse($cashflow->updated_at)->translatedformat('h:i:s - l, d F Y') }}</h5>
-                                @endif
-                            </div>
+                            
                         </div>
                     </div>
                     <!-- Bukti Transaksi -->
@@ -83,6 +65,31 @@
                                 <img src="{{ $cashflow->receipt ? asset($cashflow->receipt) : asset(Storage::url('cashflow/default.jpg')) }}" alt="{{ $cashflow->cashflow_code }} | {{ $cashflow->cashflowcategory->category }} {{ $cashflow->cashflowcategory->detail }} {{ $cashflow->notes }}" class="img-fluid" width="100%">
                             </a>
                         </div>
+                    </div>
+                    <div class="row">
+                        <!-- Created by -->
+                        <div class="form-group col-md-2">
+                            <label for="createdBy" class="text-muted mb-1">Diinput oleh</label>
+                            <h5>{{ $cashflow->createdBy->employee->name }}</h5>
+                        </div>
+                        <!-- Created at -->
+                        <div class="form-group col-md-4">
+                            <label for="created_at" class="text-muted mb-1">Diinput pada</label>
+                            <h5>{{ Carbon\Carbon::parse($cashflow->created_at)->translatedformat('h:i:s - l, d F Y') }}</h5>
+                        </div>
+                        @if ($cashflow->created_at == $cashflow->updated_at)
+                        @else
+                        <!-- Updated by -->
+                        <div class="form-group col-md-2">
+                            <label for="updatedBy" class="text-muted mb-1">Diperbarui oleh</label>
+                            <h5>{{ $cashflow->updatedBy?->employee->name }}</h5>
+                        </div>
+                        <!-- Updated at -->
+                        <div class="form-group col-md-4">
+                            <label for="updated_at" class="text-muted mb-1">Diperbarui pada</label>
+                            <h5>{{ Carbon\Carbon::parse($cashflow->updated_at)->translatedformat('h:i:s - l, d F Y') }}</h5>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

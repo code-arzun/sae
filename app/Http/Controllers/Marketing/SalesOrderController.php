@@ -334,7 +334,6 @@ class SalesOrderController extends Controller
 
     //
 
-    // Root controller view all, proposed, approved, sent, delivered page
     public function index()
     {
         $row = (int) request('row', 10000);
@@ -430,41 +429,12 @@ class SalesOrderController extends Controller
         $orderDetails = OrderDetails::with('product')->where('order_id', $order_id)
                         ->orderBy('product_id', 'asc')->get();
 
-        // show data (only for debugging)
         return view('marketing.salesorder.invoice-order', [
             'order' => $order,
             'orderDetails' => $orderDetails,
         ]);
     }
 
-     // Penyiapan Produk
-     public function penyiapanProduk()
-    {
-        $row = (int) request('row', 1000);
-        $invoiceNo = request('invoice_no', null); 
-        $salesFilter = request('employee_id', null);
-
-        $ordersQuery = Order::query();
-
-        if ($invoiceNo) {
-            $ordersQuery->where('invoice_no', 'like', "%$invoiceNo%");
-        }
-
-        if ($salesFilter) {
-            $ordersQuery->whereHas('customer', function ($query) use ($salesFilter) {
-                $query->where('employee_id', $salesFilter);
-            });
-        }
-
-        $prepares = $ordersQuery->where('order_status', 'Disetujui')->sortable()->orderBy('id', 'desc')->paginate($row);
-        $sales = Customer::select('employee_id')->distinct()->get();
-
-        return view('warehouse.delivery.penyiapan-produk', [
-            'prepares' => $prepares,
-            'sales' => $sales,
-        ]);
-    }
- 
      // Dokumen Penyiapan Produk
      public function printPenyiapan(Int $order_id)
      {

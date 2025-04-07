@@ -133,7 +133,7 @@
     </div>
     <!-- Data Recap -->
     <div class="tab-pane fade" id="datarecap" role="tabpanel">
-        @include('warehouse.products.partials.recap')
+        @include('warehouse.products.partials.statistic')
     </div>
 </div>
 

@@ -17,8 +17,8 @@
         <tr>
             <td class="text-center">{{ $loop->iteration  }}</td>
             <td>
-                <span class="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Carbon\Carbon::parse($collection->delivery_date)->translatedformat('l, d F Y') }}">
-                    {{ Carbon\Carbon::parse($collection->delivery_date)->translatedformat('d M Y') }}
+                <span class="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Carbon\Carbon::parse($collection->payment_date)->translatedformat('l, d F Y') }}">
+                    {{ Carbon\Carbon::parse($collection->payment_date)->translatedformat('d M Y') }}
                 </span>
             </td>
             <td class="text-center">

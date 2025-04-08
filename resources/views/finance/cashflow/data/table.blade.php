@@ -52,7 +52,7 @@
                     <td class="text-end">-</td>
                     <td class="accounting discountRp">{{ number_format($cashflow->nominal) }}</td>
                 @endif
-                <th class="text-center">{{ explode(' ', $cashflow->user->employee->name)[0] }}</th>
+                <th class="text-center">{{ explode(' ', $cashflow->createdBy->employee->name)[0] }}</th>
                 <td class="text-center">{{ Carbon\Carbon::parse($cashflow->created_at)->translatedformat('H:i - d M Y') }}</td>
             </tr>
 

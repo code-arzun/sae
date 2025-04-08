@@ -100,7 +100,7 @@
                                 <input type="text" class="form-control text-center" id="no_rek" name="no_rek" value="{{ old('no_rek') }}">
                             </div>
             
-                        <!-- Bank Pengirim -->
+                        <!-- Rekening Penerima -->
                             <div class="form-group col-md-4" id="rekeningPenerima" style="display: none;">
                                 <label for="transfer_to">Rekening Penerima</label>
                                 <select class="form-control bg-white text-center" name="transfer_to" id="transfer_to">

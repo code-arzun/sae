@@ -18,9 +18,13 @@ return new class extends Migration
             $table->string('cashflow_code')->nullable();
             $table->integer('nominal');
             $table->string('notes');
-            $table->date('date');
             $table->string('method')->nullable();
+            $table->integer('employee_id')->nullable();
             $table->integer('rekening_id')->nullable();
+            $table->integer('bank_id')->nullable();
+            $table->string('rekeningPartner')->nullable();
+            $table->string('namaPartner')->nullable();
+            $table->date('date');
             $table->string('receipt')->nullable();
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();

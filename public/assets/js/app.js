@@ -95,6 +95,7 @@ function calculateDiscount() {
     grandTotalElement.value = grandTotal
 }
 
+// Collection
 function toggleElements() {
     const paymentMethodInput = document.querySelector('input[name="payment_method"]:checked');
   
@@ -492,3 +493,4 @@ document.addEventListener("DOMContentLoaded", function () {
 //     preslug = preslug.replace(/ /g,"-");
 //     slug.value = preslug.toLowerCase();
 // });
+

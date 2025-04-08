@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Finance\Cashflow;
 
 use Exception;
+use App\Models\Bank;
 use App\Models\User;
 use App\Models\Cashflow;
-use App\Models\Department;
 
+use App\Models\Rekening;
+use App\Models\Department;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\CashflowCategory;
 use App\Http\Controllers\Controller;
-use App\Models\Rekening;
+use App\Models\Employee;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -25,7 +27,7 @@ class CashflowController extends Controller
 {
     public function index()
     {
-        $cashflows = Cashflow::with(['createdBy.employee', 'updatedBy.employee', 'department', 'cashflowcategory', 'rekening'])
+        $cashflows = Cashflow::with(['createdBy', 'updatedBy', 'department', 'cashflowcategory', 'rekeningPerusahaan', 'employee'])
             ->filter(request(['search']))->sortable()->orderBy('date', 'desc')->get();
 
         $annualCashflows = $cashflows->groupBy(fn ($item) => $item->date->format('Y'))->sortKeysDesc()->map(fn ($items) => $items->sortBy('date'));
@@ -38,10 +40,11 @@ class CashflowController extends Controller
             'monthlyCashflows' => $monthlyCashflows,
             'departments' => Department::all(),
             'cashflowcategories' => CashflowCategory::all(),
-            // 'user' => User::all(),
             'createdBy' => User::all(),
             'updatedBy' => User::all(),
-            'rekenings' => Rekening::all(),
+            'rekeningPerusahaans' => Rekening::all(),
+            'banks' => Bank::all(),
+            'employees' => Employee::all(),
             'title' => 'Arus Kas',
             'totalCashflow' => Cashflow::sum('nominal'),
         ]);
@@ -95,9 +98,6 @@ class CashflowController extends Controller
             $user = auth()->user();
 
             $category = CashflowCategory::find($request->cashflowcategory_id);
-            if (!$category) {
-                return Redirect::back()->withErrors(['cashflowcategory_id' => 'Kategori tidak ditemukan']);
-            }
 
             $prefix = ($category->type === 'Pemasukan') ? 'KM-' : 'KK-';
 
@@ -115,10 +115,14 @@ class CashflowController extends Controller
                 'department_id' => 'required|integer',
                 'nominal' => 'required|integer',
                 'notes' => 'required|string',
-                'receipt' => 'image|file|max:1024|nullable',
+                'receipt' => 'image|file|max:2048|nullable',
                 'date' => 'date_format:Y-m-d|required',
                 'method' => 'string|required',
-                'rekening_id' => 'integer|nullable',
+                'employee_id' => 'integer|nullable',
+                'bank_id' => 'integer|nullable',
+                'rekeningPartner' => 'string|nullable',
+                'namaPartner' => 'string|nullable',
+                'rekening_id' => 'string|nullable',
             ]);
 
             $validatedData['created_by'] = $user->id;
@@ -161,11 +165,27 @@ class CashflowController extends Controller
                 'department_id' => 'required|integer',
                 'nominal' => 'required|integer',
                 'notes' => 'required|string',
-                'receipt' => 'image|file|max:1024|nullable',
+                'receipt' => 'image|file|max:2048|nullable',
                 'date' => 'date_format:Y-m-d|required',
                 'method' => 'string|required',
-                'rekening_id' => 'integer|nullable',
+                'employee_id' => 'integer|nullable',
+                'bank_id' => 'integer|nullable',
+                'rekeningPartner' => 'string|nullable',
+                'namaPartner' => 'string|nullable',
+                'rekening_id' => 'string|nullable',
             ]);
+
+            // ✅ Kosongkan field yang tidak relevan sesuai dengan method
+                if ($validatedData['method'] === 'Tunai') {
+                    // Kosongkan semua field Transfer
+                    $validatedData['bank_id'] = null;
+                    $validatedData['rekeningPartner'] = null;
+                    $validatedData['namaPartner'] = null;
+                    $validatedData['rekening_id'] = null;
+                } elseif ($validatedData['method'] === 'Transfer') {
+                    // Kosongkan field Tunai
+                    $validatedData['employee_id'] = null;
+                }
 
             $validatedData['updated_by'] = $user->id;
 
@@ -185,7 +205,7 @@ class CashflowController extends Controller
 
             $cashflow->update($validatedData);
 
-            return back()->with('success', 'Catatan Arus Kas berhasil diperbarui!');
+            return back()->with('success', 'Data Arus Kas berhasil diperbarui!');
         }
 
 

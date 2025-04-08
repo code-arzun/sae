@@ -19,22 +19,19 @@ class Cashflow extends Model
         'cashflow_code',
         'nominal',
         'notes',
-        'receipt',
         'method',
+        'employee_id',
         'rekening_id',
+        'bank_id',
+        'rekeningPartner',
+        'namaPartner',
         'date',
+        'receipt',
         'created_by',
         'updated_by',
     ];
 
     public $sortable = [
-        'cashflowcategory_id',
-        'user_id',
-        'department_id',
-        'cashflow_code',
-        'nominal',
-        'notes',
-        'date',
     ];
 
     protected $guarded = [
@@ -45,6 +42,7 @@ class Cashflow extends Model
         // 'user',
         'createdBy',
         'updatedBy',
+        // 'rekeningPerusahaan',
     ];
 
     protected $casts = [
@@ -74,8 +72,16 @@ class Cashflow extends Model
         return $this->belongsTo(CashflowCategory::class);
     }
 
-    public function rekening(){
-        return $this->belongsTo(Rekening::class);
+    public function rekeningPerusahaan(){
+        return $this->belongsTo(Rekening::class, 'rekening_id');
+    }
+    
+    public function bank(){
+        return $this->belongsTo(Bank::class);
+    }
+
+    public function employee(){
+        return $this->belongsTo(Employee::class);
     }
 
     public function scopeFilter($query, array $filters)

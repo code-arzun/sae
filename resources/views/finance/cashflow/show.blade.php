@@ -7,8 +7,6 @@
             </div>
             <div class="modal-body bg-white">
                 <div class="row">
-                    <div class="col-md-10">
-                        <div class="row">
                             <!-- Tanggal -->
                             <div class="form-group col-md-4">
                                 <label for="date" class="text-muted mb-1">Tanggal</label>
@@ -51,22 +49,60 @@
                             </div>
                             <!-- Detail -->
                             <div class="form-group col-md-12">
-                                <label for="notes" class="text-muted mb-1">Detail</label>
+                                <label for="notes" class="text-muted mb-1">Detail Transaksi</label>
                                 <h5>{{ $cashflow->cashflowcategory->category }} {{ $cashflow->cashflowcategory->detail }} {{ $cashflow->notes }}</h5>
                             </div>
-                            
-                        </div>
-                    </div>
-                    <!-- Bukti Transaksi -->
-                    <div class="col-md-2 d-flex flex-column">
-                        <label for="receipt" class="text-muted mb-1">Bukti Transaksi</label>
-                        <div class="input-group-append">
-                            <a href="{{ asset($cashflow->receipt) }}" target="_blank">
-                                <img src="{{ $cashflow->receipt ? asset($cashflow->receipt) : asset(Storage::url('cashflow/default.jpg')) }}" alt="{{ $cashflow->cashflow_code }} | {{ $cashflow->cashflowcategory->category }} {{ $cashflow->cashflowcategory->detail }} {{ $cashflow->notes }}" class="img-fluid" width="100%">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row">
+                            <!-- Metode -->
+                            <div class="form-group col-md-4 d-flex flex-column">
+                                <label for="method" class="text-muted mb-1">Metode</label>
+                                <div>
+                                    @if ($cashflow->method === 'Transfer')
+                                    <span class="badge bg-success">{{ $cashflow->method }}</span>
+                                    @else
+                                    <span class="badge bg-warning">{{ $cashflow->method }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            @if ($cashflow->method === 'Transfer')
+                            <!-- Rekening Partner -->
+                            <div class="form-group col-md-4">
+                                <label for="rekeningPartner" class="text-muted mb-1">Rekening
+                                    @if ($cashflow->cashflowcategory->type === 'Pemasukan')
+                                    Pengirim
+                                    @else
+                                    Penerima
+                                    @endif
+                                </label>
+                                <h5>{{ $cashflow->bank->name }} - {{ $cashflow->rekeningPartner }}</h5>
+                                <h5>{{ $cashflow->namaPartner }}</h5>
+                            </div>
+                            <!-- Rekening Perusahaan -->
+                            <div class="form-group col-md-4">
+                                <label for="rekening_id" class="text-muted mb-1">Rekening
+                                    @if ($cashflow->cashflowcategory->type === 'Pemasukan')
+                                    Penerima
+                                    @else
+                                    Pengirim
+                                    @endif
+                                </label>
+                                <h5>{{ $cashflow->rekeningPerusahaan->bank->name }} - {{ $cashflow->rekeningPerusahaan->no_rek }}</h5>
+                                <h5>{{ $cashflow->rekeningPerusahaan->nama }}</h5>
+                            </div>
+                            @else
+                            <!-- Dibayar/Diterima oleh -->
+                            <div class="form-group col-md-8">
+                                <label for="rekening_id" class="text-muted mb-1">
+                                    @if ($cashflow->cashflowcategory->type === 'Pemasukan')
+                                    Diterima
+                                    @else
+                                    Dibayar
+                                    @endif
+                                    oleh
+                                </label>
+                                <h5>{{ $cashflow->employee->name }}</h5>
+                            </div>
+                            @endif
+                    
                         <!-- Created by -->
                         <div class="form-group col-md-2">
                             <label for="createdBy" class="text-muted mb-1">Diinput oleh</label>
@@ -90,6 +126,14 @@
                             <h5>{{ Carbon\Carbon::parse($cashflow->updated_at)->translatedformat('h:i:s - l, d F Y') }}</h5>
                         </div>
                         @endif
+                </div>
+                <!-- Bukti Transaksi -->
+                <div class="col-md-2 d-flex flex-column">
+                    <label for="receipt" class="text-muted mb-1">Bukti Transaksi</label>
+                    <div class="input-group-append">
+                        <a href="{{ asset($cashflow->receipt) }}" target="_blank">
+                            <img src="{{ $cashflow->receipt ? asset($cashflow->receipt) : asset(Storage::url('cashflow/default.jpg')) }}" alt="{{ $cashflow->cashflow_code }} | {{ $cashflow->cashflowcategory->category }} {{ $cashflow->cashflowcategory->detail }} {{ $cashflow->notes }}" class="img-fluid" width="100%">
+                        </a>
                     </div>
                 </div>
             </div>

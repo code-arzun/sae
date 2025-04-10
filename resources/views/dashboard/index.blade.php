@@ -1,63 +1,15 @@
 @extends('layout.main')
 
 @section('container')
-    <div class="row">
-        <div class="col-lg-12">
-        @if (session()->has('success'))
-            <div class="alert text-white bg-success" role="alert">
-                <div class="iq-alert-text">{{ session('success') }}</div>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <i class="ri-close-line"></i>
-                </button>
-            </div>
-        @endif
-        </div>
-    </div>
 
-    <!-- Hello (Pengguna) -->
+<!-- Greetings -->
     <div class="row mb-3">
         <h5 id="greetings" class="greetings"></h5>
         <h3>{{ auth()->user()->employee->name }}</h3>
     </div>
+<!-- Greetings end -->
 
-    <!-- Pic Carousel -->
-    {{-- <div class="col">
-        @if (auth()->user()->hasRole('Super Admin'))
-        <div class="row">
-            <div id="carouselExampleSlidesOnly" class="carousel slide mb-5" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://images.pexels.com/photos/457882/pexels-photo-457882.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="d-block w-100" alt="https://images.pexels.com/photos/457882/pexels-photo-457882.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
-                </div>
-                <div class="carousel-item">
-                    <img src="https://images.pexels.com/photos/620337/pexels-photo-620337.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="d-block w-100" alt="https://images.pexels.com/photos/620337/pexels-photo-620337.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
-                </div>
-                <div class="carousel-item">
-                    <img src="..." class="d-block w-100" alt="...">
-                </div>
-                </div>
-            </div>
-        </div>
-        @endif
-        @if (auth()->user()->hasRole('Gudang'))
-        <div class="row">
-            <div id="carouselExampleSlidesOnly" class="carousel slide mb-5" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://cdn.shopify.com/s/files/1/0070/7032/files/einstein.png?v=1706739683" class="d-block w-100" alt="https://cdn.shopify.com/s/files/1/0070/7032/files/einstein.png?v=1706739683">
-                </div>
-                <div class="carousel-item">
-                    <img src="https://images.pexels.com/photos/620337/pexels-photo-620337.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="d-block w-100" alt="https://images.pexels.com/photos/620337/pexels-photo-620337.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
-                </div>
-                <div class="carousel-item">
-                    <img src="..." class="d-block w-100" alt="...">
-                </div>
-                </div>
-            </div>
-        </div>
-        @endif
-    </div> --}}
-
+<!-- Rekap -->
     <div class="row">
         <!-- Super Admin -->
         @if (auth()->user()->hasRole('Super Admin'))
@@ -85,20 +37,19 @@
         </div>
         @endif
     </div>
-
+<!-- Rekap end -->
     
 @endsection
 
-@if ((!isset($attendance) || $attendance->status == null)
-    && (Carbon\Carbon::now()->format('H:i') >= '07:00'
-    && Carbon\Carbon::now()->format('H:i') <= '16:00'
+
+<!-- Attendance Pop-up -->
+@if ((!isset($attendance) || $attendance->status == null) 
+    && (Carbon\Carbon::now()->format('H:i') >= '06:00' // Start of the Day
+    && Carbon\Carbon::now()->format('H:i') <= '17:00' // End of the Day
+    && Carbon\Carbon::now()->format('l') != 'Sunday' // Not Sunday
     ))
-@include('attendance.checkin')
+    @include('attendance.checkin')
 @endif
-
-@section('specificpagescripts')
-
-@endsection
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -122,43 +73,62 @@
         greetingElement.textContent = `Selamat ${greetingMessage}, ${greetingElement.textContent}`;
     }
 
-    // Popup Absensi
-    const attendanceModalElement = document.getElementById('attendanceCheckinModal');
-    const currentDate = new Date();
-    const currentDay = currentDate.getDay(); // Mengambil hari dalam seminggu
+    // Attendance Pop-up
+        const attendanceModalElement = document.getElementById('attendanceCheckinModal');
+        const currentDate = new Date();
+        const currentDay = currentDate.getDay(); // 0 = Minggu
 
-    if (attendanceModalElement && currentDay !== 0) { // 0 berarti hari Minggu
-        const attendanceModal = new bootstrap.Modal(attendanceModalElement, {
-            keyboard: false,
-            backdrop: 'static',
-        });
-        attendanceModal.show();
-    }
-
-    const hadirRadio = document.getElementById('hadir');
-    const tidakHadirRadio = document.getElementById('tidak_hadir');
-    const timepickerDiv = document.getElementById('timepickerDiv');
-    const keteranganDiv = document.getElementById('keteranganDiv');
-
-    if (hadirRadio && tidakHadirRadio) {
-        hadirRadio.addEventListener('change', function () {
-            if (this.checked) {
-                timepickerDiv.style.display = 'block';
-                document.getElementById('datangTime').setAttribute('required', 'required');
-                keteranganDiv.style.display = 'none';
-                document.getElementById('keterangan').removeAttribute('required');
+        function updateClock() {
+            const now = new Date();
+            const jam = String(now.getHours()).padStart(2, '0');
+            const menit = String(now.getMinutes()).padStart(2, '0');
+            const detik = String(now.getSeconds()).padStart(2, '0');
+            const clockEl = document.getElementById('clock');
+            if (clockEl) {
+                clockEl.textContent = `${jam}:${menit}:${detik}`;
             }
-        });
+        }
 
-        tidakHadirRadio.addEventListener('change', function () {
-            if (this.checked) {
-                timepickerDiv.style.display = 'none';
-                document.getElementById('datangTime').removeAttribute('required');
-                keteranganDiv.style.display = 'block';
-                document.getElementById('keterangan').setAttribute('required', 'required');
-            }
-        });
-    }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        if (attendanceModalElement && currentDay !== 0) {
+            const attendanceModal = new bootstrap.Modal(attendanceModalElement, {
+                keyboard: false,
+                backdrop: 'static',
+            });
+            attendanceModal.show();
+        }
+
+        const hadirRadio = document.getElementById('hadir');
+        const tidakHadirRadio = document.getElementById('tidak_hadir');
+        const keteranganDiv = document.getElementById('keteranganDiv');
+        const hadirLabel = document.querySelector("label[for='hadir']");
+        const tidakHadirLabel = document.querySelector("label[for='tidak_hadir']");
+
+        if (hadirRadio && tidakHadirRadio) {
+            hadirRadio.addEventListener('change', function () {
+                if (this.checked) {
+                    hadirLabel.classList.add('active');
+                    tidakHadirLabel.classList.remove('active');
+                    if (keteranganDiv) {
+                        keteranganDiv.style.display = 'none';
+                        document.getElementById('keterangan').removeAttribute('required');
+                    }
+                }
+            });
+
+            tidakHadirRadio.addEventListener('change', function () {
+                if (this.checked) {
+                    tidakHadirLabel.classList.add('active');
+                    hadirLabel.classList.remove('active');
+                    if (keteranganDiv) {
+                        keteranganDiv.style.display = 'block';
+                        document.getElementById('keterangan').setAttribute('required', 'required');
+                    }
+                }
+            });
+        }
 
     // Chart
     fetch('/orders/chart-status')

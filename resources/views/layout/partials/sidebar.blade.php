@@ -16,7 +16,7 @@
           </a>
         </li>
         <li class="pc-item">
-          <a href="{{ route('myattendance') }}" class="pc-link">
+          <a href="{{ route('attendance.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-calendar-plus"></i></span>
             <span class="pc-mtext">Absensi</span>
           </a>
@@ -136,6 +136,25 @@
           <a href="{{ route('collection.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-report-money"></i></span>
             <span class="pc-mtext">Collection</span>
+          </a>
+        </li>
+        @endif
+        
+        @if (auth()->user()->can('employee'))
+        <li class="pc-item pc-caption">
+          <label>Kepegawaian</label>
+          <i class="ti ti-report-money"></i>
+        </li>
+        <li class="pc-item">
+          <a href="{{ route('allAttendance', ['year' => date('Y')]) }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-table"></i></span>
+            <span class="pc-mtext">Kehadiran</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="{{ route('employees.index') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-table"></i></span>
+            <span class="pc-mtext">Pegawai</span>
           </a>
         </li>
         @endif

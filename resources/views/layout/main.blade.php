@@ -41,7 +41,8 @@
     </div>
 
     <!-- Session -->
-    @include('layout.partials.session')
+      @include('layout.partials.session')
+    <!-- [ Session ] end -->
     
     <!-- Content Start -->
       <!-- Sidebar -->
@@ -49,6 +50,7 @@
       <!-- Navbar -->
       @include('layout.partials.navbar')
 
+      <!-- Content -->
       <div class="pc-container">
           <div class="pc-content">
               <div class="row">
@@ -66,11 +68,11 @@
     <!-- Content End -->
     
     <!-- Footer -->
-    @include('layout.partials.footer')
+      @include('layout.partials.footer')
+    <!-- [ Layout footer ] end -->
 
     <!-- Main JavaScript -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
-    <script src="{{ asset('assets/js/main.js') }}"></script>
 
     <!-- [Page Specific JS] start -->
     <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
@@ -110,7 +112,7 @@
       
     </script>
     <!-- Page-specific scripts -->
-    @yield('specificpagestyles')
+      @yield('specificpagestyles')
 </body>
 </html>
 

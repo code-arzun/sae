@@ -34,6 +34,9 @@ class DashboardController extends Controller
         $attendance = Attendance::where('employee_id', $currentUser->employee_id)
                                 ->whereDate('created_at', today())->first();
                                 
-        return view('dashboard.index', compact('attendance', 'users', 'orders'));
+        return view('dashboard.index', compact('attendance', 'users', 'orders'), 
+        [
+            'title' => 'Dashboard'
+        ]);
     }
 }

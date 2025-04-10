@@ -13,7 +13,7 @@ class Attendance extends Model
     protected $fillable = [
         'employee_id',
         'status',
-        'datang',
+        // 'datang',
         'pulang',
         'keterangan',
         'work_journal',
@@ -23,16 +23,16 @@ class Attendance extends Model
     public $sortable = [
         'employee_id',
         'status',
-        'datang',
-        'pulang',
+        // 'datang',
+        // 'pulang',
         'keterangan',
         'work_journal',
     ];
 
-    protected $casts = [
-        'datang' => 'date:H:i',
-        'pulang' => 'date:H:i',
-    ];
+    // protected $casts = [
+    //     'datang' => 'date:H:i',
+    //     'pulang' => 'date:H:i',
+    // ];
     
     protected $guarded = [
         'id'

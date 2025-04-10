@@ -103,42 +103,27 @@ use App\Http\Controllers\Publishing\WriterCategoryController;
     });
 //
 
-// ABSENSI
-    Route::prefix('attendance')->group(function () {
-        Route::get('myattendance', [AttendanceController::class, 'myattendance'])->name('myattendance');
-        });
-//
-
 // HUMAN RESOURCE
     // ====== Employee ======
         Route::middleware(['permission:employee'])->group(function () {
             Route::resource('/employees', EmployeeController::class);
             Route::resource('/position', PositionController::class);
             Route::resource('/department', DepartmentController::class);
+            Route::get('kehadiran-pegawai/{year}', [AttendanceController::class, 'allAttendance'])->name('allAttendance');
+            Route::get('kehadiran-pegawai/', function () {
+                return redirect()->route('allAttendance', ['year' => date('Y')]);
+            });
         });
 
     // ====== Employee Attendance ======
-        // Route::middleware(['permission:attendance'])->prefix('attendance')->group(function () {
-        Route::prefix('attendance')->group(function () {
-            Route::resource('/', AttendanceController::class)->except(['index', 'myattendance']);
-            Route::get('/{year}', [AttendanceController::class, 'index'])->name('attendance.index');
-            Route::get('/', function () {
-                return redirect()->route('attendance.index', ['year' => date('Y')]);
-            });
-            Route::get('/create', [AttendanceController::class, 'create'])->name('attendance.create');
-            // Route::get('myattendance', [AttendanceController::class, 'myattendance'])->name('attendance.myattendance');
-            // Route::resource('/employee/attendance', AttendanceController::class)->except(['show', 'update', 'destroy']);
-            // Route::resource('/attendance', AttendanceController::class);
-            // Route::resource('/attendance', AttendanceController::class);
-            Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
-            Route::put('/attendance/{attendance}', [AttendanceController::class, 'update'])->name('attendance.update');
-            
-            // Route::get('/myattendance', [AttendanceController::class, 'myattendance'])->name('attendance.myattendance');
-            Route::get('/attendance/{date}', [AttendanceController::class, 'show'])->name('attendance.show');
-        });
-    // Route::middleware(['permission:all.attendance.menu'])->group(function () {
-    //     Route::resource('/attendance', AttendanceController::class);
-    // });
+        Route::resource('/attendance', AttendanceController::class);
+        // Route::middleware(['permission:employee'])->group(function () {
+        //     Route::get('attendance/create', [AttendanceController::class, 'create'])->name('attendance.create');
+        //     Route::post('attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
+        //     Route::get('attendance/{attendance}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
+        //     Route::put('/attendance/{attendance}', [AttendanceController::class, 'update'])->name('attendance.update');
+        //     Route::get('/attendance/{date}', [AttendanceController::class, 'show'])->name('attendance.show');
+        // });
 
     // ====== Salary ======
     Route::middleware(['permission:salary.menu'])->group(function () {

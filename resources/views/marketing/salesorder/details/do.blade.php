@@ -3,7 +3,7 @@
                 <tr>
                     <th width="500px">Produk</th>
                     <th>Kategori</th>
-                    <th>Jumlah</th>
+                    <th>Jumlah dipesan</th>
                     <th>Belum Dikirim</th>
                     <th>Siap Kirim</th>
                     <th>Dalam Pengiriman</th>
@@ -15,7 +15,7 @@
                 <tr>
                     <td><b>{{ $item->product->product_name }}</b></td>
                     <td>{{ $item->product->category->name }}</td>
-                    <td class="text-center"><span class="badge bg-purple me-2">{{ number_format($item->quantity) }}</span>
+                    <td class="text-center"><span class="badge bg-danger me-2">{{ number_format($item->quantity) }}</span>
                     </td>
                     <td class="text-center">
                         @if ($item->quantity === $item->delivered)

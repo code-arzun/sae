@@ -110,7 +110,13 @@
                             @enderror
                         <!-- Bank -->
                             <div class="form-group col-md-2" id="editBank" style="display: none;">
-                                <label for="bank_id">Bank Pengirim</label>
+                                <label for="bank_id">Bank
+                                    @if (old('cashflowcategory_id', $cashflow->cashflowcategory->type === 'Pemasukan') == ($cashflowcategory->type === 'Pemasukan'))
+                                    Pengirim
+                                    @else
+                                    Penerima
+                                    @endif
+                                </label>
                                 <select class="form-control bg-white text-center" name="bank_id" id="bank_id">
                                     <option value="" selected disabled>Pilih Bank</option>
                                     @foreach ($banks as $bank)
@@ -120,7 +126,13 @@
                             </div>
                         <!-- Nomor Rekening -->
                             <div class="form-group col-md-3" id="editRekeningPartner" style="display: none;">
-                                <label for="rekeningPartner">Rekening Pengirim</label>
+                                <label for="rekeningPartner">Rekening
+                                    @if (old('cashflowcategory_id', $cashflow->cashflowcategory->type === 'Pemasukan') == ($cashflowcategory->type === 'Pemasukan'))
+                                    Pengirim
+                                    @else
+                                    Penerima
+                                    @endif
+                                </label>
                                 <input type="text" class="form-control text-center" id="rekeningPartner" name="rekeningPartner" value="{{ old('rekeningPartner', $cashflow->rekeningPartner) }}" placeholder="No. Rek. Pengirim">
                             </div>
                         <!-- Nama Pemilik Rekening -->
@@ -130,7 +142,13 @@
                             </div>
                         <!-- Rekening Perusahaan -->
                             <div class="form-group col-md-3" id="editRekeningPerusahaan" style="display: none;">
-                                <label for="rekening_id">Rekening Penerima</label>
+                                <label for="rekening_id">Rekening
+                                    @if (old('cashflowcategory_id', $cashflow->cashflowcategory->type === 'Pemasukan') == ($cashflowcategory->type === 'Pemasukan'))
+                                    Penerima
+                                    @else
+                                    Pengirim
+                                    @endif
+                                </label>
                                 <select class="form-control bg-white text-center" name="rekening_id" id="rekening_id">
                                     <option value="" selected disabled>Pilih Rekening Penerima</option>
                                     @foreach ($rekeningPerusahaans as $rekening)

@@ -6,6 +6,8 @@
             @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
             <th width="50px"><i class="ti ti-file-alert"></i></th>
             @endif
+            <th class="bg-success">Dibayarkan</th>
+            <th class="bg-danger">Tagihan</th>
             <th width="200px"><i class="fas fa-truck me-3"></i>Status Pembayaran</th>
             <th><i class="fas fa-truck me-3"></i>Riwayat Pembayaran</th>
             @if (auth()->user()->hasAnyRole(['Super Admin', 'Admin', 'Admin Gudang']))
@@ -21,15 +23,17 @@
             @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
                 <td class="text-center">
                     <div class="d-flex justify-content-center">
-                        <a class="badge bg-purple-300 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen Penyiapan Produk" data-original-title="Cetak Dokumen Penyiapan Produk"
+                        {{-- <a class="badge bg-purple-300 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen Penyiapan Produk" data-original-title="Cetak Dokumen Penyiapan Produk"
                             href="{{ route('do.printPenyiapan', $order->id) }}">
                             <i class="fa fa-print me-0" aria-hidden="true"></i>
-                        </a>
+                        </a> --}}
                         <!-- Shipping Update -->
                         {{-- @include('layout.partials.shipping-update') --}}
                     </div>
                 </td>
             @endif
+            <td class="accounting subtotal">{{ number_format($order->pay) }}</td>
+            <td class="accounting discountRp">{{ number_format($order->due) }}</td>
             @if ($order->payment_status === 'Belum dibayar')
                 <td colspan="2"><span class="badge bg-danger w-100">Belum ada Pembayaran</span></td>
             @else

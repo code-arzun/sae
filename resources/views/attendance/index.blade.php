@@ -7,7 +7,7 @@
         <select name="month" id="month" class="form-control" onchange="this.form.submit()">
             @foreach (range(1, 12) as $month)
                 <option value="{{ $month }}" {{ $month == $currentMonth ? 'selected' : '' }}>
-                    {{ \Carbon\Carbon::create()->month($month)->translatedFormat('F') }} {{ date('Y') }}
+                    {{ \Carbon\Carbon::create()->month($month)->translatedformat('F') }} {{ date('Y') }}
                 </option>
             @endforeach
         </select>

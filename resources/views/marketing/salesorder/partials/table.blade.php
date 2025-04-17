@@ -1,4 +1,4 @@
-<!-- Row & Pencarian -->
+<!-- Pencarian -->
 <form action="" method="get">
     <div class="row d-flex justify-content-between align-items-start">
         <div class="form-group col-sm-2">
@@ -29,15 +29,36 @@
         @endif
         <div class="form-group col-sm-2">
             <select name="invoice_no" id="invoice_no" class="form-control"
-                    data-bs-toggle="tooltip" data-bs-placement="top" title="Filter berdasarkan jenis SO" onchange="this.form.submit()">
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Filter berdasarkan jenis SO" onchange="this.form.submit()">
+                
                 <option selected disabled>-- Pilih Kode SO --</option>
                 <option value="" @if(request('invoice_no') == 'null') selected="selected" @endif>Semua</option>
-                <option value="RO" @if(request('invoice_no') == 'RO') selected="selected" @endif>SO Reguler</option>
-                <option value="HO" @if(request('invoice_no') == 'HO') selected="selected" @endif>SO HET</option>
-                <option value="RS" @if(request('invoice_no') == 'RS') selected="selected" @endif>SO Reguler Online</option>
-                <option value="HS" @if(request('invoice_no') == 'HS') selected="selected" @endif>SO HET Online</option>
+            
+                <optgroup label="SO Reguler">
+                    <option value="RO" @if(request('invoice_no') == 'RO') selected="selected" @endif>Reguler Offline</option>
+                    <option value="RS" @if(request('invoice_no') == 'RS') selected="selected" @endif>Reguler Online</option>
+                </optgroup>
+            
+                <optgroup label="SO HET">
+                    <option value="HO" @if(in_array(request('invoice_no'), ['H-'])) selected="selected" @endif>HET Offline</option>
+                    <option value="HS" @if(request('invoice_no') == 'HS') selected="selected" @endif>HET Online</option>
+                </optgroup>
+                
             </select>
         </div>
+        <div class="form-group col-sm-2">
+            <select name="customer_id" id="customer_id" class="form-control"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Filter berdasarkan Sales" onchange="this.form.submit()">
+                <option selected disabled>-- Pilih Customer --</option>
+                <option value="" @if(request('customer_id') == 'null') selected="selected" @endif>Semua</option>
+                @foreach($customers as $customer)
+                    <option value="{{ $customer->id }}" {{ request('customer_id') == $customer->id ? 'selected' : '' }}>
+                        {{ $customer->NamaLembaga }} - {{ $customer->NamaCustomer }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        
         <div class="form-group col-sm">
             <input type="text" id="search" class="form-control" name="search" 
                 data-bs-toggle="tooltip" data-bs-placement="top" title="Ketik untuk melakukan pencarian!"
@@ -72,7 +93,7 @@
 </div> --}}
 
 <!-- Tabel Data -->
-<table class="table table-hover bg-white nowrap mb-3">
+<table class="table nowrap mb-3">
     <thead>
         <tr>
             <!-- Partial Head -->
@@ -114,13 +135,9 @@
                         @endif
                     </div>
                 </td>
-            @elseif ($order->order_status === 'Ditolak')
+            @elseif ($order->order_status === 'Ditolak' || $order->order_status === 'Dibatalkan')
                 <td colspan="3">
-                    <span class="badge bg-danger w-100">Ditolak</span>
-                </td>
-            @elseif ($order->order_status === 'Dibatalkan')
-                <td colspan="3">
-                    <span class="badge bg-danger w-100">Dibatalkan</span>
+                    <span class="badge bg-danger w-100">{{ $order->order_status }}</span>
                 </td>
             @else
                 <!-- Status SO -->

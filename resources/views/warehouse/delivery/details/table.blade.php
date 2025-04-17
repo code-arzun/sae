@@ -1,4 +1,4 @@
-<table class="table bg-white nowrap mb-3">
+<table class="table nowrap mb-3">
     <thead>
         <tr>
             <th width="3px">No.</th>

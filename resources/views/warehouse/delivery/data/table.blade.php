@@ -1,41 +1,66 @@
-<!-- Row & Pencarian -->
-<form action="" method="get">
-    <div class="row d-flex justify-content-between align-items-start">
-        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
-        <div class="form-group col-sm-2">
-            <select name="employee_id" id="employee_id" class="form-control"
-                    data-bs-toggle="tooltip" data-bs-placement="top" title="Filter berdasarkan Sales" onchange="this.form.submit()">
-                <option selected disabled>-- Pilih Sales --</option>
-                <option value="" @if(request('employee_id') == 'null') selected="selected" @endif>Semua</option>
-                @foreach($sales as $employee)
-                <option value="{{ $employee->employee_id }}" {{ request('employee_id') == $employee->employee_id ? 'selected' : '' }}>
-                    {{ $employee->employee->name }}
-                </option>
-            @endforeach
-            </select>
+<!-- Pencarian -->
+<div class="col-lg-12">
+    <form action="#" method="get">
+        <div class="row align-items-start">
+            <div class="form-group col-sm-2">
+                <select class="form-control" name="delivery_status"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Filter berdasarkan Status Pengiriman" onchange="this.form.submit()">
+                    <option selected disabled>-- Status Pengiriman --</option>
+                    <option value="" @if(request('delivery_status') == 'null') selected="selected" @endif>Semua</option>
+                    @foreach ($deliveryStatus as $status)
+                        <option value="{{ $status }}" {{ request('delivery_status') == $status ? 'selected' : '' }}>
+                            {{ $status }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
+            <div class="form-group col-sm-2">
+                <select name="employee_id" id="employee_id" class="form-control"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Filter berdasarkan Sales" onchange="this.form.submit()">
+                    <option selected disabled>-- Pilih Sales --</option>
+                    <option value="" @if(request('employee_id') == 'null') selected="selected" @endif>Semua</option>
+                    @foreach($sales as $employee)
+                    <option value="{{ $employee->employee_id }}" {{ request('employee_id') == $employee->employee_id ? 'selected' : '' }}>
+                        {{ $employee->employee->name }} <!-- Adjust this to display employee's name or other details -->
+                    </option>
+                @endforeach
+                </select>
+            </div>
+            @endif
+            <div class="form-group col-sm-1">
+                <select name="delivery_invoice_no" id="delivery_invoice_no" class="form-control"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Filter berdasarkan jenis SO" onchange="this.form.submit()">
+                    <option selected disabled>-- Pilih Kode DO --</option>
+                    <option value="" @if(request('delivery_invoice_no') == 'null') selected="selected" @endif>Semua</option>
+                    <option value="RO" @if(request('invoice_no') == 'RO') selected="selected" @endif>DO Reguler</option>
+                    <option value="HO" @if(request('invoice_no') == 'HO') selected="selected" @endif>DO HET</option>
+                    <option value="RS" @if(request('invoice_no') == 'RS') selected="selected" @endif>DO Reguler Online</option>
+                    <option value="HS" @if(request('invoice_no') == 'HS') selected="selected" @endif>DO HET Online</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-1">
+                <select name="order_invoice_no" id="order_invoice_no" class="form-control"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Filter berdasarkan jenis SO" onchange="this.form.submit()">
+                    <option selected disabled>-- Pilih Kode SO --</option>
+                    <option value="" @if(request('order_invoice_no') == 'null') selected="selected" @endif>Semua</option>
+                    <option value="RO" @if(request('invoice_no') == 'RO') selected="selected" @endif>SO Reguler</option>
+                    <option value="HO" @if(request('invoice_no') == 'HO') selected="selected" @endif>SO HET</option>
+                    <option value="RS" @if(request('invoice_no') == 'RS') selected="selected" @endif>SO Reguler Online</option>
+                    <option value="HS" @if(request('invoice_no') == 'HS') selected="selected" @endif>SO HET Online</option>
+                </select>
+            </div>
+            <div class="form-group col-sm">
+                <input type="text" id="search" class="form-control" name="search" 
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Ketik untuk melakukan pencarian!"
+                    onkeyup="this.form.submit()" placeholder="Ketik disini untuk melakukan pencarian!" value="{{ request('search') }}">
+            </div>
         </div>
-        @endif
-        <div class="form-group col-sm-2">
-            <select name="invoice_no" id="invoice_no" class="form-control"
-                    data-bs-toggle="tooltip" data-bs-placement="top" title="Filter berdasarkan jenis SO" onchange="this.form.submit()">
-                <option selected disabled>-- Pilih Kode SO --</option>
-                <option value="" @if(request('invoice_no') == 'null') selected="selected" @endif>Semua</option>
-                <option value="RO" @if(request('invoice_no') == 'RO') selected="selected" @endif>SO Reguler</option>
-                <option value="HO" @if(request('invoice_no') == 'HO') selected="selected" @endif>SO HET</option>
-                <option value="RS" @if(request('invoice_no') == 'RS') selected="selected" @endif>SO Reguler Online</option>
-                <option value="HS" @if(request('invoice_no') == 'HS') selected="selected" @endif>SO HET Online</option>
-            </select>
-        </div>
-        <div class="form-group col-sm">
-            <input type="text" id="search" class="form-control" name="search" 
-                data-bs-toggle="tooltip" data-bs-placement="top" title="Ketik untuk melakukan pencarian!"
-                onblur="this.form.submit()" placeholder="Ketik disini untuk melakukan pencarian!" value="{{ request('search') }}">
-        </div>
-    </div>
-</form>
+    </form>
+</div>
 
 <!-- Tabel Data -->
-<table class="table table-hover bg-white nowrap mb-3">
+<table class="table nowrap mb-3">
     <thead>
         <tr>
             <!-- Partial Head -->
@@ -122,33 +147,4 @@
     function setShippingStatus(orderId, status) {
         document.getElementById('shipping_status_' + orderId).value = status;
     }
-    
-    document.querySelector('.bs-radio-input').addEventListener('click', function () {
-    (async () => {
-      const inputOptions = new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({
-            '#ff0000': 'Red',
-            '#00ff00': 'Green',
-            '#0000ff': 'Blue'
-          });
-        }, 1000);
-      });
-      const { value: color } = await Swal.fire({
-        title: 'Select color',
-        input: 'radio',
-        inputOptions: inputOptions,
-        inputValidator: (value) => {
-          if (!value) {
-            return 'You need to choose something!';
-          }
-        }
-      });
-      if (color) {
-        Swal.fire({
-          html: `You selected: ` + color
-        });
-      }
-    })();
-  });
 </script>

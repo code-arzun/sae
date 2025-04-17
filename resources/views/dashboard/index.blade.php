@@ -1,5 +1,12 @@
 @extends('layout.main')
 
+@section('action-button')
+    <div>
+        <h5 id="clock" class="fw-bold fs-5"></h5>
+        <h5 class="fw-bold fs-5">{{ Carbon\Carbon::parse()->translatedFormat('l, d F Y') }}</h5>
+    </div>
+@endsection
+
 @section('container')
 
 <!-- Greetings -->
@@ -12,14 +19,8 @@
 <!-- Rekap -->
     <div class="row">
         <!-- Super Admin -->
-        @if (auth()->user()->hasRole('Super Admin'))
-            @include('marketing.salesorder.data.rekap-data.all')
-        <!-- Sales -->
-        @elseif (auth()->user()->hasRole('Sales'))
-            @include('marketing.salesorder.data.rekap-data.all')
-        <!-- Admin -->
-        @elseif (auth()->user()->hasRole('Admin'))
-            @include('marketing.salesorder.data.rekap-data.all')
+        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Sales', 'Admin']))
+            @include('dashboard.so')
         <!-- Gudang -->
         @elseif (auth()->user()->hasRole('Admin Gudang'))
         <div class="row">
@@ -48,7 +49,7 @@
     && Carbon\Carbon::now()->format('H:i') <= '17:00' // End of the Day
     && Carbon\Carbon::now()->format('l') != 'Sunday' // Not Sunday
     ))
-    @include('attendance.checkin')
+@include('attendance.checkin')
 @endif
 
 <script>
@@ -88,7 +89,7 @@
                 clockEl.textContent = `${jam}:${menit}:${detik}`;
             }
         }
-
+        
         setInterval(updateClock, 1000);
         updateClock();
 
@@ -103,6 +104,7 @@
         const hadirRadio = document.getElementById('hadir');
         const tidakHadirRadio = document.getElementById('tidak_hadir');
         const keteranganDiv = document.getElementById('keteranganDiv');
+        const attendanceReminder = document.getElementById('attendanceReminder');
         const hadirLabel = document.querySelector("label[for='hadir']");
         const tidakHadirLabel = document.querySelector("label[for='tidak_hadir']");
 
@@ -111,6 +113,7 @@
                 if (this.checked) {
                     hadirLabel.classList.add('active');
                     tidakHadirLabel.classList.remove('active');
+                    attendanceReminder.style.display = 'block';
                     if (keteranganDiv) {
                         keteranganDiv.style.display = 'none';
                         document.getElementById('keterangan').removeAttribute('required');
@@ -122,6 +125,7 @@
                 if (this.checked) {
                     tidakHadirLabel.classList.add('active');
                     hadirLabel.classList.remove('active');
+                    attendanceReminder.style.display = 'none';
                     if (keteranganDiv) {
                         keteranganDiv.style.display = 'block';
                         document.getElementById('keterangan').setAttribute('required', 'required');

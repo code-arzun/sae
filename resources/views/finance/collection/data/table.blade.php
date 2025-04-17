@@ -1,4 +1,4 @@
-<table class="table table-hover bg-white nowrap mb-3">
+<table class="table nowrap mb-3">
     <thead>
         <tr>
             <!-- Partial Head -->

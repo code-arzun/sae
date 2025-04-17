@@ -21,7 +21,6 @@ class ReturController extends Controller
 {
     public function input()
     {
-        $row = (int) request('row', 20);
         $deliveryOrderFilter = request('delivery_id', null);
         $categoryFilter = request('category_id', null);
         $jenjang = request('jenjang', null);
@@ -34,14 +33,18 @@ class ReturController extends Controller
         });
         $categories = Product::select('category_id')->distinct()->get();
 
-        if ($row < 1 || $row > 100) {
-            abort(400, 'The per-page parameter must be an integer between 1 and 100.');
-        }
-
         if ($deliveryOrderFilter) {
             $productsQuery->whereHas('deliveryDetails', function($query) use ($deliveryOrderFilter) {
                 $query->where('delivery_id', $deliveryOrderFilter);
             });
+        }
+
+        $products = $productsQuery->filter(request(['search']))->sortable()->paginate()->appends(request()->query());
+
+        foreach ($products as $product) {
+            $product->filteredOrderDetail = $product->deliveryDetails->where('delivery_id', $deliveryOrderFilter)->first();
+            // Tentukan batas maksimal masing-masing item
+            $product->maxQuantity = min($product->filteredOrderDetail->quantity ?? 0, $product->product_store);
         }
 
         if ($categoryFilter)  {
@@ -63,9 +66,9 @@ class ReturController extends Controller
         return view('warehouse.retur.input', [
             'deliveryOrders' => $deliveriesQuery->get(),
             'productItem' => Cart::content(),
-            'products' => $productsQuery->filter(request(['search']))
-                            ->sortable()->paginate($row)->appends(request()->query()),
+            'products' => $products,
             'categories' => $categories,
+            'title' => 'Input Retur',
         ]);
     }
     
@@ -171,7 +174,8 @@ class ReturController extends Controller
 
         // Prepare Retur data
         $validatedData['retur_date'] = Carbon::now()->format('d-m-Y');
-        $validatedData['retur_status'] = 'Diajukan';
+        // $validatedData['retur_status'] = 'Diajukan';
+        $validatedData['retur_status'] = 'Menunggu persetujuan Manajer Marketing';
         $validatedData['total_products'] = Cart::count();
         $validatedData['sub_total'] = Cart::subtotal();
         $validatedData['discount_percent'] = $discount_percent;
@@ -200,7 +204,7 @@ class ReturController extends Controller
         Cart::destroy();
 
         // Redirect with success message
-        return redirect()->route('input.retur')->with('created', 'Retur berhasil dibuat!');
+        return redirect()->route('retur.index')->with('created', 'Retur berhasil dibuat!');
     }
 
         public function storeROReguler(Request $request)
@@ -224,7 +228,7 @@ class ReturController extends Controller
         }
     //
 
-    private function getReturs($view, $status = null)
+    public function index()
     {
         $row = (int) request('row', 10000);
 
@@ -236,9 +240,9 @@ class ReturController extends Controller
 
         $query = Retur::query();
 
-        if ($status) {
-            $query->where('retur_status', 'like', "%$status%");
-        }
+        // if ($status) {
+        //     $query->where('retur_status', 'like', "%$status%");
+        // }
 
         if ($user->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin'])) {
             $returs = $query;
@@ -276,51 +280,37 @@ class ReturController extends Controller
 
         $sales = Customer::select('employee_id')->distinct()->get();
 
-        return view("warehouse.retur.$view", [
+        return view("warehouse.retur.index", [
             'returs' => $returs,
             'sales' => $sales,
+            'title' => 'Data Retur',
         ]);
     }
-        // View
-            public function all()
-            {
-                return $this->getReturs('all', null);
-            }
-
-            public function proposed()
-            {
-                return $this->getReturs('proposed', '%Diajukan%');
-            }
-
-            public function approved()
-            {
-                return $this->getReturs('approved', '%Disetujui%');
-            }
-
-            public function declined()
-            {
-                return $this->getReturs('declined', '%Ditolak%');
-            }
-
-            public function cancelled()
-            {
-                return $this->getReturs('cancelled', '%Dibatalkan%');
-            }
-        // 
-
     public function returDetails(Int $retur_id)
     {
-        $returs = Retur::where('id', $retur_id)->first();
+        $retur = Retur::where('id', $retur_id)->first();
         $returDetails = ReturDetails::with('product')->where('retur_id', $retur_id)
                         ->orderBy('id', 'ASC')->get();
 
-        return view('warehouse.retur.details-retur', [
-            'returs' => $returs,
+        return view('warehouse.retur.details', [
+            'retur' => $retur,
             'returDetails' => $returDetails,
         ]);
     }
+
     // Update Status
-        function approvedStatus(Request $request)
+        // Approved by Manager
+        function approvedByManager(Request $request)
+        {
+            $retur_id = $request->id;
+
+            Retur::findOrFail($retur_id)->update(['retur_status' => 'Disetujui Manajer Marketing']);
+
+            return back()->with('success', 'Status Retur menjadi Disetujui Manajer Marketing!');
+        }
+
+        // Approved by Warehouse
+        function approvedByWarehouse(Request $request)
         {
             $retur_id = $request->id;
 
@@ -335,27 +325,50 @@ class ReturController extends Controller
                 ]);
             }
 
-            Retur::findOrFail($retur_id)->update(['retur_status' => 'Disetujui']);
+            // Retur::findOrFail($retur_id)->update(['retur_status' => 'Disetujui']);
+            Retur::findOrFail($retur_id)->update(['retur_status' => 'Disetujui Manajer Marketing']);
 
-            return back()->with('success', 'Status pesanan diperbarui menjadi disetujui!');
+            return back()->with('success', 'Status Retur diperbarui menjadi Disetujui Admin Gudang!');
         }
 
-        public function declinedStatus(Request $request)
+        // Declined by Manager
+        public function finished(Request $request)
         {
             $retur_id = $request->id;
 
-            Retur::findOrFail($retur_id)->update(['retur_status' => 'Ditolak']);
+            Retur::findOrFail($retur_id)->update(['retur_status' => 'Selesai']);
 
-            return back()->with('success', 'Pesanan telah ditolak!');
+            return back()->with('success', 'Status Retur diperbarui menjadi Selesai!');
         }
 
+        // Declined by Manager
+        public function declinedByManager(Request $request)
+        {
+            $retur_id = $request->id;
+
+            Retur::findOrFail($retur_id)->update(['retur_status' => 'Ditolak Manajer Marketing']);
+
+            return back()->with('success', 'Status Retur diperbarui menjadi Ditolak Manajer Marketing!');
+        }
+
+        // Declined by Warehouse
+        public function declinedByWarehouse(Request $request)
+        {
+            $retur_id = $request->id;
+
+            Retur::findOrFail($retur_id)->update(['retur_status' => 'Ditolak Admin Gudang']);
+
+            return back()->with('success', 'Status Retur diperbarui menjadi Ditolak Admin Gudang!');
+        }
+
+        // Cancelled
         public function cancelledStatus(Request $request)
         {
             $retur_id = $request->id;
 
             Retur::findOrFail($retur_id)->update(['retur_status' => 'Dibatalkan']);
 
-            return back()->with('success', 'Pesanan telah dibatalkan!');
+            return back()->with('success', 'Status Retur diperbarui menjadi Dibatalkan!');
         }
     //
 

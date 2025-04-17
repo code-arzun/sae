@@ -1920,6 +1920,14 @@ progress {
 .table > tbody {
   vertical-align: inherit;
 }
+
+.table > tbody > tr:hover > * {
+  --bs-table-color-state: var(--bs-table-hover-color);
+  --bs-table-bg-state: var(--bs-table-hover-bg);
+  color: var(--bs-table-color-state);
+  background-color: var(--bs-table-bg-state);
+}
+
 .table > thead {
   vertical-align: bottom;
 }
@@ -20728,51 +20736,52 @@ pre[class*=language-] > code {
   vertical-align: middle;
 }
 
+.table th {
+  text-align: center;
+  vertical-align: center;
+}
 .table thead th {
   padding: 0.5rem;
   color: white;
-  text-align: center;
-  vertical-align: center;
   background-color: var(--bs-info);
 }
 
-.table tbody td.accounting {
+.table :is(td, th).accounting {
   text-align: right;
   font-weight: 700;
   position: relative;
 }
-.table tbody
-td.accounting.price::before,
-td.accounting.subtotal::before,
-td.accounting.discountRp::before,
-td.accounting.grandtotal::before
-{
+
+.table :is(td, th).accounting.price::before,
+.table :is(td, th).accounting.subtotal::before,
+.table :is(td, th).accounting.discountRp::before,
+.table :is(td, th).accounting.grandtotal::before {
   content: "Rp ";
 }
-.table tbody td.accounting.discountPercent::after {
+
+.table :is(td, th).accounting.discountPercent::after {
   content: " %";
 }
 
-.table tbody td.accounting.price
-{
+.table .accounting.price {
   color: var(--bs-secondary);
 }
-.table tbody td.accounting.subtotal
-{
+
+.table .accounting.subtotal {
   color: var(--bs-success);
 }
-.table tbody td.accounting.discountPercent
-{
+
+.table .accounting.discountPercent {
   color: var(--bs-warning);
   width: 80px !important;
 }
-.table tbody td.accounting.discountRp
-{
+
+.table .accounting.discountRp {
   color: var(--bs-danger);
   width: 120px;
 }
-.table tbody td.accounting.grandtotal
-{
+
+.table .accounting.grandtotal {
   color: var(--bs-primary);
 }
 

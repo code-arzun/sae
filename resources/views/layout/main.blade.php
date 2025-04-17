@@ -26,7 +26,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" id="main-style-link" >
     <link rel="stylesheet" href="{{ asset('assets/css/style-preset.css') }}" >
     <!-- Chart Js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
     
     <!-- Custom page-specific styles -->
@@ -54,6 +55,7 @@
       <div class="pc-container">
           <div class="pc-content">
               <div class="row">
+                
                 <div class="col-md-12">
                   <!-- Page Header -->
                   @include('layout.partials.page-header')
@@ -115,4 +117,3 @@
       @yield('specificpagestyles')
 </body>
 </html>
-

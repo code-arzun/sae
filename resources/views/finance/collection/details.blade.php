@@ -60,7 +60,7 @@
             <div class="card-body row">
                 <div class="col-md-4 d-flex flex-column mb-3">
                     <label class="mb-2">Tanggal Collection</label>
-                    <h5>{{Carbon\Carbon::parse($collection->collection_date)->translatedformat('l, d F Y') }}</h5>
+                    <h5>{{Carbon\Carbon::parse($collection->payment_date)->translatedformat('l, d F Y') }}</h5>
                 </div>
                 <div class="col-md-4 d-flex flex-column mb-3">
                     <label class="mb-2">Nomor Collection</label>
@@ -113,7 +113,7 @@
         </div>
     </div>
     <div class="dt-responsive table-responsive col-md-4">
-        <table class="table table-hover bg-white">
+        <table class="table bg-white">
             <thead>
                 <tr>
                     <th width="55%">Keterangan</th>

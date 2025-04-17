@@ -1,6 +1,6 @@
 <div class="tab-pane fade show active" id="salesorder" role="tabpanel">
     <!-- Data Transaksi -->
-    <table class="table bg-white nowrap">
+    <table class="table nowrap">
         <thead>
             <tr class="text-center">
                 <th>No.</th>

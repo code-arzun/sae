@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('order_id');
             $table->string('invoice_no')->nullable();
-            $table->string('collection_date');
+            $table->string('payment_date');
             $table->string('payment_period')->nullable();
             $table->string('payment_status')->nullable();
             $table->integer('pay')->nullable();

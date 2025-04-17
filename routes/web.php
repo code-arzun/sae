@@ -190,6 +190,8 @@ use App\Http\Controllers\Publishing\WriterCategoryController;
                     Route::get('invoice/download/{order_id}', [SalesOrderController::class, 'invoiceDownload'])->name('so.invoiceDownload');
                     Route::get('export', [SalesOrderController::class, 'exportData'])->name('so.exportData');
                 });
+
+                Route::get('/chart/bar', [SalesOrderController::class, 'barChart'])->name('so.barChart');
             });
 // 
             
@@ -254,6 +256,8 @@ use App\Http\Controllers\Publishing\WriterCategoryController;
             Route::get('invoice/download/{delivery_id}', [DeliveryController::class, 'invoiceDownload'])->name('do.invoiceDownload');
             Route::get('label/{delivery_id}', [DeliveryController::class, 'labelPengiriman'])->name('do.labelPengiriman');
 
+            Route::get('/chart/bar', [DeliveryController::class, 'barChart'])->name('do.barChart');
+
             Route::get('export', [DeliveryController::class, 'exportData'])->name('do.exportData');
         });
     });
@@ -282,11 +286,12 @@ use App\Http\Controllers\Publishing\WriterCategoryController;
 
         // View Retur Order
         Route::middleware(['permission:retur'])->group(function () {
-            Route::get('all', [ReturController::class, 'all'])->name('retur.all');
-            Route::get('proposed', [ReturController::class, 'proposed'])->name('retur.proposed');
-            Route::get('approved', [ReturController::class, 'approved'])->name('retur.approved');
-            Route::get('declined', [ReturController::class, 'declined'])->name('retur.declined');
-            Route::get('cancelled', [ReturController::class, 'cancelled'])->name('retur.cancelled');
+            Route::get('', [ReturController::class, 'index'])->name('retur.index');
+            // Route::get('all', [ReturController::class, 'all'])->name('retur.all');
+            // Route::get('proposed', [ReturController::class, 'proposed'])->name('retur.proposed');
+            // Route::get('approved', [ReturController::class, 'approved'])->name('retur.approved');
+            // Route::get('declined', [ReturController::class, 'declined'])->name('retur.declined');
+            // Route::get('cancelled', [ReturController::class, 'cancelled'])->name('retur.cancelled');
 
             Route::get('details/{retur_id}', [ReturController::class, 'returDetails'])->name('retur.Details');
 
@@ -356,27 +361,14 @@ use App\Http\Controllers\Publishing\WriterCategoryController;
         Route::resource('cashflow', CashflowController::class);
         Route::resource('cashflowcategory', CashflowCategoryController::class);
     });
-    // Route::prefix('cashflow')->group(function () {
-    //     Route::middleware(['permission:input.cashflow'])->prefix('input')->group(function () {
-    //         Route::get('', [CashflowController::class,'create'])->name('input.expense');
-    //         Route::get('income', [CashflowIncomeController::class,'create'])->name('input.income');
-    //         Route::get('income', [CashflowIncomeController::class,'create'])->name('input.income');
-    //     });
-    //     Route::middleware(['permission:cashflow'])->group(function () {
-    //         // Kategori Transaksi
-    //         Route::resource('cashflowcategory', CashflowCategoryController::class);
-    //         // Pengeluaran
-    //         Route::resource('expense', CashflowController::class);
-    //         Route::get('/expense/import', [CashflowController::class, 'importView'])->name('expense.importView');
-    //         Route::post('/expense/import', [CashflowController::class, 'importStore'])->name('expense.importStore');
-    //         Route::get('/expense/export', [CashflowController::class, 'exportData'])->name('expense.exportData');
-    //         // Pemasukan
-    //         Route::resource('income', CashflowIncomeController::class);
-    //         Route::get('/income/import', [CashflowIncomeController::class, 'importView'])->name('income.importView');
-    //         Route::post('/income/import', [CashflowIncomeController::class, 'importStore'])->name('income.importStore');
-    //         Route::get('/income/export', [CashflowIncomeController::class, 'exportData'])->name('income.exportData');
-    //     });
-    // });
+    // // Pengeluaran
+        // Route::get('/expense/import', [CashflowController::class, 'importView'])->name('expense.importView');
+        // Route::post('/expense/import', [CashflowController::class, 'importStore'])->name('expense.importStore');
+        // Route::get('/expense/export', [CashflowController::class, 'exportData'])->name('expense.exportData');
+    // // Pemasukan
+        // Route::get('/income/import', [CashflowIncomeController::class, 'importView'])->name('income.importView');
+        // Route::post('/income/import', [CashflowIncomeController::class, 'importStore'])->name('income.importStore');
+        // Route::get('/income/export', [CashflowIncomeController::class, 'exportData'])->name('income.exportData');
 //
 
 // PUBLISHING

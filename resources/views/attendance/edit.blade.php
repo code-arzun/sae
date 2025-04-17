@@ -13,7 +13,7 @@
                 <label class="mb-2">Hari/Tanggal</label>
                 <h5>{{ \Carbon\Carbon::parse()->translatedFormat('l, d F Y') }}</h5>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group d-flex flex-column col-md-6">
                 <label class="mb-2">Status Kehadiran</label>
                 @if ($attendance->status == 'Hadir' && is_null($attendance->work_journal))
                     <span class="badge bg-success">{{ $attendance->status }}</span>

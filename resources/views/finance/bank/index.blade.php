@@ -26,7 +26,7 @@
     <div class="col-md-6">
         <h4>Data Bank</h4>
         <div class="dt-responsive table-responsive mb-3">
-            <table class="table bg-white mb-0">
+            <table class="table mb-0">
                 <thead>
                     <tr>
                         <th>Nama Bank</th>

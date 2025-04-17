@@ -254,6 +254,7 @@ class DeliveryController extends Controller
     //
 
     // Update Status
+        // Sent
         public function sentStatus(Request $request)
         {
             $delivery_id = $request->id;
@@ -286,6 +287,7 @@ class DeliveryController extends Controller
             return back()->with('success', 'Status pesanan diperbarui menjadi Dalam Pengiriman!');
         }
 
+        // Delivered
         public function deliveredStatus(Request $request)
         {
             $delivery_id = $request->id;
@@ -312,6 +314,7 @@ class DeliveryController extends Controller
             return back()->with('success', 'Status pesanan diperbarui menjadi Terkirim!');
         }
     //
+    
     public function index()
     {
         $row = (int) request('row', 10000);
@@ -323,9 +326,25 @@ class DeliveryController extends Controller
         $statusFilter = request('delivery_status', null);
 
         // Query dasar
-        $ordersQuery = Order::whereIn('order_status', ['Disetujui', 'Selesai'])->with('deliveries');
+        // $ordersQuery = Order::whereIn('order_status', ['Disetujui', 'Selesai'])->with('deliveries');
+        $ordersQuery = Order::with(['customer', 'deliveries'])
+        ->when(auth()->user()->hasRole('Sales'), function ($query) {
+            $query->whereHas('customer', function ($q) {
+                $q->where('employee_id', auth()->user()->employee_id);
+            });
+        }, function ($query) {
+            // Kalau bukan Sales, pakai filter employee_id dari form
+            if (request()->filled('employee_id')) {
+                $query->whereHas('customer', function ($q) {
+                    $q->where('employee_id', request('employee_id'));
+                });
+            }
+        })
+        ->whereIn('order_status', ['Disetujui', 'Selesai']);
         // $query = Delivery::with('salesorder');
-        $query = Order::with('deliveries');
+        // $query = Order::with('deliveries');
+        // $query = Delivery::with('salesorder.customer');
+        $query = Delivery::with('salesorder');
 
         // Filter berdasarkan status jika diberikan
         if (!empty($statusFilter)) {
@@ -337,8 +356,11 @@ class DeliveryController extends Controller
             $deliveries = $query;
         } elseif ($user->hasRole('Sales')) {
             // $deliveries = $query->whereHas('salesorder.customer', function ($query) use ($user) {
-            $deliveries = $ordersQuery->whereHas('customer', function ($ordersQuery) use ($user) {
-                $ordersQuery->where('employee_id', $user->employee_id);
+            // $deliveries = $ordersQuery->whereHas('customer', function ($ordersQuery) use ($user) {
+            //     $ordersQuery->where('employee_id', $user->employee_id);
+            // });
+            $deliveries = $query->whereHas('salesorder.customer', function ($query) use ($user) {
+                $query->where('employee_id', $user->employee_id);
             });
         } else {
             abort(403, 'Unauthorized action.');
@@ -366,7 +388,7 @@ class DeliveryController extends Controller
 
         // Sortable dan filter tambahan
         $orders = $ordersQuery->sortable()->filter(request(['search']))->orderBy('id', 'desc')->paginate($row);
-        $deliveries = $deliveries->sortable()->filter(request(['search']))->orderBy('id', 'desc')->paginate($row);
+        $deliveries = $query->sortable()->filter(request(['search']))->orderBy('id', 'desc')->paginate($row);
 
         $sales = Customer::select('employee_id')->distinct()->get();
 
@@ -426,6 +448,34 @@ class DeliveryController extends Controller
             'deliveries' => $deliveries,
             'deliveryDetails' => $deliveryDetails,
         ]);
+    }
+
+    // Chart
+    public function barChart(Request $request)
+    {
+        $tahun = $request->tahun;
+
+        $query = DB::table('deliveries')
+            ->selectRaw('
+                DATE_FORMAT(created_at, "%Y-%m") as periode,
+                delivery_status,
+                SUM(sub_total) as total_subtotal
+            ')
+            ->groupByRaw('DATE_FORMAT(created_at, "%Y-%m"), delivery_status')
+            ->orderByRaw('DATE_FORMAT(created_at, "%Y-%m")');
+
+        if ($tahun) {
+            $query->whereYear('created_at', $tahun);
+        }
+
+        $orders = $query->get();
+
+        $orders->transform(function ($item) {
+            $item->bulan_nama = \Carbon\Carbon::createFromFormat('Y-m', $item->periode)->format('M Y');
+            return $item;
+        });
+
+        return response()->json($orders);
     }
 
     // Download Excel

@@ -31,7 +31,7 @@
     </div>
     <div class="col-md-6">
         <div class="dt-responsive table-responsive mb-3">
-            <table class="table table-hover nowrap mb-0">
+            <table class="table nowrap mb-0">
                 <thead>
                     <tr>
                         <th width="5%">Hari</th>

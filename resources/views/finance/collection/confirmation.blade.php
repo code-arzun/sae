@@ -85,7 +85,7 @@
         </div>
     </div>
     <div class="col-md-4">
-        <table class="table bg-white table-hover">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th colspan="2">Keterangan</th>

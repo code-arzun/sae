@@ -9,6 +9,7 @@
     </div>
     <div class="navbar-content">
       <ul class="pc-navbar">
+        
         <li class="pc-item">
           <a href="{{ route('dashboard') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-dashboard"></i></span>
@@ -53,28 +54,28 @@
         @endif
 
         {{-- @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
-        <li class="pc-item pc-caption">
-          <label>Retail</label>
-          <i class="ti ti-dashboard"></i>
-        </li>
-        <li class="pc-item">
-          <a href="{{ route('customers.index') }}" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-users"></i></span>
-            <span class="pc-mtext">Sales</span>
-          </a>
-        </li>
-        <li class="pc-item">
-          <a href="{{ route('customers.index') }}" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-users"></i></span>
-            <span class="pc-mtext">Customer</span>
-          </a>
-        </li>
-        <li class="pc-item">
-          <a href="{{ route('so.index') }}" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-color-swatch"></i></span>
-            <span class="pc-mtext">Sales Order</span>
-          </a>
-        </li>
+          <li class="pc-item pc-caption">
+            <label>Retail</label>
+            <i class="ti ti-dashboard"></i>
+          </li>
+          <li class="pc-item">
+            <a href="{{ route('customers.index') }}" class="pc-link">
+              <span class="pc-micon"><i class="ti ti-users"></i></span>
+              <span class="pc-mtext">Sales</span>
+            </a>
+          </li>
+          <li class="pc-item">
+            <a href="{{ route('customers.index') }}" class="pc-link">
+              <span class="pc-micon"><i class="ti ti-users"></i></span>
+              <span class="pc-mtext">Customer</span>
+            </a>
+          </li>
+          <li class="pc-item">
+            <a href="{{ route('so.index') }}" class="pc-link">
+              <span class="pc-micon"><i class="ti ti-color-swatch"></i></span>
+              <span class="pc-mtext">Sales Order</span>
+            </a>
+          </li>
         @endif --}}
 
         @if (auth()->user()->can('do'))
@@ -89,7 +90,7 @@
           </a>
         </li>
         <li class="pc-item">
-          <a href="{{ route('retur.all') }}" class="pc-link">
+          <a href="{{ route('retur.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
             <span class="pc-mtext">Retur</span>
           </a>
@@ -158,6 +159,44 @@
           </a>
         </li>
         @endif
+        
+        @if (auth()->user()->can('employee'))
+        <li class="pc-item pc-caption">
+          <label>Pengaturan</label>
+          <i class="ti ti-report-money"></i>
+        </li>
+        <li class="pc-item">
+          <a href="{{ route('users.index') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-table"></i></span>
+            <span class="pc-mtext">User</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="{{ route('permission.index') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-table"></i></span>
+            <span class="pc-mtext">Izin</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="{{ route('role.index') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-table"></i></span>
+            <span class="pc-mtext">Roles</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="{{ route('rolePermission.index') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-table"></i></span>
+            <span class="pc-mtext">Izin Pengguna</span>
+          </a>
+        </li>
+        @endif
+
+        <!-- Reminder -->
+        <li class="pc-item">
+          <span class="pc-link">
+            @include('layout.partials.alert-worksheet')
+          </span>
+        </li>
         
         {{-- <li class="pc-item pc-hasmenu">
           <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-truck-delivery"></i></span><span class="pc-mtext">Delivery Order</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>

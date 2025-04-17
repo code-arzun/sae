@@ -69,7 +69,7 @@
 </form>
 
 <!-- Daftar Produk -->
-<table class="table bg-white nowrap mt-2">
+<table class="table nowrap mt-2">
     <thead>
         <tr>
             <th>Nama Produk</th>

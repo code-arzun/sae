@@ -64,17 +64,17 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" scope="col">#</th>
+                                            <th scope="col">#</th>
                                             <th scope="col">Item</th>
-                                            <th class="text-center" scope="col">Jumlah</th>
-                                            <th class="text-center" scope="col">Harga</th>
-                                            <th class="text-center" scope="col">Total</th>
+                                            <th scope="col">Jumlah</th>
+                                            <th scope="col">Harga</th>
+                                            <th scope="col">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($content as $item)
                                         <tr>
-                                            <th class="text-center" scope="row">{{ $loop->iteration }}</th>
+                                            <th scope="row">{{ $loop->iteration }}</th>
                                             <td>
                                                 <h6 class="mb-0">{{ $item->name }}</h6>
                                             </td>

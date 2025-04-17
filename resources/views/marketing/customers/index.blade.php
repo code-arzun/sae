@@ -1,20 +1,16 @@
 @extends('layout.main')
 
 @section('breadcrumb')
-<li class="breadcrumb-item active" aria-current="page"><a href="{{ route('customers.index') }}">Data Customer</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('customers.index') }}">Data Customer</a></li>
 @endsection
 
 @section('action-button')
-<a href="{{ route('customers.create') }}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahCustomer">Tambah Customer Baru</a>
+    <a href="{{ route('customers.create') }}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahCustomer">Tambah Customer Baru</a>
+    @include('marketing.customers.create')
 @endsection
 
 
 @section('container')
-
-{{-- <button type="button" class="badge bg-success"
-    data-bs-toggle="modal" data-target="#inputCustomer">
-    <i class="fa fa-plus"></i>
-</button> --}}
 
 <!-- Filter -->
 <form action="{{ route('customers.index') }}" method="get">
@@ -61,9 +57,10 @@
         </div>
     </div>
 </form>
+
 <!-- Data -->
 <div class="dt-responsive">
-    <table class="table table-responsive bg-white nowrap">
+    <table class="table table-responsive nowrap">
         <thead>
             {{-- <th width="3px">No.</th> --}}
             <th>Nama Lembaga</th>
@@ -119,6 +116,5 @@
         </tbody>
     </table>
 </div>
-{{-- {{ $customers->links() }} --}}
 
 @endsection

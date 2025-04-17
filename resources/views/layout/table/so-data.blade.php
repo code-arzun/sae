@@ -1,4 +1,4 @@
-<th class="text-center">{{ $loop->iteration }}</th>
+<th>{{ $loop->iteration }}</th>
 <td>
     <span data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Carbon\Carbon::parse($order->order_date)->translatedformat('l, d F Y') }}">
         {{ Carbon\Carbon::parse($order->order_date)->translatedformat('d M Y') }}

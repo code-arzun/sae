@@ -8,11 +8,14 @@
             <i class="ti ti-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="Perbarui status pengiriman"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-left">
+            <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Belum ada pengiriman')">Belum ada pengiriman</button>
             <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-1')">Pengiriman ke-1</button>
             <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-2')">Pengiriman ke-2</button>
             <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-3')">Pengiriman ke-3</button>
             <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-4')">Pengiriman ke-4</button>
             <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-5')">Pengiriman ke-5</button>
+            <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-6')">Pengiriman ke-6</button>
+            <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Pengiriman ke-7')">Pengiriman ke-7</button>
             <button type="submit" class="dropdown-item" onclick="setShippingStatus({{ $order->id }}, 'Terkirim')">Terkirim</button>
         </div>
     </div>

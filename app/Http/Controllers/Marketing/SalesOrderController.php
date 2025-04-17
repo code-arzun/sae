@@ -341,6 +341,7 @@ class SalesOrderController extends Controller
         $user = auth()->user();
         $invoiceNo = request('invoice_no', null);  // Get 'invoice_no' parameter from request
         $salesFilter = request('employee_id', null); // Use employee_id for sales filter
+        $customersFilter = request('customer_id', null); // Use employee_id for customer filter
         $statusFilter = request('order_status', null);
 
         $ordersQuery = Order::query();
@@ -373,17 +374,25 @@ class SalesOrderController extends Controller
             });
         }
         
+        if ($customersFilter) {
+            $ordersQuery->where('customer_id', $customersFilter);
+        }
+        
         $orders = $ordersQuery->sortable()->filter(request(['search']))->orderBy('id', 'desc')->paginate($row);
 
         $orderStatus = Order::select('order_status')->distinct()->pluck('order_status');
+        
+        $customerIds = Order::whereNotNull('customer_id')->distinct()->pluck('customer_id');
 
-        // Retrieve distinct sales employees for dropdown
+        $customers = \App\Models\Customer::whereIn('id', $customerIds)->get();
+        
         $sales = Customer::select('employee_id')->distinct()->get();
 
         return view("marketing.salesorder.index", [
             'orders' => $orders,
             'sales' => $sales,
             'orderStatus' => $orderStatus,
+            'customers' => $customers,
             'collections' => $collections,
             'title' => 'Data Sales Order',
         ]);
@@ -435,22 +444,89 @@ class SalesOrderController extends Controller
         ]);
     }
 
-     // Dokumen Penyiapan Produk
-     public function printPenyiapan(Int $order_id)
-     {
-         $order = Order::where('id', $order_id)->first();
-         $orderDetails = OrderDetails::with('product')
-                         ->where('order_id', $order_id)
-                         ->orderBy('id', 'asc')
-                         ->get();
- 
-         // show data (only for debugging)
-         return view('warehouse.delivery.print-penyiapan', [
-             'order' => $order,
-             'orderDetails' => $orderDetails,
-         ]);
-     }
+    // Dokumen Penyiapan Produk
+    public function printPenyiapan(Int $order_id)
+    {
+        $order = Order::where('id', $order_id)->first();
+        $orderDetails = OrderDetails::with('product')
+                        ->where('order_id', $order_id)
+                        ->orderBy('id', 'asc')
+                        ->get();
 
+        // show data (only for debugging)
+        return view('warehouse.delivery.print-penyiapan', [
+            'order' => $order,
+            'orderDetails' => $orderDetails,
+        ]);
+    }
+
+    // Chart
+    // public function chartStatus(Request $request)
+    // {
+    //     $tahun = $request->tahun;
+    
+    //     $query = DB::table('orders')
+    //         ->selectRaw('
+    //             DATE_FORMAT(created_at, "%Y-%m") as periode,
+    //             order_status,
+    //             COUNT(*) as total_orders,
+    //             SUM(sub_total) as total_subtotal,
+    //             SUM(discount_rp) as total_discount,
+    //             SUM(grandtotal) as total_grandtotal
+    //         ');
+    
+    //     if ($tahun) {
+    //         $query->whereYear('created_at', $tahun);
+    //     }
+    
+    //     $orders = $query
+    //         ->groupByRaw('DATE_FORMAT(created_at, "%Y-%m"), order_status')
+    //         ->orderByRaw('DATE_FORMAT(created_at, "%Y-%m")')
+    //         ->get();
+    
+    //     $orders->transform(function ($item) {
+    //         $item->bulan_nama = \Carbon\Carbon::createFromFormat('Y-m', $item->periode)->format('M Y');
+    //         return $item;
+    //     });
+    
+    //     return response()->json($orders);
+    // }
+    public function barChart(Request $request)
+    {
+        $tahun = $request->tahun;
+        $status = $request->status;
+    
+        $query = DB::table('orders')
+            ->selectRaw('
+                DATE_FORMAT(created_at, "%Y-%m") as periode,
+                ' . ($status ? 'order_status,' : '') . '
+                COUNT(*) as total_orders,
+                SUM(sub_total) as total_subtotal,
+                SUM(discount_rp) as total_discount,
+                SUM(grandtotal) as total_grandtotal
+            ');
+    
+        if ($tahun) {
+            $query->whereYear('created_at', $tahun);
+        }
+    
+        if ($status) {
+            $query->where('order_status', $status);
+        }
+    
+        $query->groupByRaw('DATE_FORMAT(created_at, "%Y-%m")' . ($status ? ', order_status' : ''))
+              ->orderByRaw('DATE_FORMAT(created_at, "%Y-%m")');
+    
+        $orders = $query->get();
+    
+        $orders->transform(function ($item) {
+            $item->bulan_nama = \Carbon\Carbon::createFromFormat('Y-m', $item->periode)->format('M Y');
+            return $item;
+        });
+    
+        return response()->json($orders);
+    }
+    
     // Download Excel
     public function exportExcel($orders)
     {

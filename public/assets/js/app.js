@@ -336,3 +336,22 @@ document.getElementById('PPN').addEventListener('click', function() {
 });
 
 
+ // Greetings
+    // const greetingElement = document.getElementById('greetings');
+    // if (greetingElement) {
+    //     const now = new Date();
+    //     const currentHour = now.getHours();
+    //     let greetingMessage = '';
+
+    //     if (currentHour >= 0 && currentHour <= 10) {
+    //         greetingMessage = 'Pagi';
+    //     } else if (currentHour >= 11 && currentHour <= 14) {
+    //         greetingMessage = 'Siang';
+    //     } else if (currentHour >= 14 && currentHour <= 18) {
+    //         greetingMessage = 'Sore';
+    //     } else if (currentHour >= 18 && currentHour <= 23) {
+    //         greetingMessage = 'Malam';
+    //     }
+
+    //     greetingElement.textContent = `Selamat ${greetingMessage}, ${greetingElement.textContent}`;
+    // }

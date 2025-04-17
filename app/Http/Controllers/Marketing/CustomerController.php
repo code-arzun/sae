@@ -141,11 +141,9 @@ class CustomerController extends Controller
             $validatedData['FotoCustomer'] = 'storage/customers/default.jpg';
         }
 
-        // Simpan data ke database
         Customer::create($validatedData);
 
-        // Redirect dengan pesan sukses
-        return Redirect::route('customers.index')->with('success', 'Data customer terbaru berhasil ditambahkan!');
+        return back()->with('success', 'Data customer terbaru berhasil ditambahkan!');
     }
 
 

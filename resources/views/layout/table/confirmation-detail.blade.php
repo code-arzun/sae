@@ -1,4 +1,4 @@
-<table class="table bg-white nowrap">
+<table class="table nowrap">
     <thead>
         <tr>
             <th>Nama Produk</th>

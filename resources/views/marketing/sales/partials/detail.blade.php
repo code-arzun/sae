@@ -86,7 +86,7 @@
             </div>
             <div class="col-md-6">
                 <h3>Rekapitulasi Transaksi</h3>
-                <table class="table bg-white">
+                <table class="table">
                     <thead>
                         <th>Status</th>
                         <th>Total</th>

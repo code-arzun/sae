@@ -75,7 +75,7 @@
             <!-- Create -->
             @include('finance.cashflow.category.create-income')
         </div>
-        <table class="table table-hover bg-white mb-0">
+        <table class="table mb-0">
             @include('finance.cashflow.category.partials.head')
             <tbody>
                 @forelse ($cashflowcategories as $cashflowcategory)
@@ -96,7 +96,7 @@
             <!-- Create -->
             @include('finance.cashflow.category.create-expenditure')
         </div>
-        <table class="table table-hover bg-white mb-0">
+        <table class="table mb-0">
             @include('finance.cashflow.category.partials.head')
             <tbody>
                 @forelse ($cashflowcategories as $cashflowcategory)

@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="dt-responsive table-responsive mb-3">
-            <table class="table table-hover mb-0">
+            <table class="table mb-0">
                 <thead>
                     <tr>
                         <th width="5%">Hari</th>

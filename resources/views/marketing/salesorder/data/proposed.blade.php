@@ -143,7 +143,7 @@
     {{ $orders->links() }}
 
     <!-- Rekap -->
-    <table class="table bg-white">
+    <table class="table">
         <thead class="text-white text-uppercase">
             <tr>
                 <th>Jumlah Transaksi</th>

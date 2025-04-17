@@ -9,6 +9,9 @@
         <th>Dikirim</th>
         <th>Terkirim</th>
         <th>Status</th>
+        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
+        <th>#</th>
+        @endif
     </thead>
     <tbody>
         @foreach ($deliveries as $delivery)
@@ -67,6 +70,17 @@
                     @endif
                 @endif
             </td>
+            @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
+            <td>
+                    @if ($delivery->delivery_status === 'Terkirim')
+                    <a href="{{ route('input.retur', ['delivery_id' => $delivery->id]) }}" class="badge bg-purple-500" data-bs-toggle="tooltip" data-bs-placement="top" title="Buat Retur">
+                        <i class="ti ti-plus"></i>
+                    </a>
+                    @else
+                        
+                    @endif
+            </td>
+            @endif
         </tr>
         @endforeach
     </tbody>

@@ -25,7 +25,11 @@
     <li class="nav-item">
         <a class="nav-link" id="datarecap-tab" data-bs-toggle="tab" href="#datarecap" role="tab"><h5><i class="ti ti-table me-2"></i>Rekap Data</h5></a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" id="SOChart-tab" data-bs-toggle="tab" href="#SOChart" role="tab"><h5><i class="ti ti-table me-2"></i>Chart</h5></a>
+    </li>
 </ul>
+
 <div class="tab-content" id="salesorderContent">
     <!-- All Data -->
     <div class="tab-pane fade show active" id="all" role="tabpanel">
@@ -34,6 +38,10 @@
     <!-- Data Recap -->
     <div class="tab-pane fade" id="datarecap" role="tabpanel">
         @include('marketing.salesorder.data.recap')
+    </div>
+    <!-- Data Recap -->
+    <div class="tab-pane fade" id="SOChart" role="tabpanel">
+        @include('marketing.salesorder.data.chart')
     </div>
 </div>
 

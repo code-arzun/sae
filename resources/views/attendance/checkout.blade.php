@@ -1,5 +1,5 @@
 <!-- Pulang -->
-@if($attendance && $attendance->status == 'Hadir' && is_null($attendance->work_journal))
+{{-- @if($attendance && $attendance->status == 'Hadir' && is_null($attendance->work_journal)) --}}
     <div class="modal fade" id="attendanceCheckoutModal" tabindex="-1" role="dialog" aria-labelledby="attendanceCheckoutModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -62,4 +62,4 @@
     </div>
     <!-- Auto trigger modal -->
     
-@endif
+{{-- @endif --}}

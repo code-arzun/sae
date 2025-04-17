@@ -1,13 +1,15 @@
-<table class="table nowrap mb-3">
+<div class="dt-responsive table-responsive">
+    <h4>Detail Produk</h4>
+        <table class="table nowrap mb-5">
             <thead>
                 <tr>
-                    <th width="500px">Produk</th>
-                    <th>Kategori</th>
-                    <th>Jumlah dipesan</th>
-                    <th>Belum Dikirim</th>
-                    <th>Siap Kirim</th>
-                    <th>Dalam Pengiriman</th>
-                    <th>Terkirim</th>
+                    <th>Produk</th>
+                    <th width="12%">Kategori</th>
+                    <th width="7%" class="bg-secondary">Dipesan</th>
+                    <th width="7%" class="bg-success">Terkirim</th>
+                    <th width="9%" class="bg-primary">Dalam Pengiriman</th>
+                    <th width="7%" class="bg-warning">Siap Kirim</th>
+                    <th width="8%" class="bg-danger">Belum Dikirim</th>
                 </tr>
             </thead>
             <tbody>
@@ -15,220 +17,201 @@
                 <tr>
                     <td><b>{{ $item->product->product_name }}</b></td>
                     <td>{{ $item->product->category->name }}</td>
-                    <td class="text-center"><span class="badge bg-danger me-2">{{ number_format($item->quantity) }}</span>
-                    </td>
-                    <td class="text-center">
-                        @if ($item->quantity === $item->delivered)
+                    <th>{{ number_format($item->quantity) }}</th>
+                    <!-- Terkirim -->
+                    <th class="text-center text-success">
+                        @if ($item->delivered == 0)
+                        -
                         @else
-                        <span class="badge bg-danger me-2">{{ number_format($item->to_send) }}</span>
+                        {{ number_format($item->delivered) }}
                         @endif
-                    </td>
-                    <td class="text-center">
-                        @if ($item->quantity === $item->delivered)
+                    </th>
+                    <!-- Dalam Pengiriman -->
+                    <th class="text-center text-primary">
+                        @if ($item->sent == 0 || $item->quantity === $item->delivered)
+                        -
                         @else
-                        <span class="badge bg-warning me-2">{{ number_format($item->ready_to_send) }}</span>
+                        {{ number_format($item->sent) }}
                         @endif
-                    </td>
-                    <td class="text-center">
-                        @if ($item->quantity === $item->delivered)
+                    </th>
+                    <!-- Siap dikirim -->
+                    <th class="text-center text-secondary">
+                        @if ($item->ready_to_send == 0 || $item->quantity === $item->delivered)
+                        -
                         @else
-                        <span class="badge bg-primary me-2">{{ number_format($item->sent) }}</span>
+                        {{ number_format($item->ready_to_send) }}
                         @endif
-                    </td>
-                    <td class="text-center"><span class="badge bg-success me-2">{{ number_format($item->delivered) }}</span>
-                    </td>
+                    </th>
+                    <!-- Belum dikirim -->
+                    <th class="text-center text-danger">
+                        @if ($item->to_send == 0 || $item->quantity === $item->delivered)
+                        -
+                        @else
+                        {{ number_format($item->to_send) }}
+                        @endif
+                    </th>
                 </tr>
                 @endforeach
             </tbody>
+            <tfoot class="text-center bg-gray-200">
+                <th class="text-end">Total</th>
+                <th>Rp {{ number_format($order->sub_total) }}</th>
+                <th class="text-white bg-secondary">{{ number_format($orderDetails->sum('quantity')) }}</th>
+                <th class="text-white bg-success">{{ number_format($orderDetails->sum('delivered')) }}</th>
+                <th class="text-white bg-primary">{{ number_format($orderDetails->sum('sent')) }}</th>
+                <th class="text-white bg-warning">{{ number_format($orderDetails->sum('ready_to_send')) }}</th>
+                <th class="text-white bg-danger">{{ number_format($orderDetails->sum('to_send')) }}</th>
+            </tfoot>
         </table>
-    </div>
-<div class="card">
-    {{-- <div class="card-header d-flex justify-content-between">
-        <div class="header-title">
-            <h4 class="card-title">Delivery Order</h4>
-        </div>
 
-        @php
-            $remainingAmount = $order->sub_total - $deliveries->sum('sub_total');
-        @endphp
-
-        @if ($remainingAmount > 0 && auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin']))
-        <div>
-            <a href="{{ route('input.do') }}"
-                class="btn bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Buat Delivery Order">
-                <i class="fa fa-plus me-2" aria-hidden="true"></i>Buat Delivery Order 
-            </a>
-        </div>
-        @endif
-    </div> --}}
-    <div class="dt-responsive table-responsive mb-3">
-        <table class="table nowrap mb-3">
+    @if ($deliveries->count() > 0)
+    <h4>Riwayat Pengiriman</h4>
+        <table class="table nowrap mb-5">
             <thead>
                 <tr>
-                    {{-- <th width="3px">No.</th> --}}
-                    <th width="500px">Produk</th>
-                    <th>Kategori</th>
-                    <th>Jumlah</th>
-                    <th>Belum Dikirim</th>
-                    <th>Siap Kirim</th>
-                    <th>Dalam Pengiriman</th>
-                    <th>Terkirim</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($orderDetails as $item)
-                <tr>
-                    {{-- <td>{{ $loop->iteration  }}</td> --}}
-                    <td><b>{{ $item->product->product_name }}</b></td>
-                    <td>{{ $item->product->category->name }}</td>
-                    <td class="text-center"><span class="badge bg-purple me-2">{{ number_format($item->quantity) }}</span>
-                        {{ $item->product->category->productunit->name }}
-                    </td>
-                    <td class="text-center">
-                        @if ($item->quantity === $item->delivered)
-                        @else
-                        <span class="badge bg-danger me-2">{{ number_format($item->to_send) }}</span>
-                        {{ $item->product->category->productunit->name }}
-                        @endif
-                    </td>
-                    <td class="text-center">
-                        @if ($item->quantity === $item->delivered)
-                        @else
-                        <span class="badge bg-warning me-2">{{ number_format($item->ready_to_send) }}</span>
-                        {{ $item->product->category->productunit->name }}
-                        @endif
-                    </td>
-                    <td class="text-center">
-                        @if ($item->quantity === $item->delivered)
-                        @else
-                        <span class="badge bg-primary me-2">{{ number_format($item->sent) }}</span>
-                        {{ $item->product->category->productunit->name }}
-                        @endif
-                    </td>
-                    <td class="text-center"><span class="badge bg-success me-2">{{ number_format($item->delivered) }}</span>
-                        {{ $item->product->category->productunit->name }}
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    <div class="dt-responsive table-responsive">
-        <table class="table table-striped table-bordered nowrap mb-3">
-            <thead>
-                <tr>
-                    <th>Pengiriman ke-</th>
-                    <th>Tanggal DO</th>
-                    <th>No. DO</th>
-                    <th>Dokumen</th>
-                    <th>Total Produk</th>
-                    <th>Total</th>
+                    <th width="120px">Pengiriman</th>
+                    <th width="180px">Tanggal DO</th>
+                    <th width="150px">Nomor DO</th>
+                    <th width="130px">Total Produk</th>
+                    <th width="140px">Subtotal</th>
                     <th>Terpacking</th>
                     <th>Dikirim</th>
                     <th>Terkirim</th>
+                    <th>#</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($deliveries as $delivery)
-                <tr class="text-center">
-                    <td>{{ $loop->iteration  }}</td>
+                <tr>
+                    <td class="text-center">ke- <span class="fw-bold fs-5">{{ $loop->iteration  }}</span></td>
                     <td>{{ Carbon\Carbon::parse($delivery->delivery_date)->translatedformat('l, d F Y') }}</td>
                     <td>
-                        <a class="badge badge-primary" href="{{ route('do.deliveryDetails', $delivery->id) }}" 
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail">{{ $delivery->invoice_no }}
-                        </a>
+                        <div class="d-flex justify-content-between">
+                            <a class="badge bg-primary" href="{{ route('do.deliveryDetails', $delivery->id) }}" 
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Detail">{{ $delivery->invoice_no }}
+                            </a>
+                            <a href="{{ route('do.invoiceDownload', $delivery->id) }}"
+                                class="badge bg-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen">
+                                <i class="fa fa-print" aria-hidden="true"></i> 
+                            </a>
+                        </div>
                     </td>
+                    <td><span class="fw-bold fs-6 me-1">{{ number_format($delivery->total_products) }}</span> {{ $item->product->category->productunit->name }}</td>
+                    <td class="accounting subtotal">{{ number_format($delivery->sub_total) }}</td>
+                    <td>{{ $delivery->packed_at ? Carbon\Carbon::parse($delivery->packed_at)->translatedFormat('H:i - l, d M Y') : '-' }}</td>
+                    <td>{{ $delivery->sent_at ? Carbon\Carbon::parse($delivery->sent_at)->translatedFormat('H:i - l, d M Y') : '-' }}</td>
+                    <td>{{ $delivery->delivered_at ? Carbon\Carbon::parse($delivery->delivered_at)->translatedFormat('H:i - l, d M Y') : '-' }}</td>
                     <td>
-                        <a href="{{ route('do.invoiceDownload', $delivery->id) }}"
-                            class="btn bg-warning me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Dokumen">
-                            <i class="fa fa-print me-0" aria-hidden="true"></i> 
-                        </a>
+                        @if (auth()->user()->hasAnyRole(['Super Admin', 'Manajer Marketing', 'Admin', 'Admin Gudang']))
+                            @if ($delivery->delivery_status === 'Siap dikirim')
+                                <a href="#" class="badge bg-danger w-100" data-bs-toggle="modal" data-bs-target="#sent{{ $delivery->id }}">{{ $delivery->delivery_status }}</a>
+                                @include('warehouse.delivery.partials.modal-sent')
+                            @elseif ($delivery->delivery_status === 'Dalam Pengiriman')
+                                <a href="#" class="badge bg-warning w-100" data-bs-toggle="modal" data-bs-target="#delivered{{ $delivery->id }}">{{ $delivery->delivery_status }}</a>
+                                @include('warehouse.delivery.partials.modal-delivered')
+                            @else
+                                <span class="badge bg-success w-100">{{ $delivery->delivery_status }}</span>
+                            @endif
+                        @else
+                            @if ($delivery->delivery_status === 'Siap dikirim')
+                                <span class="badge bg-danger w-100">{{ $delivery->delivery_status }}</span>
+                            @elseif ($delivery->delivery_status === 'Dalam Pengiriman')
+                                <span class="badge bg-warning w-100">{{ $delivery->delivery_status }}</span>
+                            @else
+                                <span class="badge bg-success w-100">{{ $delivery->delivery_status }}</span>
+                            @endif
+                        @endif
                     </td>
-                    <td><b class="mr-1">{{ number_format($delivery->total_products) }}</b> {{ $item->product->category->productunit->name }}</td>
-                    <td class="text-end">Rp {{ number_format($delivery->sub_total) }}</td>
-                    <td class="text-center">{{ $delivery->packed_at ? Carbon\Carbon::parse($delivery->packed_at)->translatedFormat('H:i - l, d M Y') : '' }}</td>
-                    <td class="text-center">{{ $delivery->sent_at ? Carbon\Carbon::parse($delivery->sent_at)->translatedFormat('H:i - l, d M Y') : '' }}</td>
-                    <td class="text-center">{{ $delivery->delivered_at ? Carbon\Carbon::parse($delivery->delivered_at)->translatedFormat('H:i - l, d M Y') : '' }}</td>
-                    
                 </tr>
                 @endforeach
             </tbody>
         </table>
+    <h4>Rekap Pengiriman</h4>
         <table class="table text-center">
             <thead>
                 <tr>
-                    <th>Jumlah Pengiriman</th>
-                    <th>Total Produk Terkirim</th>
-                    <th>Subtotal Barang Terkirim</th>
-                    <th>Total Produk Belum dikirim</th>
-                    <th>Subtotal Belum dikirim</th>
+                    <th>Total Pengiriman</th>
+                    <th class="bg-success">Total Produk Terkirim</th>
+                    <th class="bg-success">Subtotal Barang Terkirim</th>
+                    <th class="bg-danger">Total Produk Belum dikirim</th>
+                    <th class="bg-danger">Subtotal Belum dikirim</th>
                 </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td><span class="badge bg-warning me-1">{{ $deliveries->count('order_id') }}</span> kali</td>
-                <td><span class="badge bg-success">{{ $deliveries->sum('total_products') }}</span></td>
-                <td><span class="badge bg-primary">Rp {{ number_format($deliveries->sum('sub_total')) }}</span></td>
-                <td>
-                    <span class="badge bg-danger">
-                        {{ $order->total_products - $deliveries->sum('total_products') }}
-                    </span>
-                </td>
-                <td><span class="badge bg-danger">Rp {{ number_format($order->sub_total - $deliveries->sum('sub_total')) }}</span></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="dt-responsive table-responsive">
-        <table class="table table-striped table-bordered nowrap mb-3">
-            <thead>
+            <tbody class="text-center">
                 <tr>
-                    <th>No.</th>
-                    <th>Produk</th>
-                    <th>Jumlah</th>
-                    <th>Pengiriman ke-1</th>
-                    <th>Pengiriman ke-2</th>
-                    <th>Pengiriman ke-3</th>
-                    <th>Belum dikirim</th>
+                    <td><span class="fw-bold fs-5 me-1">{{ $deliveries->count('order_id') }}</span> kali</td>
+                    <td><span class="fw-bold fs-6 text-success me-1">{{ $deliveries->filter(fn($d) => $d->delivery_status === 'Terkirim')->sum('total_products') }}</span> {{ $item->product->category->productunit->name }}</td>
+                    <th class="text-success">Rp {{ number_format($deliveries->filter(fn($d) => $d->delivery_status === 'Terkirim')->sum('sub_total')) }}</th>
+                    <td>
+                        <span class="fw-bold fs-6 text-danger me-1">
+                            {{ $order->total_products 
+                                - $deliveries->filter(fn($d) => $d->delivery_status === 'Siap dikirim')->sum('total_products')
+                                - $deliveries->filter(fn($d) => $d->delivery_status === 'Dalam Pengiriman')->sum('total_products')
+                                - $deliveries->filter(fn($d) => $d->delivery_status === 'Terkirim')->sum('total_products') 
+                            }}
+                        </span> 
+                        {{ $item->product->category->productunit->name }}
+                    </td>
+                    <th class="text-danger">Rp {{ number_format($order->sub_total - $deliveries->sum('sub_total')) }}</th>
                 </tr>
-            </thead>
-            <tbody class="light-data">
-                @foreach ($orderDetails as $item)
-                    <tr>
-                        <td class="text-center">{{ $loop->iteration }}</td>
-                        <td><b>{{ $item->product->product_name }}</b>
-                            <p>{{ $item->product->category->name }}</p>
-                        </td>
-                        <td class="text-center">
-                            <b class="mr-1">{{ number_format($item->quantity) }}</b> 
-                        </td>
-                        
-                        @php
-                            // Ambil semua delivery terkait dengan order dan produk saat ini
-                            $deliveries = $deliveryDetails->where('product_id', $item->product_id);
-                            $maxDeliveries = 3; // Misal kita ingin menampilkan 3 pengiriman
-                        @endphp
-                        
-                        @if ($deliveries->count() > 0)
-                            @foreach ($deliveries->take($maxDeliveries) as $index => $delivery)
-                                <td class="text-center">
-                                    <b class="mr-1">{{ number_format($delivery->quantity) }}</b> 
-                                </td>
-                            @endforeach
-                            
-                            <!-- Jika jumlah pengiriman kurang dari maksimal, tampilkan kolom kosong -->
-                            @for ($i = $deliveries->count(); $i < $maxDeliveries; $i++)
-                                <td class="text-center">-</td>
-                            @endfor
-                        @else
-                            <!-- Jika tidak ada pengiriman, tampilkan kolom kosong -->
-                            @for ($i = 0; $i < $maxDeliveries; $i++)
-                                <td class="text-center">-</td>
-                            @endfor
-                        @endif
-                    </tr>
-                @endforeach
             </tbody>
         </table>
-    </div>
+    @else
+        <div class="alert alert-danger text-center" role="alert">
+            <strong>
+                Pesanan dengan Nomor {{ $order->invoice_no }} belum ada pengiriman.
+            </strong>
+        </div>
+    @endif
 </div>
+
+{{-- <table class="table table-striped table-bordered nowrap mb-3">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Produk</th>
+            <th>Jumlah</th>
+            <th>Pengiriman ke-1</th>
+            <th>Pengiriman ke-2</th>
+            <th>Pengiriman ke-3</th>
+            <th>Belum dikirim</th>
+        </tr>
+    </thead>
+    <tbody class="light-data">
+        @foreach ($orderDetails as $item)
+            <tr>
+                <td class="text-center">{{ $loop->iteration }}</td>
+                <td><b>{{ $item->product->product_name }}</b>
+                    <p>{{ $item->product->category->name }}</p>
+                </td>
+                <td class="text-center">
+                    <b class="mr-1">{{ number_format($item->quantity) }}</b> 
+                </td>
+                
+                @php
+                    // Ambil semua delivery terkait dengan order dan produk saat ini
+                    $deliveries = $deliveryDetails->where('product_id', $item->product_id);
+                    $maxDeliveries = 3; // Misal kita ingin menampilkan 3 pengiriman
+                @endphp
+                
+                @if ($deliveries->count() > 0)
+                    @foreach ($deliveries->take($maxDeliveries) as $index => $delivery)
+                        <td class="text-center">
+                            <b class="mr-1">{{ number_format($delivery->quantity) }}</b> 
+                        </td>
+                    @endforeach
+                    
+                    <!-- Jika jumlah pengiriman kurang dari maksimal, tampilkan kolom kosong -->
+                    @for ($i = $deliveries->count(); $i < $maxDeliveries; $i++)
+                        <td class="text-center">-</td>
+                    @endfor
+                @else
+                    <!-- Jika tidak ada pengiriman, tampilkan kolom kosong -->
+                    @for ($i = 0; $i < $maxDeliveries; $i++)
+                        <td class="text-center">-</td>
+                    @endfor
+                @endif
+            </tr>
+        @endforeach
+    </tbody>
+</table> --}}

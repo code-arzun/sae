@@ -1,5 +1,5 @@
 <div class="dt-responsive table-responsive mb-3">
-    <table class="table table-hover">
+    <table class="table ">
         <thead>
             <tr>
                 <th width="7%">Tgl</th>
@@ -52,7 +52,7 @@
                     <td class="text-end">-</td>
                     <td class="accounting discountRp">{{ number_format($cashflow->nominal) }}</td>
                 @endif
-                <th class="text-center">{{ explode(' ', $cashflow->createdBy->employee->name)[0] }}</th>
+                <th>{{ explode(' ', $cashflow->createdBy->employee->name)[0] }}</th>
                 <td class="text-center">{{ Carbon\Carbon::parse($cashflow->created_at)->translatedformat('H:i - d M Y') }}</td>
             </tr>
 
